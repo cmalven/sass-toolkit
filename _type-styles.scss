@@ -1,0 +1,162 @@
+@import "map-deep-get";
+@import "font-smoothing";
+@import "node_modules/sass-mq/mq";
+
+//===============================================================
+// Type Styles
+//===============================================================
+/*
+  Utility that automatically generates all of the type styles
+  for a project. Relies on $type-styles and $font-stacks map variables existing in the following format:
+*/
+
+$font-stacks: (
+  serif: (
+    font-family: (Georgia, Times, "Times New Roman", serif),
+    font-weight: 700,
+    font-style: normal
+  ),
+  sans-serif: (
+    font-family: ('Helvetica Neue', Helvetica, Arial, sans-serif),
+    font-weight: normal,
+    font-style: normal
+  )
+) !default;
+
+$type-styles: (
+  heading: (
+    stack: sans-serif,
+    sizes: (
+      default: 24,
+      medium: 36
+    ),
+    properties: (
+      line-height: 1.4,
+    )
+  ),
+
+  body: (
+    stack: serif,
+    sizes: (
+      default: 16
+    ),
+    properties: (
+      line-height: 1.6,
+    )
+  )
+) !default;
+
+
+//---------------------------------------------------------------
+// Get Style Map
+//---------------------------------------------------------------
+/*
+  Function for getting a specific style map from within the $type-styles map
+  @param $key (string)  - Key style you want
+  @param $map (map)     - Map to search for $key [$font-stacks]
+*/
+@function get-style-map($key, $map) {
+  @if map-has-key($map, $key) {
+    @return map-get($map, $key);
+  } @else {
+    @warn "Key #{$key} doesn't exist in map #{$map}";
+  }
+}
+
+
+//---------------------------------------------------------------
+// Font Stack Styles
+//---------------------------------------------------------------
+/*
+  Generates font styles related to a specific font-stack.
+  @param $key (string)  - Key to find in $map
+  @param $map (map)     - Map to search for $key [$font-stacks]
+*/
+@mixin font-stack-styles($key, $map: $font-stacks) {
+  @if map_has_key($map, $key) {
+    font-family: map-deep-get($map, $key, 'font-family');
+    font-weight: map-deep-get($map, $key, 'font-weight');
+    font-style: map-deep-get($map, $key, 'font-style');
+  }
+}
+
+
+//---------------------------------------------------------------
+// Get Type Style
+//---------------------------------------------------------------
+/*
+  Mixin for getting a font-stack and size from the $type-styles map.
+  @param $key (string)  - Should be a top level key from the $type-styles map
+  @param $size (string) - The size key to grab, should correspond to a breakpoint
+  @param $map (map)     - Map to search for $key [$font-stacks]
+*/
+@mixin get-type-style($key, $size: default, $map: $type-styles) {
+  @if map-has-key($map, $key){
+    // Get the style map from within our $type-styles map
+    $map-style: get-style-map($key, $map);
+    // Use $key to get the 'sizes' map from within the styles map
+    $map-sizes: map-deep-get($map, $key, 'sizes');
+    // Get the  size from that size map
+    $font-size: map-get($map-sizes, $size);
+
+    // Set font-size
+    font-size: ($font-size / 10) * 1rem;
+
+    @if map_has_key($map, $key) and map-get($map-style, font-smoothing)  {
+      @include font-smoothing();
+    }
+    // Set font-family
+    @include font-stack-styles(map-get($map-style, 'stack'));
+
+    // Set arbitrary properties
+    @if map_has_key($map-style, 'properties') {
+      @each $property, $value in map-get($map-style, 'properties') {
+        #{$property}: $value;
+      }
+    }
+  }
+}
+
+
+
+//---------------------------------------------------------------
+// Type Styles
+//---------------------------------------------------------------
+/*
+  Generate font-family and typesize styles across breakpoints.
+  @param $key (string)   - Should be a top level key from the $type-styles map
+  @param $map (map)      - Map to search for $key [$font-stacks]
+*/
+@mixin type-style($key, $map: $type-styles) {
+  @include get-type-style($key, default);
+
+  // Use $key to get the 'sizes' map from within the styles map
+  $map-sizes: map-deep-get($map, $key, 'sizes');
+  $responsive-sizes: map-remove($map-sizes, default);
+
+  @each $break, $size in $responsive-sizes {
+    @include mq($break) {
+      font-size: ($size / 10) * 1rem;
+    }
+  }
+}
+
+
+//---------------------------------------------------------------
+// Output Helper Classes
+//---------------------------------------------------------------
+/*
+  Loop through the $type-styles map (defined in `_base/variables.scss`)
+  and generate helpers classes we can use to apply directly into our
+  template markup.
+*/
+
+$output-type-helpers: true !default;
+
+@if $output-type-helpers {
+  @each $class in map-keys($type-styles) {
+    .h-type-#{$class} {
+      @include type-style($class);
+    }
+  }
+}

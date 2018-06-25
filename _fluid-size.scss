@@ -1,0 +1,123 @@
+@import "fluid";
+
+//===============================================================
+// Fluid Size
+//===============================================================
+/*
+  Mixin to provide sizing (often either margin or padding, but can be any numeric property) to a defined
+  location of an element and have that spacing scale fluidly between screen sizes.
+  Relies on a $fluid-sizes map variable existing in the following format:
+*/
+
+$fluid-sizes: (
+  s: (
+    default: 20px,
+    medium: 40px,
+    max: 80px
+  ),
+
+  m: (
+    default: 20px,
+    medium: 40px,
+    max: 80px
+  )
+) !default;
+
+$fluid-min-width: 320px !default;
+
+
+//---------------------------------------------------------------
+// Get Fluid Size
+//---------------------------------------------------------------
+/*
+  Function for getting a specific size/breakpoint value from the $fluid-sizes map.
+  @param $size (string)           - Key size you want
+  @param $breakpoint (string)     - The breakpoint you want sizing at
+*/
+@function get-fluid-size($size, $breakpoint: null) {
+  @if map-has-key($fluid-sizes, $size) {
+    $size-set: map-get($fluid-sizes, $size);
+    @if map-has-key($size-set, $breakpoint) {
+      @return map-get($size-set, $breakpoint);
+    } @else {
+      $breakpoints-length: length(map-values($size-set));
+      $last-breakpoint-value: nth(map-values($size-set), $breakpoints-length);
+      @return $last-breakpoint-value;
+    }
+  }
+}
+
+
+//---------------------------------------------------------------
+// Get Size Set
+//---------------------------------------------------------------
+/*
+  Function for getting a specific size set from the $fluid-sizes map.
+  @param $size (string)  - Size set you want
+*/
+@function get-spacing-size($size) {
+  @if map-has-key($fluid-sizes, $size) {
+    @return map-get($fluid-sizes, $size);
+  }
+}
+
+
+//---------------------------------------------------------------
+// Output Size Markup
+//---------------------------------------------------------------
+/*
+  Generates fluid size and applies it to the supplied property.
+  @param $size (key)                   - Key size you want (from the $fluid-sizes map)
+  @param $property (string)            - The css property you'd like to apply the size to
+                                         will only be applied up until this breakpoint.
+  @param $negative (boolean)           - If true, returns a negative range
+*/
+@mixin fluid-size($size, $property: margin-top, $negative: false, $adjust: 0) {
+  @if map-has-key($fluid-sizes, $size) {
+    // Set size value
+    $size-set: get-spacing-size($size);
+
+    // Set initial breakpoint
+    $previous-breakpoint: $fluid-min-width;
+    $previous-size: map-get($size-set, default);
+
+    @each $key, $value in $size-set {
+      @if map-has-key($mq-breakpoints, $key) {
+        $new-breakpoint: map-get($mq-breakpoints, $key);
+        @include fluid($property, $previous-breakpoint, $new-breakpoint, $previous-size, $value, $negative, $adjust);
+        $previous-breakpoint: $new-breakpoint;
+        $previous-size: $value;
+      }
+    }
+  }
+}
+
+//---------------------------------------------------------------
+// Output Helper Classes
+//---------------------------------------------------------------
+/*
+  Loop through the $fluid-sizes map (defined in `_base/variables.scss`)
+  and generate helpers classes we can use to apply directly into our
+  template markup.
+*/
+
+$output-fluid-size-helpers: true !default;
+
+@if $output-fluid-size-helpers {
+  @each $amount in map-keys($fluid-sizes) {
+    .h-fluid-size-top-margin-#{$amount} {
+      @include fluid-size($amount);
+    }
+    .h-fluid-size-bottom-margin-#{$amount} {
+      @include fluid-size($amount, margin-bottom);
+    }
+
+    .h-fluid-size-top-padding-#{$amount} {
+      @include fluid-size($amount, padding-top);
+    }
+
+    .h-fluid-size-bottom-padding-#{$amount} {
+      @include fluid-size($amount, padding-bottom);
+    }
+  }
+}

@@ -1,0 +1,87 @@
+//===============================================================
+// Color
+//===============================================================
+/*
+  Utility that automatically generates all of the color styles
+  for a project. Relies on a $colors map variable existing in the following format:
+*/
+
+$colors: (
+  black: #222,
+  white: #fff,
+  gray: #aaa
+) !default;
+
+//---------------------------------------------------------------
+// Variables
+//---------------------------------------------------------------
+$tint-mix: #fff !default;
+$shade-mix: #000 !default;
+
+
+//---------------------------------------------------------------
+// Color
+//---------------------------------------------------------------
+/*
+  Function for getting a specific color from within the $colors map
+  @param $key (string)  - Key color you want
+  @param $map (map)     - Map to search for $key [$colors]
+*/
+@function color($key, $map: $colors) {
+  @if map-has-key($map, $key) {
+    @return map-get($map, $key);
+  } @else {
+    @warn "Key #{$key} doesn't exist in map #{$map}";
+  }
+}
+
+
+//---------------------------------------------------------------
+// Tint
+//---------------------------------------------------------------
+/*
+  Function for lightening a color
+  @param $color (color)       - color to tint
+  @param $percentage (number) - percentage of `$color` in returned color
+  @return color
+*/
+@function tint($color, $percentage) {
+  @return mix($tint-mix, $color, $percentage);
+}
+
+
+//---------------------------------------------------------------
+// Shade
+//---------------------------------------------------------------
+/*
+  Function for darkening a color
+  @param $color (color)       - color to tint
+  @param $percentage (number) - percentage of `$color` in returned color
+  @return color
+*/
+@function shade($color, $percentage) {
+  @return mix($shade-mix, $color, $percentage);
+}
+
+
+//---------------------------------------------------------------
+// Output Helper Classes
+//---------------------------------------------------------------
+/*
+  Loop through the $colors map (defined in `_base/variable.scss`)
+  and generate helpers classes we can use to apply directly into our
+  template markup.
+*/
+
+$output-color-helpers: true !default;
+
+@if $output-color-helpers {
+  @each $color in map-keys($colors) {
+    .h-color-text-#{$color} {
+      color: color($color);
+    }
+    .h-color-bg-#{$color} {
+      background-color: color($color);
+    }
+  }
+}

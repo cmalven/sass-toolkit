@@ -1,0 +1,44 @@
+@import "strip-unit";
+
+// =========================================================================
+//
+//  PRECISE CONTROL OVER RESPONSIVE SIZING FOR SASS
+//  ---------------------------------------------------
+//  Indrek Paas @indrekpaas
+//
+//  Inspired by Mike Riethmuller's Precise control over responsive typography
+//  http://madebymike.com.au/writing/precise-control-responsive-typography/
+//
+// =========================================================================
+
+/// @param {list} $properties - list of properties to use
+/// @param {string} $min-vw - minumum viewport width for values
+/// @param {string} $max-vw - maximum viewport width for values
+/// @param {string} $min-value - minimum value
+/// @param {string} $max-value - maximum value
+/// @param {boolean} $negative - whether the value range should be negative
+
+@mixin fluid($properties, $min-vw, $max-vw, $min-value, $max-value, $negative: false, $adjust: 0) {
+  @if $negative {
+    $min-value: ($min-value + $adjust) * -1;
+    $max-value: ($max-value + $adjust) * -1;
+  }
+
+  @each $property in $properties {
+    #{$property}: $min-value + $adjust;
+  }
+
+  @media screen and (min-width: $min-vw) {
+    @each $property in $properties {
+      $min-value: $min-value + $adjust;
+      $max-value: $max-value + $adjust;
+      #{$property}: calc(#{$min-value} + #{strip-unit($max-value - $min-value)} * ((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)}));
+    }
+  }
+
+  @media screen and (min-width: $max-vw) {
+    @each $property in $properties {
+      #{$property}: $max-value + $adjust;
+    }
+  }
+}

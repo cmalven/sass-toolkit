@@ -1,0 +1,113 @@
+@import "node_modules/sass-mq/mq";
+
+//===============================================================
+// Spacing
+//===============================================================
+/*
+  Mixin to provide spacing (either margin or padding) to a defined
+  location of an element and have that spacing scale down proportionally
+  at smaller screen sizes. Relies on a $spacing map variable existing in the following format:
+*/
+
+$spacing: (
+  none: 0,
+  xs: 2rem,
+  s: 3rem,
+  sm: 4rem,
+  m: 5rem,
+  ml: 6rem,
+  l: 8.5rem,
+  xl: 15rem
+) !default;
+
+
+//---------------------------------------------------------------
+// Get Spacing
+//---------------------------------------------------------------
+/*
+  Function for getting a specific size from the $spacing map.
+  @param $key (string)  - Key size you want
+  @param $map (map)     - Map to search for $key [$spacing]
+*/
+@function get-spacing($size) {
+  @if map-has-key($spacing, $size){
+    @return map-get($spacing, $size);
+  }
+}
+
+
+//---------------------------------------------------------------
+// Output Spacing Markup
+//---------------------------------------------------------------
+/*
+  Generates responsive spacing and applies it to the supplied property.
+  @param $size (key)                   - Key size you want (from the $spacing map)
+  @param $property (string)            - The css property you'd like to apply the spacing to
+  @param $sizeAdjustSmall (number)     - Helps us proportionally scale spacing at smaller screen sizes
+  @param $sizeAdjustMedium (number)    - Helps us proportionally scale spacing at medium screen sizes
+  @param $negative (boolean)           - Whether or not we want to apply spacing as a negative value
+  @param $until (key)                  - Key from the $mq-breakpoints map. If set, the spacing
+                                         will only be applied up until this breakpoint.
+*/
+@mixin spacing($size, $property: margin-top, $negative: false,  $sizeAdjustSmall: 0.7, $sizeAdjustMedium: 0.85, $until: false) {
+  @warn "The sass-toolkit `spacing()` mixin is deprecated and may be removed in a future release. Consider using the `fluid-size()` mixin instead.";
+
+  @if map-has-key($spacing, $size) {
+
+    // Set spacing value
+    $spacingAmount: get-spacing($size);
+
+    // If necessary, make spacing value negative
+    @if $negative {
+      $spacingAmount: $spacingAmount * -1;
+    }
+
+    // If we've explicity set spacing until a certain media query
+    @if $until {
+      @include mq($until: $until) {
+        #{$property}: $spacingAmount;
+      }
+
+    // Else output spacing and adjust proportionally across breakpoints
+    } @else {
+      #{$property}: $spacingAmount * $sizeAdjustSmall;
+      @include mq($from:medium) {
+        #{$property}: $spacingAmount * $sizeAdjustMedium;
+      }
+      @include mq($from:large) {
+         #{$property}: $spacingAmount;
+      }
+    }
+
+  }
+}
+
+//---------------------------------------------------------------
+// Output Helper Classes
+//---------------------------------------------------------------
+/*
+  Loop through the $spacing map (defined in `_base/variables.scss`)
+  and generate helpers classes we can use to apply directly into our
+  template markup.
+*/
+
+$output-spacing-helpers: true !default;
+
+@if $output-spacing-helpers {
+  @each $amount in map-keys($spacing) {
+    .h-spacing-top-margin-#{$amount} {
+      @include spacing($amount);
+    }
+    .h-spacing-bottom-margin-#{$amount} {
+      @include spacing($amount, margin-bottom);
+    }
+
+    .h-spacing-top-padding-#{$amount} {
+      @include spacing($amount, padding-top);
+    }
+
+    .h-spacing-bottom-padding-#{$amount} {
+      @include spacing($amount, padding-bottom);
+    }
+  }
+}
