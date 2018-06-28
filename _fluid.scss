@@ -38,7 +38,7 @@
 
   @media screen and (min-width: $max-vw) {
     @each $property in $properties {
-      #{$property}: $max-value + $adjust;
+      #{$property}: $max-value + #{strip-unit($adjust) * 1px};
     }
   }
 }
