@@ -309,3 +309,22 @@ h1 {
   @include fluid(padding-bottom padding-top, 20em, 70em, 2em, 4em);
 }
 ```
+
+
+## Development
+
+### Install dependencies
+```sh
+yarn
+```
+
+### Run tests
+```sh
+yarn test
+```
+
+…or…
+
+```sh
+yarn test-watch
+```

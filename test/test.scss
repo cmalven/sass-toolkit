@@ -1,0 +1,742 @@
+@import 'true';
+
+$mq-breakpoints: (
+  small: 500px,
+  medium: 768px,
+  large: 1024px,
+  xlarge: 1280px,
+  max: 1440px
+);
+
+$colors: (
+  black: #000,
+  white: #fff,
+  red: #ff0000,
+  peaches-and-cream: #f8c6b8
+);
+
+
+$fluid-sizes: (
+  xs: (
+    default: 20px
+  ),
+
+  s: (
+    default: 10px,
+    medium: 30px,
+    max: 50px
+  ),
+
+  m: (
+    default: 20px,
+    medium: 40px,
+    max: 80px
+  )
+);
+
+$font-stacks: (
+  helvetica: (
+    font-family: ('Helvetica Neue', arial, sans-serif),
+    font-weight: normal,
+    font-style: normal
+  )
+);
+
+$type-styles: (
+  a: (
+    stack: helvetica,
+    font-smoothing: true,
+    sizes: (
+      default: 16,
+      medium: 24,
+      large: 32
+    ),
+    properties: (
+      line-height: 1.55,
+      text-transform: normal,
+      letter-spacing: 0,
+      font-weight: normal
+    )
+  ),
+  b: (
+    stack: helvetica,
+    font-smoothing: false,
+    sizes: (
+      default: 16,
+      medium: 24,
+      large: 32
+    ),
+    properties: (
+      line-height: 1.55,
+      text-transform: uppercase,
+      letter-spacing: 0.1em,
+      font-weight: normal
+    )
+  )
+);
+
+@import 'color';
+@import 'type-styles';
+@import 'fluid';
+@import 'fluid-size';
+
+@include test-module('Color') {
+  @include test('Outputs the correct color') {
+    @include assert-equal(
+      color(black), #000
+    );
+    @include assert-equal(
+      color(white), #fff
+    );
+    @include assert-equal(
+      color(red), #ff0000
+    );
+    @include assert-equal(
+      color(peaches-and-cream), #f8c6b8
+    );
+  }
+
+  @include test('Outputs helper classes') {
+    @include assert {
+      @include output {
+        @include output-color-helpers;
+      }
+      @include expect {
+        .h-color-text-black {
+          color: #000;
+        }
+
+        .h-color-bg-black {
+          background-color: #000;
+        }
+
+        .h-color-text-white {
+          color: #fff;
+        }
+
+        .h-color-bg-white {
+          background-color: #fff;
+        }
+
+        .h-color-text-red {
+          color: #ff0000;
+        }
+
+        .h-color-bg-red {
+          background-color: #ff0000;
+        }
+
+        .h-color-text-peaches-and-cream {
+          color: #f8c6b8;
+        }
+
+        .h-color-bg-peaches-and-cream {
+          background-color: #f8c6b8;
+        }
+      }
+    }
+  }
+}
+
+@include test-module('Type') {
+  @include test('Font stack styles mixin') {
+    @include assert {
+      @include output {
+        @include font-stack-styles(helvetica);
+      }
+      @include expect {
+        font-family: "Helvetica Neue", arial, sans-serif;
+        font-weight: normal;
+        font-style: normal;
+      }
+    }
+  }
+
+  @include test('Output helper classes') {
+    @include assert {
+      @include output {
+        @include output-type-helpers;
+      }
+      @include expect {
+        .h-type-a {
+          font-size: 1.6rem;
+          -moz-osx-font-smoothing: grayscale;
+          -webkit-font-smoothing: antialiased;
+          font-family: "Helvetica Neue", arial, sans-serif;
+          font-weight: normal;
+          font-style: normal;
+          line-height: 1.55;
+          text-transform: normal;
+          letter-spacing: 0;
+          font-weight: normal;
+        }
+
+        @media (min-width: 48em) {
+          .h-type-a {
+            font-size: 2.4rem;
+          }
+        }
+
+        @media (min-width: 64em) {
+          .h-type-a {
+            font-size: 3.2rem;
+          }
+        }
+
+        .h-type-b {
+          font-size: 1.6rem;
+          font-family: "Helvetica Neue", arial, sans-serif;
+          font-weight: normal;
+          font-style: normal;
+          line-height: 1.55;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          font-weight: normal;
+        }
+
+        @media (min-width: 48em) {
+          .h-type-b {
+            font-size: 2.4rem;
+          }
+        }
+
+        @media (min-width: 64em) {
+          .h-type-b {
+            font-size: 3.2rem;
+          }
+        }
+      }
+    }
+  }
+
+  @include test('Type style mixin') {
+    @include assert {
+      @include output {
+        @include type-style(a);
+      }
+      @include expect {
+        font-size: 1.6rem;
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-font-smoothing: antialiased;
+        font-family: "Helvetica Neue", arial, sans-serif;
+        font-weight: normal;
+        font-style: normal;
+        line-height: 1.55;
+        text-transform: normal;
+        letter-spacing: 0;
+        font-weight: normal;
+
+        @media (min-width: 48em) {
+          font-size: 2.4rem;
+        }
+
+        @media (min-width: 64em) {
+          font-size: 3.2rem;
+        }
+      }
+    }
+  }
+
+  @include test('Get type style mixin') {
+    @include assert {
+      @include output {
+        @include get-type-style(a, medium);
+      }
+      @include expect {
+        font-size: 2.4rem;
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-font-smoothing: antialiased;
+        font-family: "Helvetica Neue", arial, sans-serif;
+        font-weight: normal;
+        font-style: normal;
+        line-height: 1.55;
+        text-transform: normal;
+        letter-spacing: 0;
+        font-weight: normal;
+      }
+    }
+  }
+}
+
+@include test-module('Fluid') {
+  @include test('Outputs correctly') {
+    @include assert {
+      @include output {
+        @include fluid(
+          margin-top,
+          map-get($mq-breakpoints, medium),
+          map-get($mq-breakpoints, large),
+          50px,
+          100px
+        );
+      }
+      @include expect {
+       margin-top: 50px;
+
+       @media screen and (min-width: 768px) {
+         margin-top: calc(50px + 50 * ((100vw - 768px) / 256));
+       }
+
+       @media screen and (min-width: 1024px) {
+         margin-top: 100px;
+       }
+      }
+    }
+  }
+  @include test('With multiple properties') {
+    @include assert {
+      @include output {
+        @include fluid(
+          (margin-top, margin-bottom),
+          map-get($mq-breakpoints, medium),
+          map-get($mq-breakpoints, large),
+          50px,
+          100px
+        );
+      }
+      @include expect {
+       margin-top: 50px;
+       margin-bottom: 50px;
+
+       @media screen and (min-width: 768px) {
+         margin-top: calc(50px + 50 * ((100vw - 768px) / 256));
+         margin-bottom: calc(50px + 50 * ((100vw - 768px) / 256));
+       }
+
+       @media screen and (min-width: 1024px) {
+         margin-top: 100px;
+         margin-bottom: 100px;
+       }
+      }
+    }
+  }
+
+  @include test('With negative') {
+    @include assert {
+      @include output {
+        @include fluid(
+          margin-top,
+          map-get($mq-breakpoints, medium),
+          map-get($mq-breakpoints, large),
+          50px,
+          100px,
+          $negative: true
+        );
+      }
+      @include expect {
+       margin-top: -50px;
+
+       @media screen and (min-width: 768px) {
+         margin-top: calc(-50px + -50 * ((100vw - 768px) / 256));
+       }
+
+       @media screen and (min-width: 1024px) {
+         margin-top: -100px;
+       }
+      }
+    }
+  }
+
+  @include test('With positive adjust value') {
+    @include assert {
+      @include output {
+        @include fluid(
+          margin-top,
+          map-get($mq-breakpoints, medium),
+          map-get($mq-breakpoints, large),
+          50px,
+          100px,
+          $adjust: 15px
+        );
+      }
+      @include expect {
+       margin-top: 65px;
+
+       @media screen and (min-width: 768px) {
+         margin-top: calc(65px + 50 * ((100vw - 768px) / 256));
+       }
+
+       @media screen and (min-width: 1024px) {
+         margin-top: 115px;
+       }
+      }
+    }
+  }
+
+  @include test('With negative adjust value') {
+    @include assert {
+      @include output {
+        @include fluid(
+          margin-top,
+          map-get($mq-breakpoints, medium),
+          map-get($mq-breakpoints, large),
+          50px,
+          100px,
+          $adjust: -15px
+        );
+      }
+      @include expect {
+       margin-top: 35px;
+
+       @media screen and (min-width: 768px) {
+         margin-top: calc(35px + 50 * ((100vw - 768px) / 256));
+       }
+
+       @media screen and (min-width: 1024px) {
+         margin-top: 85px;
+       }
+      }
+    }
+  }
+
+  @include test('With negative adjust value and negative') {
+    @include assert {
+      @include output {
+        @include fluid(
+          margin-top,
+          map-get($mq-breakpoints, medium),
+          map-get($mq-breakpoints, large),
+          50px,
+          100px,
+          $negative: true,
+          $adjust: -15px
+        );
+      }
+      @include expect {
+       margin-top: -65px;
+
+       @media screen and (min-width: 768px) {
+         margin-top: calc(-65px + -50 * ((100vw - 768px) / 256));
+       }
+
+       @media screen and (min-width: 1024px) {
+         margin-top: -115px;
+       }
+      }
+    }
+  }
+}
+
+@include test-module('Fluid Size') {
+  @include test('Get fluid size function') {
+    @include assert-equal(
+      get-fluid-size(m, default), 20px
+    );
+    @include assert-equal(
+      get-fluid-size(m, medium), 40px
+    );
+    @include assert-equal(
+      get-fluid-size(m, max),80px
+    );
+  }
+
+  @include test('Fluid size mixin') {
+    @include assert {
+      @include output {
+        @include fluid-size(m);
+      }
+
+      @include expect {
+        margin-top: 20px;
+
+        @media screen and (min-width: 320px) {
+          margin-top: calc(20px + 20 * ((100vw - 320px) / 448));
+        }
+
+        @media screen and (min-width: 768px) {
+          margin-top: calc(40px + 40 * ((100vw - 768px) / 672));
+        }
+
+        @media screen and (min-width: 1440px) {
+          margin-top: 80px;
+        }
+      }
+    }
+  }
+
+  @include test('With only one breakpoint') {
+    @include assert {
+      @include output {
+        @include fluid-size(xs);
+      }
+
+      @include expect {
+        margin-top: 20px;
+      }
+    }
+  }
+
+  @include test('With custom property') {
+    @include assert {
+      @include output {
+        @include fluid-size(m, padding-top);
+      }
+
+      @include expect {
+        padding-top: 20px;
+
+        @media screen and (min-width: 320px) {
+          padding-top: calc(20px + 20 * ((100vw - 320px) / 448));
+        }
+
+        @media screen and (min-width: 768px) {
+          padding-top: calc(40px + 40 * ((100vw - 768px) / 672));
+        }
+
+        @media screen and (min-width: 1440px) {
+          padding-top: 80px;
+        }
+      }
+    }
+  }
+
+  @include test('With negative') {
+    @include assert {
+      @include output {
+        @include fluid-size(m, $negative: true);
+      }
+
+      @include expect {
+        margin-top: -20px;
+
+        @media screen and (min-width: 320px) {
+          margin-top: calc(-20px + -20 * ((100vw - 320px) / 448));
+        }
+
+        @media screen and (min-width: 768px) {
+          margin-top: calc(-40px + -40 * ((100vw - 768px) / 672));
+        }
+
+        @media screen and (min-width: 1440px) {
+          margin-top: -80px;
+        }
+      }
+    }
+  }
+
+  @include test('With adjust value') {
+    @include assert {
+      @include output {
+        @include fluid-size(m, $adjust: 15px);
+      }
+
+      @include expect {
+        margin-top: 35px;
+
+        @media screen and (min-width: 320px) {
+          margin-top: calc(35px + 20 * ((100vw - 320px) / 448));
+        }
+
+        @media screen and (min-width: 768px) {
+          margin-top: calc(55px + 40 * ((100vw - 768px) / 672));
+        }
+
+        @media screen and (min-width: 1440px) {
+          margin-top: 95px;
+        }
+      }
+    }
+  }
+
+  @include test('Outputs helper classes') {
+    @include assert {
+      @include output {
+        @include output-fluid-size-helpers;
+      }
+
+      @include expect {
+        .h-fluid-size-top-margin-xs {
+          margin-top: 20px;
+        }
+
+        .h-fluid-size-bottom-margin-xs {
+          margin-bottom: 20px;
+        }
+
+        .h-fluid-size-top-padding-xs {
+          padding-top: 20px;
+        }
+
+        .h-fluid-size-bottom-padding-xs {
+          padding-bottom: 20px;
+        }
+        
+        .h-fluid-size-top-margin-s {
+          margin-top: 10px;
+        }
+
+        @media screen and (min-width: 320px) {
+          .h-fluid-size-top-margin-s {
+            margin-top: calc(10px + 20 * ((100vw - 320px) / 448));
+          }
+        }
+
+        @media screen and (min-width: 768px) {
+          .h-fluid-size-top-margin-s {
+            margin-top: calc(30px + 20 * ((100vw - 768px) / 672));
+          }
+        }
+
+        @media screen and (min-width: 1440px) {
+          .h-fluid-size-top-margin-s {
+            margin-top: 50px;
+          }
+        }
+
+        .h-fluid-size-bottom-margin-s {
+          margin-bottom: 10px;
+        }
+
+        @media screen and (min-width: 320px) {
+          .h-fluid-size-bottom-margin-s {
+            margin-bottom: calc(10px + 20 * ((100vw - 320px) / 448));
+          }
+        }
+
+        @media screen and (min-width: 768px) {
+          .h-fluid-size-bottom-margin-s {
+            margin-bottom: calc(30px + 20 * ((100vw - 768px) / 672));
+          }
+        }
+
+        @media screen and (min-width: 1440px) {
+          .h-fluid-size-bottom-margin-s {
+            margin-bottom: 50px;
+          }
+        }
+
+        .h-fluid-size-top-padding-s {
+          padding-top: 10px;
+        }
+
+        @media screen and (min-width: 320px) {
+          .h-fluid-size-top-padding-s {
+            padding-top: calc(10px + 20 * ((100vw - 320px) / 448));
+          }
+        }
+
+        @media screen and (min-width: 768px) {
+          .h-fluid-size-top-padding-s {
+            padding-top: calc(30px + 20 * ((100vw - 768px) / 672));
+          }
+        }
+
+        @media screen and (min-width: 1440px) {
+          .h-fluid-size-top-padding-s {
+            padding-top: 50px;
+          }
+        }
+
+        .h-fluid-size-bottom-padding-s {
+          padding-bottom: 10px;
+        }
+
+        @media screen and (min-width: 320px) {
+          .h-fluid-size-bottom-padding-s {
+            padding-bottom: calc(10px + 20 * ((100vw - 320px) / 448));
+          }
+        }
+
+        @media screen and (min-width: 768px) {
+          .h-fluid-size-bottom-padding-s {
+            padding-bottom: calc(30px + 20 * ((100vw - 768px) / 672));
+          }
+        }
+
+        @media screen and (min-width: 1440px) {
+          .h-fluid-size-bottom-padding-s {
+            padding-bottom: 50px;
+          }
+        }
+
+        .h-fluid-size-top-margin-m {
+          margin-top: 20px;
+        }
+
+        @media screen and (min-width: 320px) {
+          .h-fluid-size-top-margin-m {
+            margin-top: calc(20px + 20 * ((100vw - 320px) / 448));
+          }
+        }
+
+        @media screen and (min-width: 768px) {
+          .h-fluid-size-top-margin-m {
+            margin-top: calc(40px + 40 * ((100vw - 768px) / 672));
+          }
+        }
+
+        @media screen and (min-width: 1440px) {
+          .h-fluid-size-top-margin-m {
+            margin-top: 80px;
+          }
+        }
+
+        .h-fluid-size-bottom-margin-m {
+          margin-bottom: 20px;
+        }
+
+        @media screen and (min-width: 320px) {
+          .h-fluid-size-bottom-margin-m {
+            margin-bottom: calc(20px + 20 * ((100vw - 320px) / 448));
+          }
+        }
+
+        @media screen and (min-width: 768px) {
+          .h-fluid-size-bottom-margin-m {
+            margin-bottom: calc(40px + 40 * ((100vw - 768px) / 672));
+          }
+        }
+
+        @media screen and (min-width: 1440px) {
+          .h-fluid-size-bottom-margin-m {
+            margin-bottom: 80px;
+          }
+        }
+
+        .h-fluid-size-top-padding-m {
+          padding-top: 20px;
+        }
+
+        @media screen and (min-width: 320px) {
+          .h-fluid-size-top-padding-m {
+            padding-top: calc(20px + 20 * ((100vw - 320px) / 448));
+          }
+        }
+
+        @media screen and (min-width: 768px) {
+          .h-fluid-size-top-padding-m {
+            padding-top: calc(40px + 40 * ((100vw - 768px) / 672));
+          }
+        }
+
+        @media screen and (min-width: 1440px) {
+          .h-fluid-size-top-padding-m {
+            padding-top: 80px;
+          }
+        }
+
+        .h-fluid-size-bottom-padding-m {
+          padding-bottom: 20px;
+        }
+
+        @media screen and (min-width: 320px) {
+          .h-fluid-size-bottom-padding-m {
+            padding-bottom: calc(20px + 20 * ((100vw - 320px) / 448));
+          }
+        }
+
+        @media screen and (min-width: 768px) {
+          .h-fluid-size-bottom-padding-m {
+            padding-bottom: calc(40px + 40 * ((100vw - 768px) / 672));
+          }
+        }
+
+        @media screen and (min-width: 1440px) {
+          .h-fluid-size-bottom-padding-m {
+            padding-bottom: 80px;
+          }
+        }
+      }
+    }
+  }
+}

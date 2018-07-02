@@ -1,6 +1,6 @@
 {
   "name": "@malven/sass-toolkit",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "A collection of foundational utilities for Sass",
   "repository": {
     "type": "git",
@@ -16,5 +16,14 @@
   "homepage": "https://github.com/cmalven/sass-toolkit",
   "dependencies": {
     "sass-mq": "^3.3.2"
+  },
+  "devDependencies": {
+    "mocha": "^5.2.0",
+    "node-sass": "^4.9.0",
+    "sass-true": "^4.0.0"
+  },
+  "scripts": {
+    "test": "mocha",
+    "test-watch": "mocha --watch --watch-extensions scss"
   }
 }

@@ -153,10 +153,14 @@ $type-styles: (
 
 $output-type-helpers: true !default;
 
-@if $output-type-helpers {
+@mixin output-type-helpers {
   @each $class in map-keys($type-styles) {
     .h-type-#{$class} {
       @include type-style($class);
     }
   }
+}
+
+@if $output-type-helpers {
+  @include output-type-helpers;
 }
