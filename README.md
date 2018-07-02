@@ -27,16 +27,15 @@ npm install sass-toolkit --save
 
 ### Requirements & Assumptions
 
-The included tools are based heavily on the frontend development process at One Design Company, and as a result make some assumptions about the tools you're using and how your styles are organized.
+The included tools are based heavily on the frontend development process at Malven Co., and as a result make some assumptions about the tools you're using and how your styles are organized.
 
 #### Outputting Helpers
 
-There are three variables included for outputting helpers. One for each toolkit file.
+There are variables included for outputting helpers. One for each toolkit file.
 ```
-$output-color-helpers
-$output-spacing-helpers
-$output-type-helpers
-$output-fluid-size-helpers
+$output-color-helpers;
+$output-type-helpers;
+$output-fluid-size-helpers;
 ```
 
 By default all helpers are output, to turn them off just add the variable and set the variable to `false`.
