@@ -289,66 +289,6 @@ Works for any of the following classes:
 <h1 class="h-fluid-size-top-margin-s">Ground control to Major Tom</h1>
 ```
 
-### Spacing
-
-**Deprecated and may be removed in a future release. Use `fluid-size` instead.**
-
-Mixin to provide spacing (either margin or padding) to a defined
-location of an element and have that spacing scale down proportionally
-at smaller screen sizes. Can also optionally generate helper classes for use directly in your HTML.
-
-#### As an SCSS mixin
-
-```scss
-.foo + .bar {
-  @include spacing(s); // by default, the value is applied to `margin-top`
-}
-
-.bar + .foo {
-  @include spacing(m, padding-bottom);
-}
-```
-
-#### As an SCSS function
-
-**Important:** when provided as a function, the spacing will *not* be responsive.
-
-```scss
-.bar + .foo {
-  margin-top: get-spacing(m);
-}
-```
-
-#### As an HTML class
-
-Works for any of the following classes:
-
-- `h-spacing-top-margin-{$amount}`
-- `h-spacing-bottom-margin-{$amount}`
-- `h-spacing-top-padding-{$amount}`
-- `h-spacing-bottom-padding-{$amount}`
-
-```html
-<h1 class="h-spacing-top-margin-m">Ground control to Major Tom</h1>
-```
-
-#### Required Setup
-
-Relies on a $spacing map variable existing in the following format:
-
-```scss
-$spacing: (
-  none: 0,
-  xs: 2rem,
-  s: 3rem,
-  sm: 4rem,
-  m: 5rem,
-  ml: 6rem,
-  l: 8.5rem,
-  xl: 15rem
-);
-```
-
 The exact names of the keys in this map aren't important, as long as `@include spacing(foo)` has a matching key `foo` in the map.
 
 ### Fluid
