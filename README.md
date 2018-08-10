@@ -58,6 +58,20 @@ $mq-breakpoints: (
 
 The `color` utility grabs colors and optionally generates helper class for your colors that can be used directly in your HTML.
 
+#### Required Setup
+
+Relies on a `$colors` map variable existing in the following format:
+
+```scss
+$colors: (
+  black: #222,
+  white: #fff,
+  gray: #aaa,
+  blue: #118bc1,
+  yellow: #ffe215
+);
+```
+
 #### As a SCSS function
 
 ```scss
@@ -75,23 +89,59 @@ The `color` utility grabs colors and optionally generates helper class for your 
 </div>
 ```
 
-#### Required Setup
-
-Relies on a `$colors` map variable existing in the following format:
-
-```scss
-$colors: (
-  black: #222,
-  white: #fff,
-  gray: #aaa,
-  blue: #118bc1,
-  yellow: #ffe215
-);
-```
-
 ### Type Styles
 
 Automatically generates all of the type styles for a project, provides a mixin for grabbing a specific set of predefined styles, adjusts type responsively, and provides optional helper classes for your type styles that can be used directly in your HTML. A type style can be any collection of CSS properties. Anything you add to the `properties` key of the configuration map will be output by the mixin.
+
+#### Required Setup
+
+Assumes that you are using 10-based `rem` (e.g. `font-size: 1.4rem; // 14 px`) units for sizing across the site, via something like `html { font-size: 62.5%; }`
+
+Also relies on $`type-styles` and `$font-stacks` map variables existing in the following format:
+
+```scss
+$font-stacks: (
+  futura-bold: (
+    font-family: (Futura, 'Trebuchet MS', Arial, sans-serif),
+    font-weight: 700,
+    font-style: normal
+  ),
+  helvetica: (
+    font-family: ('Helvetica Neue', Helvetica, Arial, sans-serif;),
+    font-weight: normal,
+    font-style: normal
+  )
+);
+
+$type-styles: (
+  heading: (
+    stack: futura-bold,
+    sizes: (
+      default: 14,
+      medium: 18
+    ),
+    properties: (
+      line-height: 1,
+      text-transform: normal,
+      letter-spacing: 0,
+    )
+  ),
+
+  body: (
+    stack: helvetica,
+    font-smoothing: true,
+    sizes: (
+      default: 16,
+      medium: 24
+    ),
+    properties: (
+      line-height: 1.4,
+      text-transform: uppercase,
+      letter-spacing: 1.2,
+    )
+  )
+);
+```
 
 #### As an SCSS mixin
 
@@ -169,56 +219,6 @@ And if you _only_ want the basic styling for a font stack, you can use the `font
 <h1 class="h-type-heading">Ground control to Major Tom</h1>
 ```
 
-#### Required Setup
-
-Assumes that you are using 10-based `rem` (e.g. `font-size: 1.4rem; // 14 px`) units for sizing across the site, via something like `html { font-size: 62.5%; }`
-
-Also relies on $`type-styles` and `$font-stacks` map variables existing in the following format:
-
-```scss
-$font-stacks: (
-  futura-bold: (
-    font-family: (Futura, 'Trebuchet MS', Arial, sans-serif),
-    font-weight: 700,
-    font-style: normal
-  ),
-  helvetica: (
-    font-family: ('Helvetica Neue', Helvetica, Arial, sans-serif;),
-    font-weight: normal,
-    font-style: normal
-  )
-);
-
-$type-styles: (
-  heading: (
-    stack: futura-bold,
-    sizes: (
-      default: 14,
-      medium: 18
-    ),
-    properties: (
-      line-height: 1,
-      text-transform: normal,
-      letter-spacing: 0,
-    )
-  ),
-
-  body: (
-    stack: helvetica,
-    font-smoothing: true,
-    sizes: (
-      default: 16,
-      medium: 24
-    ),
-    properties: (
-      line-height: 1.4,
-      text-transform: uppercase,
-      letter-spacing: 1.2,
-    )
-  )
-);
-```
-
 ### Fluid Size
 
 The fluid size mixin makes it simple to smoothly adjust a value across a range of breakpoints, with precise control over the value at each breakpoint. It’s great for handling responsive margins and padding, but can be used for any numeric value, including font sizes, absolute/relative positioning values, etc. Interally, this mixin extends the `fluid` mixin mentioned later on. If you want a simpler, lower-level way to handle fluid property adjustments, check out the `fluid` mixin.
@@ -273,7 +273,7 @@ You can adjust the mixin to produce negative values from any `$fluid-sizes` set 
 
 #### A note about units
 
-Due to some browser inconsistencies when using the CSS `calc()` function that is used by this mixin behind the scenes, we recommend setting all `$fluid-sizes` values in `px`, and all values _must_ include a unit, even `0` values (i.e. use `0px` instead of `0`). Failing to follow these guidelines probably wont’t cause issues in all browsers, but cross-browser behavior may be inconsistent.
+Due to some browser inconsistencies when using the CSS `calc()` function that is used by this mixin behind the scenes, we recommend setting all `$fluid-sizes` values in `px`, and all values _must_ include a unit, even `0` values (i.e. use `0px` instead of `0`). Failing to follow these guidelines probably won’t cause issues in all browsers, but cross-browser behavior may be inconsistent.
 
 #### As an HTML class
 
