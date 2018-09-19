@@ -72,6 +72,20 @@ $type-styles: (
       letter-spacing: 0.1em,
       font-weight: normal
     )
+  ),
+  c: (
+    stack: helvetica,
+    font-smoothing: false,
+    sizes: (
+      default: 16px,
+      medium: 24px,
+      large: 32px
+    ),
+    properties: (
+      line-height: 1.55,
+      text-transform: normal,
+      font-weight: normal
+    )
   )
 );
 
@@ -205,6 +219,28 @@ $type-styles: (
             font-size: 3.2rem;
           }
         }
+
+        .h-type-c {
+          font-size: 16px;
+          font-family: "Helvetica Neue", arial, sans-serif;
+          font-weight: normal;
+          font-style: normal;
+          line-height: 1.55;
+          text-transform: normal;
+          font-weight: normal;
+        }
+
+        @media (min-width: 48em) {
+          .h-type-c {
+            font-size: 24px;
+          }
+        }
+
+        @media (min-width: 64em) {
+          .h-type-c {
+            font-size: 32px;
+          }
+        }
       }
     }
   }
@@ -232,6 +268,31 @@ $type-styles: (
 
         @media (min-width: 64em) {
           font-size: 3.2rem;
+        }
+      }
+    }
+  }
+
+  @include test('Type style mixin with unit for sizes') {
+    @include assert {
+      @include output {
+        @include type-style(c);
+      }
+      @include expect {
+        font-size: 16px;
+        font-family: "Helvetica Neue", arial, sans-serif;
+        font-weight: normal;
+        font-style: normal;
+        line-height: 1.55;
+        text-transform: normal;
+        font-weight: normal;
+
+        @media (min-width: 48em) {
+          font-size: 24px;
+        }
+
+        @media (min-width: 64em) {
+          font-size: 32px;
         }
       }
     }

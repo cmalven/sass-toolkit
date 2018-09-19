@@ -171,7 +171,9 @@ And if you _only_ want the basic styling for a font stack, you can use the `font
 
 #### Required Setup
 
-Assumes that you are using 10-based `rem` (e.g. `font-size: 1.4rem; // 14 px`) units for sizing across the site, via something like `html { font-size: 62.5%; }`
+Assumes that you are using 10-based `rem` (e.g. `font-size: 1.4rem; // 14 px`) units for sizing across the site, via something like `html { font-size: 62.5%; }`.
+
+Values in `sizes` can also be specified with a unit, if desired. For instance, `default: 14px` instead of `default: 14`.
 
 Also relies on $`type-styles` and `$font-stacks` map variables existing in the following format:
 

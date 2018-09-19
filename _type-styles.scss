@@ -63,6 +63,21 @@ $type-styles: (
   }
 }
 
+// ---------------------------------------------------------------
+// Format Font Size
+// ---------------------------------------------------------------
+/*
+  Returns a font size either converted to rem or as original units
+  @param $value (string)  - Value to process
+*/
+@function format-font-size($value) {
+  $unit: unit($value);
+  @if $unit == '' {
+    @return ($value / 10) * 1rem;
+  }
+  @return $value;
+}
+
 
 //---------------------------------------------------------------
 // Font Stack Styles
@@ -100,7 +115,7 @@ $type-styles: (
     $font-size: map-get($map-sizes, $size);
 
     // Set font-size
-    font-size: ($font-size / 10) * 1rem;
+    font-size: format-font-size($font-size);
 
     @if map_has_key($map, $key) and map-get($map-style, font-smoothing)  {
       @include font-smoothing();
@@ -136,7 +151,7 @@ $type-styles: (
 
   @each $break, $size in $responsive-sizes {
     @include mq($break) {
-      font-size: ($size / 10) * 1rem;
+      font-size: format-font-size($size);
     }
   }
 }
