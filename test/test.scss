@@ -398,6 +398,32 @@ $type-styles: (
     }
   }
 
+  @include test('With scale value') {
+    @include assert {
+      @include output {
+        @include fluid(
+          margin-top,
+          map-get($mq-breakpoints, medium),
+          map-get($mq-breakpoints, large),
+          50px,
+          100px,
+          $scale: 2
+        );
+      }
+      @include expect {
+       margin-top: 100px;
+
+       @media screen and (min-width: 768px) {
+         margin-top: calc(100px + 100 * ((100vw - 768px) / 256));
+       }
+
+       @media screen and (min-width: 1024px) {
+         margin-top: 200px;
+       }
+      }
+    }
+  }
+
   @include test('With positive adjust value') {
     @include assert {
       @include output {

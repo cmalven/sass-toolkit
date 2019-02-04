@@ -72,7 +72,7 @@ $fluid-min-width: 320px !default;
                                          will only be applied up until this breakpoint.
   @param $negative (boolean)           - If true, returns a negative range
 */
-@mixin fluid-size($size, $property: margin-top, $negative: false, $adjust: 0) {
+@mixin fluid-size($size, $property: margin-top, $negative: false, $adjust: 0, $scale: 1) {
   @if map-has-key($fluid-sizes, $size) {
     // Create an index we can increment
     $idx: 1;
@@ -94,7 +94,7 @@ $fluid-min-width: 320px !default;
           $new-breakpoint: map-get($mq-breakpoints, $key);
           $include-min: $idx == 1;
           $include-max: $idx == $size-set-length - 1;
-          @include fluid($property, $previous-breakpoint, $new-breakpoint, $previous-size, $value, $negative, $adjust, $include-min: $include-min, $include-max: $include-max);
+          @include fluid($property, $previous-breakpoint, $new-breakpoint, $previous-size, $value, $negative, $scale, $adjust, $include-min: $include-min, $include-max: $include-max);
           $previous-breakpoint: $new-breakpoint;
           $previous-size: $value;
           $idx: $idx + 1;

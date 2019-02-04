@@ -17,15 +17,17 @@
 /// @param {string} $min-value - minimum value
 /// @param {string} $max-value - maximum value
 /// @param {boolean} $negative - whether the value range should be negative
+/// @param {string} $scale - value to multiply all values by
+/// @param {string} $adjust - pixel amount to adjust all values by
 
-@mixin fluid($properties, $min-vw, $max-vw, $min-value, $max-value, $negative: false, $adjust: 0px, $include-min: true, $include-max: true) {
+@mixin fluid($properties, $min-vw, $max-vw, $min-value, $max-value, $negative: false, $scale: 1, $adjust: 0px, $include-min: true, $include-max: true) {
   @if $negative {
     $min-value: $min-value * -1;
     $max-value: $max-value * -1;
   }
 
-  $min-value: $min-value + $adjust;
-  $max-value: $max-value + $adjust;
+  $min-value: ($min-value * $scale) + $adjust;
+  $max-value: ($max-value * $scale) + $adjust;
   
   @if $include-min {
     @each $property in $properties {
