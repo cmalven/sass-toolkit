@@ -12,15 +12,28 @@
 // =========================================================================
 
 /// @param {list} $properties - list of properties to use
-/// @param {string} $min-vw - minumum viewport width for values
-/// @param {string} $max-vw - maximum viewport width for values
-/// @param {string} $min-value - minimum value
-/// @param {string} $max-value - maximum value
+/// @param {string} $min-vw - minumum viewport width in pixels or the name of a map key in $mq-breakpoints
+/// @param {string} $max-vw - maximum viewport width in pixels or the name of a map key in $mq-breakpoints
+/// @param {string} $min-value - minimum value in pixels
+/// @param {string} $max-value - maximum value in pixels
 /// @param {boolean} $negative - whether the value range should be negative
 /// @param {string} $scale - value to multiply all values by
 /// @param {string} $adjust - pixel amount to adjust all values by
 
 @mixin fluid($properties, $min-vw, $max-vw, $min-value, $max-value, $negative: false, $scale: 1, $adjust: 0px, $include-min: true, $include-max: true) {
+
+  @if $fluid-min-width and $min-vw == 'default' {
+    $min-vw: $fluid-min-width;
+  }
+  
+  @if $mq-breakpoints and map-has-key($mq-breakpoints, $min-vw) {
+    $min-vw: map-get($mq-breakpoints, $min-vw);
+  }
+
+  @if $mq-breakpoints and map-has-key($mq-breakpoints, $max-vw) {
+    $max-vw: map-get($mq-breakpoints, $max-vw);
+  }
+
   @if $negative {
     $min-value: $min-value * -1;
     $max-value: $max-value * -1;

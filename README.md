@@ -309,6 +309,16 @@ html {
 h1 {
   @include fluid(padding-bottom padding-top, 20em, 70em, 2em, 4em);
 }
+
+/* If you have a $mq-breakpoints map, you can use its keys in place of values */
+p {
+  @include fluid(margin-top, medium, large, 2em, 4em);
+}
+
+/* …and you can use `default` to refer to your $fluid-min-width value */
+p {
+  @include fluid(margin-top, default, large, 2em, 4em);
+}
 ```
 
 
