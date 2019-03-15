@@ -19,9 +19,10 @@
 /// @param {boolean} $negative - whether the value range should be negative
 /// @param {string} $scale - value to multiply all values by
 /// @param {string} $adjust - pixel amount to adjust all values by
-/// @param {string} $unit - Viewport unit to use
+/// @param {string} $size-unit - Unit to use for size (width or height)
+/// @param {string} $viewport-unit - Unit to use for viewport units (vw or vh)
 
-@mixin fluid($properties, $min-size, $max-size, $min-value, $max-value, $negative: false, $scale: 1, $adjust: 0px, $include-min: true, $include-max: true, $unit: 'vw') {
+@mixin fluid($properties, $min-size, $max-size, $min-value, $max-value, $negative: false, $scale: 1, $adjust: 0px, $include-min: true, $include-max: true, $size-unit: 'width', $viewport-unit: 'vw') {
 
   @if $fluid-min-width and $min-size == 'default' {
     $min-size: $fluid-min-width;
@@ -49,14 +50,14 @@
     }
   }
 
-  @media screen and (min-width: $min-size) {
+  @media screen and (min-#{$size-unit}: $min-size) {
     @each $property in $properties {
-      #{$property}: calc(#{$min-value} + #{strip-unit($max-value - $min-value)} * ((100#{$unit} - #{$min-size}) / #{strip-unit($max-size - $min-size)}));
+      #{$property}: calc(#{$min-value} + #{strip-unit($max-value - $min-value)} * ((100#{$viewport-unit} - #{$min-size}) / #{strip-unit($max-size - $min-size)}));
     }
   }
 
   @if $include-max {
-    @media screen and (min-width: $max-size) {
+    @media screen and (min-#{$size-unit}: $max-size) {
       @each $property in $properties {
         #{$property}: $max-value;
       }
