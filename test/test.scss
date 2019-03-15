@@ -345,6 +345,32 @@ $type-styles: (
     }
   }
 
+  @include test('With viewport height units') {
+    @include assert {
+      @include output {
+        @include fluid(
+          margin-top,
+          map-get($mq-breakpoints, medium),
+          map-get($mq-breakpoints, large),
+          50px,
+          100px,
+          $unit: vh
+        );
+      }
+      @include expect {
+       margin-top: 50px;
+
+       @media screen and (min-width: 768px) {
+         margin-top: calc(50px + 50 * ((100vh - 768px) / 256));
+       }
+
+       @media screen and (min-width: 1024px) {
+         margin-top: 100px;
+       }
+      }
+    }
+  }
+
   @include test('With map keys for sizes') {
     @include assert {
       @include output {

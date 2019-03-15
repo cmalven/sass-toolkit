@@ -12,26 +12,27 @@
 // =========================================================================
 
 /// @param {list} $properties - list of properties to use
-/// @param {string} $min-vw - minumum viewport width in pixels or the name of a map key in $mq-breakpoints
-/// @param {string} $max-vw - maximum viewport width in pixels or the name of a map key in $mq-breakpoints
+/// @param {string} $min-size - minumum viewport size in pixels or the name of a map key in $mq-breakpoints
+/// @param {string} $max-size - maximum viewport size in pixels or the name of a map key in $mq-breakpoints
 /// @param {string} $min-value - minimum value in pixels
 /// @param {string} $max-value - maximum value in pixels
 /// @param {boolean} $negative - whether the value range should be negative
 /// @param {string} $scale - value to multiply all values by
 /// @param {string} $adjust - pixel amount to adjust all values by
+/// @param {string} $unit - Viewport unit to use
 
-@mixin fluid($properties, $min-vw, $max-vw, $min-value, $max-value, $negative: false, $scale: 1, $adjust: 0px, $include-min: true, $include-max: true) {
+@mixin fluid($properties, $min-size, $max-size, $min-value, $max-value, $negative: false, $scale: 1, $adjust: 0px, $include-min: true, $include-max: true, $unit: 'vw') {
 
-  @if $fluid-min-width and $min-vw == 'default' {
-    $min-vw: $fluid-min-width;
+  @if $fluid-min-width and $min-size == 'default' {
+    $min-size: $fluid-min-width;
   }
   
-  @if $mq-breakpoints and map-has-key($mq-breakpoints, $min-vw) {
-    $min-vw: map-get($mq-breakpoints, $min-vw);
+  @if $mq-breakpoints and map-has-key($mq-breakpoints, $min-size) {
+    $min-size: map-get($mq-breakpoints, $min-size);
   }
 
-  @if $mq-breakpoints and map-has-key($mq-breakpoints, $max-vw) {
-    $max-vw: map-get($mq-breakpoints, $max-vw);
+  @if $mq-breakpoints and map-has-key($mq-breakpoints, $max-size) {
+    $max-size: map-get($mq-breakpoints, $max-size);
   }
 
   @if $negative {
@@ -48,14 +49,14 @@
     }
   }
 
-  @media screen and (min-width: $min-vw) {
+  @media screen and (min-width: $min-size) {
     @each $property in $properties {
-      #{$property}: calc(#{$min-value} + #{strip-unit($max-value - $min-value)} * ((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)}));
+      #{$property}: calc(#{$min-value} + #{strip-unit($max-value - $min-value)} * ((100#{$unit} - #{$min-size}) / #{strip-unit($max-size - $min-size)}));
     }
   }
 
   @if $include-max {
-    @media screen and (min-width: $max-vw) {
+    @media screen and (min-width: $max-size) {
       @each $property in $properties {
         #{$property}: $max-value;
       }
