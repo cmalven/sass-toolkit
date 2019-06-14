@@ -18,7 +18,7 @@
     "sass-mq": "^3.3.2"
   },
   "devDependencies": {
-    "mocha": "^5.2.0",
+    "mocha": "^6.1.4",
     "node-sass": "^4.9.0",
     "sass-true": "^4.0.0"
   },
