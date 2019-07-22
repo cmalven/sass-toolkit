@@ -3,7 +3,13 @@ workflow "Test and Publish" {
   on = "release"
 }
 
+action "Build" {
+  uses = "actions/npm@master"
+  args = "install"
+}
+
 action "Test" {
+  needs = "Build"
   uses = "actions/npm@master"
   args = "test"
 }
