@@ -339,3 +339,9 @@ npm test
 ```sh
 npm test-watch
 ```
+
+### Release
+
+- Bump `version` in `package.json` appropriately.
+- Create a new Github release identifying changes.
+- A Github Action will automatically run tests and publish the update.
