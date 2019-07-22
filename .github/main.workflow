@@ -3,7 +3,12 @@ workflow "Publish" {
   on = "release"
 }
 
-action "GitHub Action for npm" {
+action "Test" {
+  uses = "actions/npm@master"
+  args = "test"
+}
+
+action "Publish" {
   uses = "actions/npm@master"
   args = "publish --access public"
   secrets = ["NPM_AUTH_TOKEN"]
