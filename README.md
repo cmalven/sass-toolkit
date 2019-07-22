@@ -326,16 +326,16 @@ p {
 
 ### Install dependencies
 ```sh
-yarn
+npm i
 ```
 
 ### Run tests
 ```sh
-yarn test
+npm test
 ```
 
 …or…
 
 ```sh
-yarn test-watch
+npm test-watch
 ```
