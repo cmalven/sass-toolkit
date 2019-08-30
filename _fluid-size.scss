@@ -55,9 +55,9 @@ $fluid-min-width: 320px !default;
   Function for getting a specific size set from the $fluid-sizes map.
   @param $size (string)  - Size set you want
 */
-@function get-spacing-size($size) {
-  @if map-has-key($fluid-sizes, $size) {
-    @return map-get($fluid-sizes, $size);
+@function get-spacing-size($size, $map: $fluid-sizes) {
+  @if map-has-key($map, $size) {
+    @return map-get($map, $size);
   }
 }
 
@@ -71,34 +71,52 @@ $fluid-min-width: 320px !default;
   @param $property (string)            - The css property you'd like to apply the size to
                                          will only be applied up until this breakpoint.
   @param $negative (boolean)           - If true, returns a negative range
+  @param $adjust (pixel value)         - Adjusts all resulting values by a given amount
+  @param $scale (number)               - Multiplies all resulting values by a given amount
 */
 @mixin fluid-size($size, $property: margin-top, $negative: false, $adjust: 0, $scale: 1) {
   @if map-has-key($fluid-sizes, $size) {
-    // Create an index we can increment
-    $idx: 1;
-
-    // Set size value
     $size-set: get-spacing-size($size);
-    $size-set-length: length(map-keys($size-set));
+    @include output-fluid-sizes($size-set, $property, $negative, $adjust, $scale);
+  }
+}
 
-    // Set initial breakpoint
-    $previous-breakpoint: $fluid-min-width;
-    $previous-size: map-get($size-set, default);
 
-    @if $size-set-length == 1 {
-      #{$property}: $previous-size;
-    }
-    @else {
-      @each $key, $value in $size-set {
-        @if map-has-key($mq-breakpoints, $key) {
-          $new-breakpoint: map-get($mq-breakpoints, $key);
-          $include-min: $idx == 1;
-          $include-max: $idx == $size-set-length - 1;
-          @include fluid($property, $previous-breakpoint, $new-breakpoint, $previous-size, $value, $negative, $scale, $adjust, $include-min: $include-min, $include-max: $include-max);
-          $previous-breakpoint: $new-breakpoint;
-          $previous-size: $value;
-          $idx: $idx + 1;
-        }
+//---------------------------------------------------------------
+// Output Fluid Breakpoints
+//---------------------------------------------------------------
+/*
+  Loops through breakpoints and outputs fluid sizes
+  @param $size (key)                   - Key size you want (from the $fluid-sizes map)
+  @param $property (string)            - The css property you'd like to apply the size to
+                                         will only be applied up until this breakpoint.
+  @param $negative (boolean)           - If true, returns a negative range
+  @param $adjust (pixel value)         - Adjusts all resulting values by a given amount
+  @param $scale (number)               - Multiplies all resulting values by a given amount
+*/
+@mixin output-fluid-sizes($size-set, $property, $negative: false, $adjust: 0, $scale: 1) {
+  // Create an index we can increment
+  $idx: 1;
+
+  $size-set-length: length(map-keys($size-set));
+
+  // Set initial breakpoint
+  $previous-breakpoint: $fluid-min-width;
+  $previous-size: map-get($size-set, default);
+
+  @if $size-set-length == 1 {
+    #{$property}: $previous-size;
+  }
+  @else {
+    @each $key, $value in $size-set {
+      @if map-has-key($mq-breakpoints, $key) {
+        $new-breakpoint: map-get($mq-breakpoints, $key);
+        $include-min: $idx == 1;
+        $include-max: $idx == $size-set-length - 1;
+        @include fluid($property, $previous-breakpoint, $new-breakpoint, $previous-size, $value, $negative, $scale, $adjust, $include-min: $include-min, $include-max: $include-max);
+        $previous-breakpoint: $new-breakpoint;
+        $previous-size: $value;
+        $idx: $idx + 1;
       }
     }
   }
