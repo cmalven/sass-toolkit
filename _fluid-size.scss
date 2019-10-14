@@ -105,7 +105,9 @@ $fluid-min-width: 320px !default;
   $previous-size: map-get($size-set, default);
 
   @if $size-set-length == 1 {
-    #{$property}: $previous-size;
+    $value: $previous-size * $scale + $adjust;
+    @if $negative { $value: $value * -1; }
+    #{$property}: $value;
   }
   @else {
     @each $key, $value in $size-set {

@@ -681,6 +681,18 @@ $type-styles: (
     }
   }
 
+  @include test('With only one breakpoint plus negative, scale, and adjust') {
+    @include assert {
+      @include output {
+        @include fluid-size(xs, $negative: true, $scale: 2, $adjust: 10px);
+      }
+
+      @include expect {
+        margin-top: -50px;
+      }
+    }
+  }
+
   @include test('With custom property') {
     @include assert {
       @include output {
