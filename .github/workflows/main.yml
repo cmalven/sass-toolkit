@@ -7,7 +7,10 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/npm@master
+    - uses: actions/checkout@master
+    - uses: actions/setup-node@master
+      with:
+        node-version: '10.x'
     - name: Install, Build, and Test
       run: |
         npm install
@@ -18,7 +21,12 @@ jobs:
     needs: [build]
     
     steps:
-    - uses: actions/npm@master
+    - uses: actions/checkout@master
+    - uses: actions/setup-node@master
+      with:
+        node-version: '10.x'
     - name: Publishes to npm
       run: |
         npm publish --access public
+      env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
