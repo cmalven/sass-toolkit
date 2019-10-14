@@ -1,0 +1,24 @@
+name: Test and Publish
+
+on: [release]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/npm@master
+    - name: Install, Build, and Test
+      run: |
+        npm install
+        npm test
+  
+  publish:
+    runs-on: ubuntu-latest
+    needs: [build]
+    
+    steps:
+    - uses: actions/npm@master
+    - name: Publishes to npm
+      run: |
+        npm publish --access public
