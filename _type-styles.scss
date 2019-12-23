@@ -1,6 +1,7 @@
 @import "map-deep-get";
 @import "font-smoothing";
 @import "node_modules/sass-mq/mq";
+@import "fluid-size";
 
 //===============================================================
 // Type Styles
@@ -149,11 +150,20 @@ $type-styles: (
   $map-sizes: map-deep-get($map, $key, 'sizes');
   $responsive-sizes: map-remove($map-sizes, default);
 
-  @each $break, $size in $responsive-sizes {
-    @include mq($break) {
-      font-size: format-font-size($size);
+  // Is the resizing fluid?
+  $isFluid: map-deep-get($map, $key, 'fluid');
+  
+  @if $isFluid {
+    @include output-fluid-sizes($map-sizes, font-size)
+  }
+  @else {
+    @each $break, $size in $responsive-sizes {
+      @include mq($break) {
+        font-size: format-font-size($size);
+      }
     }
   }
+
 }
 
 

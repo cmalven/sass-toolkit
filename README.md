@@ -145,6 +145,23 @@ $type-styles: (
 );
 ```
 
+### With fluid value
+
+If you'd like the values for `font-size` to scale fluidly between breakpoints, just add `fluid: true`. This also requires that you add `px` to your values:
+
+```scss
+$type-styles: (
+  heading: (
+    stack: futura-bold,
+    sizes: (
+      default: 14px,
+      medium: 18px,
+      large: 24px
+    ),
+    fluid: true
+  ),
+```
+
 #### As an SCSS mixin
 
 ### With responsive sizing
