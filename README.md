@@ -307,7 +307,7 @@ Works for any of the following classes:
 <h1 class="h-fluid-size-top-margin-s">Ground control to Major Tom</h1>
 ```
 
-The exact names of the keys in this map aren't important, as long as `@include spacing(foo)` has a matching key `foo` in the map.
+The exact names of the keys in this map aren't important, as long as `@include fluid-size(foo)` has a matching key `foo` in the map.
 
 ### Fluid
 
