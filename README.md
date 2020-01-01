@@ -319,25 +319,27 @@ Inspired by the work of [Indrek Paas](https://github.com/indrekpaas) and the wri
 @include fluid($properties)
 /* Single property */
 html {
-  @include fluid(font-size, 320px, 1366px, 14px, 18px);
+  @include fluid(font-size, 320px, 1440px, 14px, 18px);
 }
 
 /* Multiple properties with same values */
 h1 {
-  @include fluid(padding-bottom padding-top, 20em, 70em, 2em, 4em);
+  @include fluid(padding-bottom padding-top, 320px, 1440px, 200px, 300px);
 }
 
 /* If you have a $mq-breakpoints map, you can use its keys in place of values */
 p {
-  @include fluid(margin-top, medium, large, 2em, 4em);
+  @include fluid(margin-top, medium, large, 100px, 200px);
 }
 
 /* …and you can use `default` to refer to your $fluid-min-width value */
 p {
-  @include fluid(margin-top, default, large, 2em, 4em);
+  @include fluid(margin-top, default, large, 100px, 200px);
 }
-```
 
+/* Substitute vertical units, for queries that respond to device height */
+@include fluid(margin-top, 600px, 900px, 100px, 200px, $size-unit: height, $viewport-unit: vh );
+```
 
 ## Development
 
