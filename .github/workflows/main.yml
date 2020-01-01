@@ -1,6 +1,8 @@
 name: Test and Publish
 
-on: [release]
+on:
+  release:
+    types: [published]
 
 jobs:
   publish:
