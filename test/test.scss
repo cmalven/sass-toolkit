@@ -52,10 +52,7 @@ $type-styles: (
       large: 32
     ),
     properties: (
-      line-height: 1.55,
-      text-transform: normal,
-      letter-spacing: 0,
-      font-weight: normal
+      line-height: 1.55
     )
   ),
   b: (
@@ -69,8 +66,7 @@ $type-styles: (
     properties: (
       line-height: 1.55,
       text-transform: uppercase,
-      letter-spacing: 0.1em,
-      font-weight: normal
+      letter-spacing: 0.1em
     )
   ),
   c: (
@@ -82,9 +78,7 @@ $type-styles: (
       large: 32px
     ),
     properties: (
-      line-height: 1.55,
-      text-transform: normal,
-      font-weight: normal
+      line-height: 1.55
     )
   ),
   d: (
@@ -195,9 +189,6 @@ $type-styles: (
           font-weight: normal;
           font-style: normal;
           line-height: 1.55;
-          text-transform: normal;
-          letter-spacing: 0;
-          font-weight: normal;
         }
 
         @media (min-width: 48em) {
@@ -220,7 +211,6 @@ $type-styles: (
           line-height: 1.55;
           text-transform: uppercase;
           letter-spacing: 0.1em;
-          font-weight: normal;
         }
 
         @media (min-width: 48em) {
@@ -241,8 +231,6 @@ $type-styles: (
           font-weight: normal;
           font-style: normal;
           line-height: 1.55;
-          text-transform: normal;
-          font-weight: normal;
         }
 
         @media (min-width: 48em) {
@@ -306,9 +294,6 @@ $type-styles: (
         font-weight: normal;
         font-style: normal;
         line-height: 1.55;
-        text-transform: normal;
-        letter-spacing: 0;
-        font-weight: normal;
 
         @media (min-width: 48em) {
           font-size: 2.4rem;
@@ -332,8 +317,6 @@ $type-styles: (
         font-weight: normal;
         font-style: normal;
         line-height: 1.55;
-        text-transform: normal;
-        font-weight: normal;
 
         @media (min-width: 48em) {
           font-size: 24px;
@@ -386,9 +369,6 @@ $type-styles: (
         font-weight: normal;
         font-style: normal;
         line-height: 1.55;
-        text-transform: normal;
-        letter-spacing: 0;
-        font-weight: normal;
       }
     }
   }
@@ -677,6 +657,19 @@ $type-styles: (
 
       @include expect {
         margin-top: 20px;
+      }
+    }
+  }
+
+  @include test('With only one breakpoint and multiple properties') {
+    @include assert {
+      @include output {
+        @include fluid-size(xs, width height);
+      }
+
+      @include expect {
+        width: 20px;
+        height: 20px;
       }
     }
   }
