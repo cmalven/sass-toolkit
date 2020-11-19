@@ -109,7 +109,7 @@ $font-stacks: (
     font-style: normal
   ),
   helvetica: (
-    font-family: ('Helvetica Neue', Helvetica, Arial, sans-serif;),
+    font-family: ('Helvetica Neue', Helvetica, Arial, sans-serif),
     font-weight: normal,
     font-style: normal
   )
@@ -159,7 +159,8 @@ $type-styles: (
       large: 24px
     ),
     fluid: true
-  ),
+  )
+)
 ```
 
 #### As an SCSS mixin
@@ -356,7 +357,7 @@ npm test
 …or…
 
 ```sh
-npm test-watch
+npm run test-watch
 ```
 
 ### Release
