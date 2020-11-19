@@ -15,12 +15,12 @@
   "license": "MIT",
   "homepage": "https://github.com/cmalven/sass-toolkit",
   "dependencies": {
-    "chokidar-cli": "^2.0.0",
     "sass-mq": "^5.0.0"
   },
   "devDependencies": {
+    "chokidar-cli": "^2.0.0",
     "mocha": "^8.2.1",
-    "node-sass": "^5.0.0",
+    "sass": "^1.29.0",
     "sass-true": "^6.0.1"
   },
   "scripts": {
