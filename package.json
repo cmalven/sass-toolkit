@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "mocha": "^8.2.1",
-    "node-sass": "^4.9.0",
+    "node-sass": "^5.0.0",
     "sass-true": "^5.0.0"
   },
   "scripts": {
