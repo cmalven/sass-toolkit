@@ -90,9 +90,9 @@ $type-styles: (
   e: (
     stack: helvetica,
     sizes: (
-      default: 16,
-      medium: 24,
-      large: 32
+      default: 16px,
+      medium: 24px,
+      large: 32px
     ),
     fluid: true
   )
@@ -253,28 +253,28 @@ $type-styles: (
         }
 
         .h-type-e {
-          font-size: 1.6rem;
+          font-size: 16px;
           font-family: "Helvetica Neue", arial, sans-serif;
           font-weight: normal;
           font-style: normal;
-          font-size: 16;
+          font-size: 16px;
         }
 
         @media screen and (min-width: 320px) {
           .h-type-e {
-            font-size: calc(16 + 8 * ((100vw - 320px) / 448));
+            font-size: calc(16px + 8 * ((100vw - 320px) / 448));
           }
         }
 
         @media screen and (min-width: 768px) {
           .h-type-e {
-            font-size: calc(24 + 8 * ((100vw - 768px) / 256));
+            font-size: calc(24px + 8 * ((100vw - 768px) / 256));
           }
         }
 
         @media screen and (min-width: 1024px) {
           .h-type-e {
-            font-size: 32;
+            font-size: 32px;
           }
         }
       }
@@ -335,22 +335,22 @@ $type-styles: (
         @include type-style(e);
       }
       @include expect {
-        font-size: 1.6rem;
+        font-size: 16px;
         font-family: "Helvetica Neue", arial, sans-serif;
         font-weight: normal;
         font-style: normal;
-        font-size: 16;
+        font-size: 16px;
 
         @media screen and (min-width: 320px) {
-          font-size: calc(16 + 8 * ((100vw - 320px) / 448));
+          font-size: calc(16px + 8 * ((100vw - 320px) / 448));
         }
 
         @media screen and (min-width: 768px) {
-          font-size: calc(24 + 8 * ((100vw - 768px) / 256));
+          font-size: calc(24px + 8 * ((100vw - 768px) / 256));
         }
 
         @media screen and (min-width: 1024px) {
-          font-size: 32;
+          font-size: 32px;
         }
       }
     }
