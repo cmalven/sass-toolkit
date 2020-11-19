@@ -94,7 +94,7 @@ $fluid-min-width: 320px !default;
   @param $adjust (pixel value)         - Adjusts all resulting values by a given amount
   @param $scale (number)               - Multiplies all resulting values by a given amount
 */
-@mixin output-fluid-sizes($size-set, $property, $negative: false, $adjust: 0, $scale: 1) {
+@mixin output-fluid-sizes($size-set, $properties, $negative: false, $adjust: 0, $scale: 1) {
   // Create an index we can increment
   $idx: 1;
 
@@ -107,7 +107,10 @@ $fluid-min-width: 320px !default;
   @if $size-set-length == 1 {
     $value: $previous-size * $scale + $adjust;
     @if $negative { $value: $value * -1; }
-    #{$property}: $value;
+    @each $property in $properties {
+      #{$property}: $value;
+    }
+
   }
   @else {
     @each $key, $value in $size-set {
@@ -115,7 +118,7 @@ $fluid-min-width: 320px !default;
         $new-breakpoint: map-get($mq-breakpoints, $key);
         $include-min: $idx == 1;
         $include-max: $idx == $size-set-length - 1;
-        @include fluid($property, $previous-breakpoint, $new-breakpoint, $previous-size, $value, $negative, $scale, $adjust, $include-min: $include-min, $include-max: $include-max);
+        @include fluid($properties, $previous-breakpoint, $new-breakpoint, $previous-size, $value, $negative, $scale, $adjust, $include-min: $include-min, $include-max: $include-max);
         $previous-breakpoint: $new-breakpoint;
         $previous-size: $value;
         $idx: $idx + 1;
