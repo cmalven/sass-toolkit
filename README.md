@@ -249,6 +249,10 @@ Relies on a `$fluid-sizes` map variable existing in the following format:
 
 ```scss
 $fluid-sizes: (
+  xs: (
+    default: 20px
+  ),
+  
   s: (
     default: 20px,
     medium: 40px,
@@ -263,7 +267,7 @@ $fluid-sizes: (
 );
 ```
 
-Each set in `$fluid-sizes` can have any key (e.g. `s`) and _must_ include at least a `default` key/value and one other key/value pair representing another breakpoint. Each key/value pair inside of a set should have a key that matches a value from you `$mq-breakpoints` map, and a value that matches the desired value when the viewport width is at that breakpoint.
+Each set in `$fluid-sizes` can have any key (e.g. `s`) and _must_ include at least a `default` key/value, and can optionally include any other key/value pair representing another breakpoint. Each key/value pair inside of a set should have a key that matches a value from you `$mq-breakpoints` map, and a value that matches the desired value when the viewport width is at that breakpoint.
 
 The `default` key here represents the minimum possible size/value, as defined by the `$fluid-min-width` variable, which is `320px` by default. You can adjust this value by setting a `$fluid-min-width` variable to the smallest possible viewport width you want to handle.
 
