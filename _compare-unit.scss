@@ -1,0 +1,22 @@
+// ===============================================================
+// Compare Unit
+// ===============================================================
+/*
+  Compares number values in a list and warns if not all units are the same
+
+  @param  {List} $values     - List of values to compare
+  @return {Boolean}          - Are any units different
+*/
+
+@function compare-unit($values) {
+  $unit: unit(nth($values, 1));
+  $all-equal: true;
+
+  @each $val in $values {
+    @if unit($val) != $unit {
+      $all-equal: false;
+    }
+  }
+
+  @return $all-equal;
+}

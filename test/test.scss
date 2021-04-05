@@ -102,6 +102,7 @@ $type-styles: (
 @import 'fluid';
 @import 'fluid-size';
 @import 'strip-unit';
+@import 'compare-unit';
 
 // ---------------------------------------------------------------
 // Utils
@@ -126,6 +127,39 @@ $type-styles: (
   @include test('Strips em') {
     @include assert-equal(
         strip-unit(20em), 20
+    );
+  }
+}
+
+@include test-module('Compare Unit') {
+  @include test('Compare equal unitless') {
+    @include assert-equal(
+        compare-unit(10 20 30 100), true
+    );
+  }
+  @include test('Compare unequal unitless') {
+    @include assert-equal(
+        compare-unit(10 20 30px 100), false
+    );
+  }
+  @include test('Compare equal px') {
+    @include assert-equal(
+        compare-unit(10px 20px 30px 100px), true
+    );
+  }
+  @include test('Compare unequal px') {
+    @include assert-equal(
+        compare-unit(10px 20px 30 100px), false
+    );
+  }
+  @include test('Compare equal rem') {
+    @include assert-equal(
+        compare-unit(10rem 20rem 30rem 100rem), true
+    );
+  }
+  @include test('Compare unequal rem') {
+    @include assert-equal(
+        compare-unit(10rem 20rem 30 100rem), false
     );
   }
 }
