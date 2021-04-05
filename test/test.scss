@@ -103,6 +103,10 @@ $type-styles: (
 @import 'fluid';
 @import 'fluid-size';
 
+// ---------------------------------------------------------------
+// Color
+// ---------------------------------------------------------------
+
 @include test-module('Color') {
   @include test('Outputs the correct color') {
     @include assert-equal(
@@ -160,6 +164,10 @@ $type-styles: (
     }
   }
 }
+
+// ---------------------------------------------------------------
+// Type
+// ---------------------------------------------------------------
 
 @include test-module('Type') {
   @include test('Font stack styles mixin') {
@@ -584,7 +592,7 @@ $type-styles: (
     }
   }
 
-  @include test('With negative adjust value and negative') {
+  @include test('With negative adjust value and negative: true') {
     @include assert {
       @include output {
         @include fluid(
@@ -611,6 +619,10 @@ $type-styles: (
     }
   }
 }
+
+// ---------------------------------------------------------------
+// Fluid Size
+// ---------------------------------------------------------------
 
 @include test-module('Fluid Size') {
   @include test('Get fluid size function') {
