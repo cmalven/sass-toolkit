@@ -3,9 +3,9 @@
 @import "node_modules/sass-mq/mq";
 @import "fluid-size";
 
-//===============================================================
+// ---------------------------------------------------------------
 // Type Styles
-//===============================================================
+// ---------------------------------------------------------------
 /*
   Utility that automatically generates all of the type styles
   for a project. Relies on $type-styles and $font-stacks map variables existing in the following format:
@@ -48,9 +48,9 @@ $type-styles: (
 ) !default;
 
 
-//---------------------------------------------------------------
+// ---------------------------------------------------------------
 // Get Style Map
-//---------------------------------------------------------------
+// ---------------------------------------------------------------
 /*
   Function for getting a specific style map from within the $type-styles map
   @param $key (string)  - Key style you want
@@ -60,7 +60,7 @@ $type-styles: (
   @if map-has-key($map, $key) {
     @return map-get($map, $key);
   } @else {
-    @warn "Key #{$key} doesn't exist in map #{$map}";
+    @error "Key `#{$key}` doesn't exist in map `#{$map}`";
   }
 }
 
@@ -80,9 +80,9 @@ $type-styles: (
 }
 
 
-//---------------------------------------------------------------
+// ---------------------------------------------------------------
 // Font Stack Styles
-//---------------------------------------------------------------
+// ---------------------------------------------------------------
 /*
   Generates font styles related to a specific font-stack.
   @param $key (string)  - Key to find in $map
@@ -94,12 +94,15 @@ $type-styles: (
     font-weight: map-deep-get($map, $key, 'font-weight');
     font-style: map-deep-get($map, $key, 'font-style');
   }
+  @else {
+    @error "Key `#{$key}` doesn't exist in map `#{$map}`";
+  }
 }
 
 
-//---------------------------------------------------------------
+// ---------------------------------------------------------------
 // Get Type Style
-//---------------------------------------------------------------
+// ---------------------------------------------------------------
 /*
   Mixin for getting a font-stack and size from the $type-styles map.
   @param $key (string)  - Should be a top level key from the $type-styles map
@@ -131,13 +134,15 @@ $type-styles: (
       }
     }
   }
+  @else {
+    @error "Key `#{$key}` doesn't exist in map `#{$map}`";
+  }
 }
 
 
-
-//---------------------------------------------------------------
+// ---------------------------------------------------------------
 // Type Styles
-//---------------------------------------------------------------
+// ---------------------------------------------------------------
 /*
   Generate font-family and typesize styles across breakpoints.
   @param $key (string)   - Should be a top level key from the $type-styles map
@@ -167,9 +172,9 @@ $type-styles: (
 }
 
 
-//---------------------------------------------------------------
+// ---------------------------------------------------------------
 // Output Helper Classes
-//---------------------------------------------------------------
+// ---------------------------------------------------------------
 /*
   Loop through the $type-styles map (defined in `_base/variables.scss`)
   and generate helpers classes we can use to apply directly into our

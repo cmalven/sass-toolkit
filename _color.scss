@@ -31,7 +31,7 @@ $shade-mix: #000 !default;
   @if map-has-key($map, $key) {
     @return map-get($map, $key);
   } @else {
-    @warn "Key #{$key} doesn't exist in map #{$map}";
+    @error "Key `#{$key}` doesn't exist in map `#{$map}`";
   }
 }
 
@@ -77,10 +77,10 @@ $output-color-helpers: true !default;
 
 @mixin output-color-helpers {
   @each $color in map-keys($colors) {
-    .h-color-text-#{$color} {
+    #{'.h-color-text-' + $color} {
       color: color($color);
     }
-    .h-color-bg-#{$color} {
+    #{'.h-color-bg-' + $color} {
       background-color: color($color);
     }
   }

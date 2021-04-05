@@ -15,7 +15,6 @@ $colors: (
   peaches-and-cream: #f8c6b8
 );
 
-
 $fluid-sizes: (
   xs: (
     default: 20px
@@ -102,6 +101,73 @@ $type-styles: (
 @import 'type-styles';
 @import 'fluid';
 @import 'fluid-size';
+@import 'strip-unit';
+@import 'compare-unit';
+
+// ---------------------------------------------------------------
+// Utils
+// ---------------------------------------------------------------
+
+@include test-module('Stript Unit') {
+  @include test('Strips unitless') {
+    @include assert-equal(
+        strip-unit(20), 20
+    );
+  }
+  @include test('Strips px') {
+    @include assert-equal(
+        strip-unit(20px), 20
+    );
+  }
+  @include test('Strips rem') {
+    @include assert-equal(
+        strip-unit(20rem), 20
+    );
+  }
+  @include test('Strips em') {
+    @include assert-equal(
+        strip-unit(20em), 20
+    );
+  }
+}
+
+@include test-module('Compare Unit') {
+  @include test('Compare equal unitless') {
+    @include assert-equal(
+        compare-unit(10 20 30 100), true
+    );
+  }
+  @include test('Compare unequal unitless') {
+    @include assert-equal(
+        compare-unit(10 20 30px 100), false
+    );
+  }
+  @include test('Compare equal px') {
+    @include assert-equal(
+        compare-unit(10px 20px 30px 100px), true
+    );
+  }
+  @include test('Compare unequal px') {
+    @include assert-equal(
+        compare-unit(10px 20px 30 100px), false
+    );
+  }
+  @include test('Compare equal rem') {
+    @include assert-equal(
+        compare-unit(10rem 20rem 30rem 100rem), true
+    );
+  }
+  @include test('Compare unequal rem') {
+    @include assert-equal(
+        compare-unit(10rem 20rem 30 100rem), false
+    );
+  }
+}
+
+
+// ---------------------------------------------------------------
+// Color
+// ---------------------------------------------------------------
 
 @include test-module('Color') {
   @include test('Outputs the correct color') {
@@ -160,6 +226,10 @@ $type-styles: (
     }
   }
 }
+
+// ---------------------------------------------------------------
+// Type
+// ---------------------------------------------------------------
 
 @include test-module('Type') {
   @include test('Font stack styles mixin') {
@@ -584,7 +654,7 @@ $type-styles: (
     }
   }
 
-  @include test('With negative adjust value and negative') {
+  @include test('With negative adjust value and negative: true') {
     @include assert {
       @include output {
         @include fluid(
@@ -611,6 +681,10 @@ $type-styles: (
     }
   }
 }
+
+// ---------------------------------------------------------------
+// Fluid Size
+// ---------------------------------------------------------------
 
 @include test-module('Fluid Size') {
   @include test('Get fluid size function') {
