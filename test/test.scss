@@ -101,6 +101,35 @@ $type-styles: (
 @import 'type-styles';
 @import 'fluid';
 @import 'fluid-size';
+@import 'strip-unit';
+
+// ---------------------------------------------------------------
+// Utils
+// ---------------------------------------------------------------
+
+@include test-module('Stript Unit') {
+  @include test('Strips unitless') {
+    @include assert-equal(
+        strip-unit(20), 20
+    );
+  }
+  @include test('Strips px') {
+    @include assert-equal(
+        strip-unit(20px), 20
+    );
+  }
+  @include test('Strips rem') {
+    @include assert-equal(
+        strip-unit(20rem), 20
+    );
+  }
+  @include test('Strips em') {
+    @include assert-equal(
+        strip-unit(20em), 20
+    );
+  }
+}
+
 
 // ---------------------------------------------------------------
 // Color
