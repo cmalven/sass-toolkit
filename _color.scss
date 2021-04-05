@@ -77,10 +77,10 @@ $output-color-helpers: true !default;
 
 @mixin output-color-helpers {
   @each $color in map-keys($colors) {
-    .h-color-text-#{$color} {
+    #{'.h-color-text-' + $color} {
       color: color($color);
     }
-    .h-color-bg-#{$color} {
+    #{'.h-color-bg-' + $color} {
       background-color: color($color);
     }
   }
