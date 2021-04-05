@@ -60,7 +60,7 @@ $type-styles: (
   @if map-has-key($map, $key) {
     @return map-get($map, $key);
   } @else {
-    @warn "Key #{$key} doesn't exist in map #{$map}";
+    @error "Key `#{$key}` doesn't exist in map `#{$map}`";
   }
 }
 
@@ -93,6 +93,9 @@ $type-styles: (
     font-family: map-deep-get($map, $key, 'font-family');
     font-weight: map-deep-get($map, $key, 'font-weight');
     font-style: map-deep-get($map, $key, 'font-style');
+  }
+  @else {
+    @error "Key `#{$key}` doesn't exist in map `#{$map}`";
   }
 }
 
@@ -131,8 +134,10 @@ $type-styles: (
       }
     }
   }
+  @else {
+    @error "Key `#{$key}` doesn't exist in map `#{$map}`";
+  }
 }
-
 
 
 // ---------------------------------------------------------------

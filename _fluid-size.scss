@@ -59,6 +59,9 @@ $fluid-min-width: 320px !default;
   @if map-has-key($map, $size) {
     @return map-get($map, $size);
   }
+  @else {
+    @error "Key `#{$size}` doesn't exist in map `#{$map}`";
+  }
 }
 
 
@@ -78,6 +81,9 @@ $fluid-min-width: 320px !default;
   @if map-has-key($fluid-sizes, $size) {
     $size-set: get-spacing-size($size);
     @include output-fluid-sizes($size-set, $property, $negative, $adjust, $scale);
+  }
+  @else {
+    @error "Key `#{$size}` doesn't exist in map `$fluid-sizes`";
   }
 }
 

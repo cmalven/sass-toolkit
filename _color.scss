@@ -31,7 +31,7 @@ $shade-mix: #000 !default;
   @if map-has-key($map, $key) {
     @return map-get($map, $key);
   } @else {
-    @warn "Key #{$key} doesn't exist in map #{$map}";
+    @error "Key `#{$key}` doesn't exist in map `#{$map}`";
   }
 }
 
