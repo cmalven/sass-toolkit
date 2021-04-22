@@ -1065,4 +1065,62 @@ $type-styles: (
       }
     }
   }
+
+  @include test('Outputs custom properties') {
+    @include assert {
+      @include output {
+        @include output-fluid-size-custom-properties;
+      }
+
+      @include expect {
+        :root {
+          --fluid-size-xs: 20px;
+        }
+
+        :root {
+          --fluid-size-s: 10px;
+        }
+
+        @media screen and (min-width: 320px) {
+          :root {
+            --fluid-size-s: calc(10px + 20 * ((100vw - 320px) / 448));
+          }
+        }
+
+        @media screen and (min-width: 768px) {
+          :root {
+            --fluid-size-s: calc(30px + 20 * ((100vw - 768px) / 672));
+          }
+        }
+
+        @media screen and (min-width: 1440px) {
+          :root {
+            --fluid-size-s: 50px;
+          }
+        }
+
+        :root {
+          --fluid-size-m: 20px;
+        }
+
+        @media screen and (min-width: 320px) {
+          :root {
+            --fluid-size-m: calc(20px + 20 * ((100vw - 320px) / 448));
+          }
+        }
+
+        @media screen and (min-width: 768px) {
+          :root {
+            --fluid-size-m: calc(40px + 40 * ((100vw - 768px) / 672));
+          }
+        }
+
+        @media screen and (min-width: 1440px) {
+          :root {
+            --fluid-size-m: 80px;
+          }
+        }
+      }
+    }
+  }
 }

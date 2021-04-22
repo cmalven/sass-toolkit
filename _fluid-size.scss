@@ -93,14 +93,15 @@ $fluid-min-width: 320px !default;
 //---------------------------------------------------------------
 /*
   Loops through breakpoints and outputs fluid sizes
-  @param $size (key)                   - Key size you want (from the $fluid-sizes map)
-  @param $property (string)            - The css property you'd like to apply the size to
-                                         will only be applied up until this breakpoint.
-  @param $negative (boolean)           - If true, returns a negative range
-  @param $adjust (pixel value)         - Adjusts all resulting values by a given amount
-  @param $scale (number)               - Multiplies all resulting values by a given amount
+  @param $size-set (map)                   - Size set you want (from the $fluid-sizes map)
+  @param $properties (list)                - The css property you'd like to apply the size to
+                                             will only be applied up until this breakpoint.
+  @param $negative (boolean)               - If true, returns a negative range
+  @param $adjust (pixel value)             - Adjusts all resulting values by a given amount
+  @param $scale (number)                   - Multiplies all resulting values by a given amount
+  @param $custom-property-name (string)    - If set, a CSS custom property (variable) will be created an :root
 */
-@mixin output-fluid-sizes($size-set, $properties, $negative: false, $adjust: 0, $scale: 1) {
+@mixin output-fluid-sizes($size-set, $properties, $negative: false, $adjust: 0, $scale: 1, $custom-property-name: null) {
   // Create an index we can increment
   $idx: 1;
 
@@ -111,12 +112,16 @@ $fluid-min-width: 320px !default;
   $previous-size: map-get($size-set, default);
 
   @if $size-set-length == 1 {
-    $value: $previous-size * $scale + $adjust;
-    @if $negative { $value: $value * -1; }
-    @each $property in $properties {
-      #{$property}: $value;
+    @if $custom-property-name {
+      :root { --#{$custom-property-name}: #{$previous-size}; }
     }
-
+    @else {
+      $value: $previous-size * $scale + $adjust;
+      @if $negative { $value: $value * -1; }
+      @each $property in $properties {
+        #{$property}: $value;
+      }
+    }
   }
   @else {
     @each $key, $value in $size-set {
@@ -124,7 +129,7 @@ $fluid-min-width: 320px !default;
         $new-breakpoint: map-get($mq-breakpoints, $key);
         $include-min: $idx == 1;
         $include-max: $idx == $size-set-length - 1;
-        @include fluid($properties, $previous-breakpoint, $new-breakpoint, $previous-size, $value, $negative, $scale, $adjust, $include-min: $include-min, $include-max: $include-max);
+        @include fluid($properties, $previous-breakpoint, $new-breakpoint, $previous-size, $value, $negative, $scale, $adjust, $include-min: $include-min, $include-max: $include-max, $custom-property-name: $custom-property-name);
         $previous-breakpoint: $new-breakpoint;
         $previous-size: $value;
         $idx: $idx + 1;
@@ -132,6 +137,7 @@ $fluid-min-width: 320px !default;
     }
   }
 }
+
 
 //---------------------------------------------------------------
 // Output Helper Classes
@@ -145,24 +151,45 @@ $fluid-min-width: 320px !default;
 $output-fluid-size-helpers: true !default;
 
 @mixin output-fluid-size-helpers {
-  @each $amount in map-keys($fluid-sizes) {
-    .h-fluid-size-top-margin-#{$amount} {
-      @include fluid-size($amount);
+  @each $size-key in map-keys($fluid-sizes) {
+    .h-fluid-size-top-margin-#{$size-key} {
+      @include fluid-size($size-key);
     }
-    .h-fluid-size-bottom-margin-#{$amount} {
-      @include fluid-size($amount, margin-bottom);
-    }
-
-    .h-fluid-size-top-padding-#{$amount} {
-      @include fluid-size($amount, padding-top);
+    .h-fluid-size-bottom-margin-#{$size-key} {
+      @include fluid-size($size-key, margin-bottom);
     }
 
-    .h-fluid-size-bottom-padding-#{$amount} {
-      @include fluid-size($amount, padding-bottom);
+    .h-fluid-size-top-padding-#{$size-key} {
+      @include fluid-size($size-key, padding-top);
+    }
+
+    .h-fluid-size-bottom-padding-#{$size-key} {
+      @include fluid-size($size-key, padding-bottom);
     }
   }
 }
 
 @if $output-fluid-size-helpers {
   @include output-fluid-size-helpers;
+}
+
+
+//---------------------------------------------------------------
+// Output Fluid Size Custom Properties
+//---------------------------------------------------------------
+/*
+  Loop through the $fluid-sizes map (defined in `_base/variables.scss`)
+  and generate a responsive CSS custom property (variable) for each.
+*/
+
+$output-fluid-size-custom-properties: true !default;
+
+@mixin output-fluid-size-custom-properties {
+  @each $key, $val in $fluid-sizes {
+    @include output-fluid-sizes($val, margin, $custom-property-name: 'fluid-size-' + #{$key});
+  }
+}
+
+@if $output-fluid-size-custom-properties {
+  @include output-fluid-size-custom-properties;
 }
