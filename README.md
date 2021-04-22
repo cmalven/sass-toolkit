@@ -241,7 +241,7 @@ And if you _only_ want the basic styling for a font stack, you can use the `font
 
 ### Fluid Size
 
-The fluid size mixin makes it simple to smoothly adjust a value across a range of breakpoints, with precise control over the value at each breakpoint. It’s great for handling responsive margins and padding, but can be used for any numeric value, including font sizes, absolute/relative positioning values, etc. Interally, this mixin extends the `fluid` mixin mentioned later on. If you want a simpler, lower-level way to handle fluid property adjustments, check out the `fluid` mixin.
+The fluid size mixin makes it simple to smoothly adjust a value across a range of breakpoints, with precise control over the value at each breakpoint. It’s great for handling responsive margins and padding, but can be used for any numeric value, including font sizes, absolute/relative positioning values, etc. Internally, this mixin extends the `fluid` mixin mentioned later on. If you want a simpler, lower-level way to handle fluid property adjustments, check out the `fluid` mixin.
 
 #### Required Setup
 
@@ -249,10 +249,14 @@ Relies on a `$fluid-sizes` map variable existing in the following format:
 
 ```scss
 $fluid-sizes: (
+  xs: (
+    default: 20px
+  ),
+  
   s: (
-    default: 20px,
-    medium: 40px,
-    max: 80px
+    default: 10px,
+    medium: 30px,
+    max: 50px
   ),
 
   m: (
@@ -263,7 +267,7 @@ $fluid-sizes: (
 );
 ```
 
-Each set in `$fluid-sizes` can have any key (e.g. `s`) and _must_ include at least a `default` key/value and one other key/value pair representing another breakpoint. Each key/value pair inside of a set should have a key that matches a value from you `$mq-breakpoints` map, and a value that matches the desired value when the viewport width is at that breakpoint.
+Each set in `$fluid-sizes` can have any key (e.g. `s`) and _must_ include at least a `default` key/value, and can optionally include any other key/value pair representing another breakpoint. Each key/value pair inside of a set should have a key that matches a value from you `$mq-breakpoints` map, and a value that matches the desired value when the viewport width is at that breakpoint.
 
 The `default` key here represents the minimum possible size/value, as defined by the `$fluid-min-width` variable, which is `320px` by default. You can adjust this value by setting a `$fluid-min-width` variable to the smallest possible viewport width you want to handle.
 
@@ -309,6 +313,32 @@ Works for any of the following classes:
 ```
 
 The exact names of the keys in this map aren't important, as long as `@include fluid-size(foo)` has a matching key `foo` in the map.
+
+#### CSS Custom Properties (variables)
+
+By default, Sass Toolkit will loop through all size sets in the `$fluid-sizes` map and output corresponding, responsive CSS custom properties for each. You can then use these custom properties directly (as an alternative to `@include fluid-size()`), or you can use them in your own `calc()` declarations. Using the above `$fluid-sizes`, you'd end up with the following:
+
+```scss
+// Only values for the `s` size set are shown here, but you'd see something similar for all other sets in `$fluid-sizes`
+
+:root {
+  --fluid-size-s: 10px;
+}
+
+@media screen and (min-width: 320px) {
+  :root {
+    --fluid-size-s: calc(10px + 20 * ((100vw - 320px) / 448));
+  }
+}
+
+@media screen and (min-width: 768px) {
+  :root {
+    --fluid-size-s: calc(30px + 20 * ((100vw - 768px) / 672));
+  }
+}
+```
+
+You can disable the automatic output of these custom properties by globally setting `$output-fluid-size-helpers: false;`
 
 ### Fluid
 

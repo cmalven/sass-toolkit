@@ -108,7 +108,7 @@ $type-styles: (
 // Utils
 // ---------------------------------------------------------------
 
-@include test-module('Stript Unit') {
+@include test-module('Strip Unit') {
   @include test('Strips unitless') {
     @include assert-equal(
         strip-unit(20), 20
@@ -457,15 +457,47 @@ $type-styles: (
         );
       }
       @include expect {
-       margin-top: 50px;
+        margin-top: 50px;
 
-       @media screen and (min-width: 768px) {
-         margin-top: calc(50px + 50 * ((100vw - 768px) / 256));
-       }
+        @media screen and (min-width: 768px) {
+          margin-top: calc(50px + 50 * ((100vw - 768px) / 256));
+        }
 
-       @media screen and (min-width: 1024px) {
-         margin-top: 100px;
-       }
+        @media screen and (min-width: 1024px) {
+          margin-top: 100px;
+        }
+      }
+    }
+  }
+
+  @include test('Outputs only custom properties') {
+    @include assert {
+      @include output {
+        @include fluid(
+          margin-top,
+          map-get($mq-breakpoints, medium),
+          map-get($mq-breakpoints, large),
+          50px,
+          100px,
+          $custom-property-name: 'my-custom-property'
+        );
+      }
+      @include expect {
+        :root {
+          --my-custom-property: 50px;
+        }
+
+        @media screen and (min-width: 768px) {
+          :root {
+            --my-custom-property: calc(50px + 50 * ((100vw - 768px) / 256));
+          }
+        }
+
+        @media screen and (min-width: 1024px) {
+          :root {
+            --my-custom-property: 100px;
+          }
+        }
       }
     }
   }
@@ -1028,6 +1060,64 @@ $type-styles: (
         @media screen and (min-width: 1440px) {
           .h-fluid-size-bottom-padding-m {
             padding-bottom: 80px;
+          }
+        }
+      }
+    }
+  }
+
+  @include test('Outputs custom properties') {
+    @include assert {
+      @include output {
+        @include output-fluid-size-custom-properties;
+      }
+
+      @include expect {
+        :root {
+          --fluid-size-xs: 20px;
+        }
+
+        :root {
+          --fluid-size-s: 10px;
+        }
+
+        @media screen and (min-width: 320px) {
+          :root {
+            --fluid-size-s: calc(10px + 20 * ((100vw - 320px) / 448));
+          }
+        }
+
+        @media screen and (min-width: 768px) {
+          :root {
+            --fluid-size-s: calc(30px + 20 * ((100vw - 768px) / 672));
+          }
+        }
+
+        @media screen and (min-width: 1440px) {
+          :root {
+            --fluid-size-s: 50px;
+          }
+        }
+
+        :root {
+          --fluid-size-m: 20px;
+        }
+
+        @media screen and (min-width: 320px) {
+          :root {
+            --fluid-size-m: calc(20px + 20 * ((100vw - 320px) / 448));
+          }
+        }
+
+        @media screen and (min-width: 768px) {
+          :root {
+            --fluid-size-m: calc(40px + 40 * ((100vw - 768px) / 672));
+          }
+        }
+
+        @media screen and (min-width: 1440px) {
+          :root {
+            --fluid-size-m: 80px;
           }
         }
       }

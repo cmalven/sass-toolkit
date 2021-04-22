@@ -22,8 +22,23 @@
 /// @param {string} $adjust - pixel amount to adjust all values by
 /// @param {string} $size-unit - Unit to use for size (width or height)
 /// @param {string} $viewport-unit - Unit to use for viewport units (vw or vh)
+/// @param {string} $custom-property-name - If set, a CSS custom property (variable) will be created an :root
 
-@mixin fluid($properties, $min-size, $max-size, $min-value, $max-value, $negative: false, $scale: 1, $adjust: 0px, $include-min: true, $include-max: true, $size-unit: 'width', $viewport-unit: 'vw') {
+@mixin fluid(
+  $properties,
+  $min-size,
+  $max-size,
+  $min-value,
+  $max-value,
+  $negative: false,
+  $scale: 1,
+  $adjust: 0px,
+  $include-min: true,
+  $include-max: true,
+  $size-unit: 'width',
+  $viewport-unit: 'vw',
+  $custom-property-name: null
+) {
 
   @if $fluid-min-width and $min-size == 'default' {
     $min-size: $fluid-min-width;
@@ -51,21 +66,38 @@
   }
 
   @if $include-min {
-    @each $property in $properties {
-      #{$property}: $min-value;
+    @if $custom-property-name {
+      :root { --#{$custom-property-name}: #{$min-value}; }
+    }
+    @else {
+      @each $property in $properties {
+        #{$property}: $min-value;
+      }
     }
   }
 
   @media screen and (min-#{$size-unit}: $min-size) {
-    @each $property in $properties {
-      #{$property}: calc(#{$min-value} + #{strip-unit($max-value - $min-value)} * ((100#{$viewport-unit} - #{$min-size}) / #{strip-unit($max-size - $min-size)}));
+    $val: calc(#{$min-value} + #{strip-unit($max-value - $min-value)} * ((100#{$viewport-unit} - #{$min-size}) / #{strip-unit($max-size - $min-size)}));
+
+    @if $custom-property-name {
+      :root { --#{$custom-property-name}: #{$val}; }
+    }
+    @else {
+      @each $property in $properties {
+        #{$property}: $val;
+      }
     }
   }
 
   @if $include-max {
     @media screen and (min-#{$size-unit}: $max-size) {
-      @each $property in $properties {
-        #{$property}: $max-value;
+      @if $custom-property-name {
+        :root { --#{$custom-property-name}: #{$max-value}; }
+      }
+      @else {
+        @each $property in $properties {
+          #{$property}: $max-value;
+        }
       }
     }
   }
