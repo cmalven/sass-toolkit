@@ -25,6 +25,7 @@ $fluid-sizes: (
 
 $fluid-min-width: 320px !default;
 $output-fluid-size-helpers: true !default;
+$output-fluid-size-custom-properties: true !default;
 
 
 //---------------------------------------------------------------
@@ -192,8 +193,6 @@ $output-fluid-size-helpers: true !default;
   Loop through the $fluid-sizes map (defined in `_base/variables.scss`)
   and generate a responsive CSS custom property (variable) for each.
 */
-
-$output-fluid-size-custom-properties: true !default;
 
 @mixin output-fluid-size-custom-properties {
   @each $key, $val in $fluid-sizes {
