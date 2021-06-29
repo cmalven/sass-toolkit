@@ -24,6 +24,7 @@ $fluid-sizes: (
 ) !default;
 
 $fluid-min-width: 320px !default;
+$output-fluid-size-helpers: true !default;
 
 
 //---------------------------------------------------------------
@@ -79,8 +80,19 @@ $fluid-min-width: 320px !default;
 */
 @mixin fluid-size($size, $property: margin-top, $negative: false, $adjust: 0, $scale: 1) {
   @if map-has-key($fluid-sizes, $size) {
-    $size-set: get-spacing-size($size);
-    @include output-fluid-sizes($size-set, $property, $negative, $adjust, $scale);
+    @each $prop in $property {
+      // If we're customizing the original value we need a more complicated calc…
+      $val: var(--fluid-size-#{$size});
+      @if $negative or $adjust != 0 or $scale != 1 {
+        $mult: 1;
+        @if $negative { $mult: -1; }
+        #{$prop}: calc(calc(#{$val} * #{$scale} + #{$adjust}) * #{$mult});
+      }
+      // …otherwise we can keep things simple
+      @else {
+        #{$prop}: #{$val};
+      }
+    }
   }
   @else {
     @error "Key `#{$size}` doesn't exist in map `$fluid-sizes`";
@@ -148,13 +160,12 @@ $fluid-min-width: 320px !default;
   template markup.
 */
 
-$output-fluid-size-helpers: true !default;
-
 @mixin output-fluid-size-helpers {
   @each $size-key in map-keys($fluid-sizes) {
     .h-fluid-size-top-margin-#{$size-key} {
       @include fluid-size($size-key);
     }
+
     .h-fluid-size-bottom-margin-#{$size-key} {
       @include fluid-size($size-key, margin-bottom);
     }

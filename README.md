@@ -316,7 +316,7 @@ The exact names of the keys in this map aren't important, as long as `@include f
 
 #### CSS Custom Properties (variables)
 
-By default, Sass Toolkit will loop through all size sets in the `$fluid-sizes` map and output corresponding, responsive CSS custom properties for each. You can then use these custom properties directly (as an alternative to `@include fluid-size()`), or you can use them in your own `calc()` declarations. Using the above `$fluid-sizes`, you'd end up with the following:
+Sass Toolkit will loop through all size sets in the `$fluid-sizes` map and output corresponding, responsive CSS custom properties for each. These are used for the output of `@include fluid-sizes()`, but you can also use these custom properties directly (e.g. `margin-top: var(--fluid-size-s)`), or you can use them in your own `calc()` declarations. Using the above `$fluid-sizes`, you'd end up with the following:
 
 ```scss
 // Only values for the `s` size set are shown here, but you'd see something similar for all other sets in `$fluid-sizes`
@@ -337,8 +337,6 @@ By default, Sass Toolkit will loop through all size sets in the `$fluid-sizes` m
   }
 }
 ```
-
-You can disable the automatic output of these custom properties by globally setting `$output-fluid-size-helpers: false;`
 
 ### Fluid
 
