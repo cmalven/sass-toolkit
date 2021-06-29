@@ -196,7 +196,7 @@ $output-fluid-size-custom-properties: true !default;
 
 @mixin output-fluid-size-custom-properties {
   @each $key, $val in $fluid-sizes {
-    @include output-fluid-sizes($val, margin, $custom-property-name: 'fluid-size-' + #{$key});
+    @include output-fluid-sizes($val, margin, $custom-property-name: 'fluid-size-#{$key}');
   }
 }
 
