@@ -738,19 +738,7 @@ $type-styles: (
       }
 
       @include expect {
-        margin-top: 20px;
-
-        @media screen and (min-width: 320px) {
-          margin-top: calc(20px + 20 * ((100vw - 320px) / 448));
-        }
-
-        @media screen and (min-width: 768px) {
-          margin-top: calc(40px + 40 * ((100vw - 768px) / 672));
-        }
-
-        @media screen and (min-width: 1440px) {
-          margin-top: 80px;
-        }
+        margin-top: var(--fluid-size-m);
       }
     }
   }
@@ -762,7 +750,7 @@ $type-styles: (
       }
 
       @include expect {
-        margin-top: 20px;
+        margin-top: var(--fluid-size-xs);
       }
     }
   }
@@ -774,8 +762,8 @@ $type-styles: (
       }
 
       @include expect {
-        width: 20px;
-        height: 20px;
+        width: var(--fluid-size-xs);
+        height: var(--fluid-size-xs);
       }
     }
   }
@@ -787,7 +775,7 @@ $type-styles: (
       }
 
       @include expect {
-        margin-top: -50px;
+        margin-top: calc(calc(var(--fluid-size-xs) * 2 + 10px) * -1);
       }
     }
   }
@@ -795,23 +783,12 @@ $type-styles: (
   @include test('With custom property') {
     @include assert {
       @include output {
-        @include fluid-size(m, padding-top);
+        @include fluid-size(m, padding-top padding-bottom);
       }
 
       @include expect {
-        padding-top: 20px;
-
-        @media screen and (min-width: 320px) {
-          padding-top: calc(20px + 20 * ((100vw - 320px) / 448));
-        }
-
-        @media screen and (min-width: 768px) {
-          padding-top: calc(40px + 40 * ((100vw - 768px) / 672));
-        }
-
-        @media screen and (min-width: 1440px) {
-          padding-top: 80px;
-        }
+        padding-top: var(--fluid-size-m);
+        padding-bottom: var(--fluid-size-m);
       }
     }
   }
@@ -823,19 +800,7 @@ $type-styles: (
       }
 
       @include expect {
-        margin-top: -20px;
-
-        @media screen and (min-width: 320px) {
-          margin-top: calc(-20px + -20 * ((100vw - 320px) / 448));
-        }
-
-        @media screen and (min-width: 768px) {
-          margin-top: calc(-40px + -40 * ((100vw - 768px) / 672));
-        }
-
-        @media screen and (min-width: 1440px) {
-          margin-top: -80px;
-        }
+        margin-top: calc(calc(var(--fluid-size-m) * 1 + 0) * -1);
       }
     }
   }
@@ -847,19 +812,7 @@ $type-styles: (
       }
 
       @include expect {
-        margin-top: 35px;
-
-        @media screen and (min-width: 320px) {
-          margin-top: calc(35px + 20 * ((100vw - 320px) / 448));
-        }
-
-        @media screen and (min-width: 768px) {
-          margin-top: calc(55px + 40 * ((100vw - 768px) / 672));
-        }
-
-        @media screen and (min-width: 1440px) {
-          margin-top: 95px;
-        }
+        margin-top: calc(calc(var(--fluid-size-m) * 1 + 15px) * 1);
       }
     }
   }
@@ -872,195 +825,51 @@ $type-styles: (
 
       @include expect {
         .h-fluid-size-top-margin-xs {
-          margin-top: 20px;
+          margin-top: var(--fluid-size-xs);
         }
 
         .h-fluid-size-bottom-margin-xs {
-          margin-bottom: 20px;
+          margin-bottom: var(--fluid-size-xs);
         }
 
         .h-fluid-size-top-padding-xs {
-          padding-top: 20px;
+          padding-top: var(--fluid-size-xs);
         }
 
         .h-fluid-size-bottom-padding-xs {
-          padding-bottom: 20px;
+          padding-bottom: var(--fluid-size-xs);
         }
-        
+
         .h-fluid-size-top-margin-s {
-          margin-top: 10px;
-        }
-
-        @media screen and (min-width: 320px) {
-          .h-fluid-size-top-margin-s {
-            margin-top: calc(10px + 20 * ((100vw - 320px) / 448));
-          }
-        }
-
-        @media screen and (min-width: 768px) {
-          .h-fluid-size-top-margin-s {
-            margin-top: calc(30px + 20 * ((100vw - 768px) / 672));
-          }
-        }
-
-        @media screen and (min-width: 1440px) {
-          .h-fluid-size-top-margin-s {
-            margin-top: 50px;
-          }
+          margin-top: var(--fluid-size-s);
         }
 
         .h-fluid-size-bottom-margin-s {
-          margin-bottom: 10px;
-        }
-
-        @media screen and (min-width: 320px) {
-          .h-fluid-size-bottom-margin-s {
-            margin-bottom: calc(10px + 20 * ((100vw - 320px) / 448));
-          }
-        }
-
-        @media screen and (min-width: 768px) {
-          .h-fluid-size-bottom-margin-s {
-            margin-bottom: calc(30px + 20 * ((100vw - 768px) / 672));
-          }
-        }
-
-        @media screen and (min-width: 1440px) {
-          .h-fluid-size-bottom-margin-s {
-            margin-bottom: 50px;
-          }
+          margin-bottom: var(--fluid-size-s);
         }
 
         .h-fluid-size-top-padding-s {
-          padding-top: 10px;
-        }
-
-        @media screen and (min-width: 320px) {
-          .h-fluid-size-top-padding-s {
-            padding-top: calc(10px + 20 * ((100vw - 320px) / 448));
-          }
-        }
-
-        @media screen and (min-width: 768px) {
-          .h-fluid-size-top-padding-s {
-            padding-top: calc(30px + 20 * ((100vw - 768px) / 672));
-          }
-        }
-
-        @media screen and (min-width: 1440px) {
-          .h-fluid-size-top-padding-s {
-            padding-top: 50px;
-          }
+          padding-top: var(--fluid-size-s);
         }
 
         .h-fluid-size-bottom-padding-s {
-          padding-bottom: 10px;
-        }
-
-        @media screen and (min-width: 320px) {
-          .h-fluid-size-bottom-padding-s {
-            padding-bottom: calc(10px + 20 * ((100vw - 320px) / 448));
-          }
-        }
-
-        @media screen and (min-width: 768px) {
-          .h-fluid-size-bottom-padding-s {
-            padding-bottom: calc(30px + 20 * ((100vw - 768px) / 672));
-          }
-        }
-
-        @media screen and (min-width: 1440px) {
-          .h-fluid-size-bottom-padding-s {
-            padding-bottom: 50px;
-          }
+          padding-bottom: var(--fluid-size-s);
         }
 
         .h-fluid-size-top-margin-m {
-          margin-top: 20px;
-        }
-
-        @media screen and (min-width: 320px) {
-          .h-fluid-size-top-margin-m {
-            margin-top: calc(20px + 20 * ((100vw - 320px) / 448));
-          }
-        }
-
-        @media screen and (min-width: 768px) {
-          .h-fluid-size-top-margin-m {
-            margin-top: calc(40px + 40 * ((100vw - 768px) / 672));
-          }
-        }
-
-        @media screen and (min-width: 1440px) {
-          .h-fluid-size-top-margin-m {
-            margin-top: 80px;
-          }
+          margin-top: var(--fluid-size-m);
         }
 
         .h-fluid-size-bottom-margin-m {
-          margin-bottom: 20px;
-        }
-
-        @media screen and (min-width: 320px) {
-          .h-fluid-size-bottom-margin-m {
-            margin-bottom: calc(20px + 20 * ((100vw - 320px) / 448));
-          }
-        }
-
-        @media screen and (min-width: 768px) {
-          .h-fluid-size-bottom-margin-m {
-            margin-bottom: calc(40px + 40 * ((100vw - 768px) / 672));
-          }
-        }
-
-        @media screen and (min-width: 1440px) {
-          .h-fluid-size-bottom-margin-m {
-            margin-bottom: 80px;
-          }
+          margin-bottom: var(--fluid-size-m);
         }
 
         .h-fluid-size-top-padding-m {
-          padding-top: 20px;
-        }
-
-        @media screen and (min-width: 320px) {
-          .h-fluid-size-top-padding-m {
-            padding-top: calc(20px + 20 * ((100vw - 320px) / 448));
-          }
-        }
-
-        @media screen and (min-width: 768px) {
-          .h-fluid-size-top-padding-m {
-            padding-top: calc(40px + 40 * ((100vw - 768px) / 672));
-          }
-        }
-
-        @media screen and (min-width: 1440px) {
-          .h-fluid-size-top-padding-m {
-            padding-top: 80px;
-          }
+          padding-top: var(--fluid-size-m);
         }
 
         .h-fluid-size-bottom-padding-m {
-          padding-bottom: 20px;
-        }
-
-        @media screen and (min-width: 320px) {
-          .h-fluid-size-bottom-padding-m {
-            padding-bottom: calc(20px + 20 * ((100vw - 320px) / 448));
-          }
-        }
-
-        @media screen and (min-width: 768px) {
-          .h-fluid-size-bottom-padding-m {
-            padding-bottom: calc(40px + 40 * ((100vw - 768px) / 672));
-          }
-        }
-
-        @media screen and (min-width: 1440px) {
-          .h-fluid-size-bottom-padding-m {
-            padding-bottom: 80px;
-          }
+          padding-bottom: var(--fluid-size-m);
         }
       }
     }
