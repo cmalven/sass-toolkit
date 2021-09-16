@@ -1,3 +1,4 @@
+@use "sass:math";
 @import "map-deep-get";
 @import "font-smoothing";
 @import "fluid-size";
@@ -73,7 +74,7 @@ $type-styles: (
 @function format-font-size($value) {
   $unit: unit($value);
   @if $unit == '' {
-    @return ($value / 10) * 1rem;
+    @return math.div($value, 10) * 1rem;
   }
   @return $value;
 }

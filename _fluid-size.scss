@@ -87,7 +87,7 @@ $output-fluid-size-custom-properties: true !default;
       @if $negative or $adjust != 0 or $scale != 1 {
         $mult: 1;
         @if $negative { $mult: -1; }
-        #{$prop}: calc(calc(#{$val} * #{$scale} + #{$adjust}) * #{$mult});
+        #{$prop}: calc((#{$val} * #{$scale} + #{$adjust}) * #{$mult});
       }
       // …otherwise we can keep things simple
       @else {

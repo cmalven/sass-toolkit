@@ -332,13 +332,13 @@ $type-styles: (
 
         @media (min-width: 320px) {
           .h-type-e {
-            font-size: calc(16px + 8 * ((100vw - 320px) / 448));
+            font-size: calc(16px + 8 * (100vw - 320px) / 448);
           }
         }
 
         @media (min-width: 768px) {
           .h-type-e {
-            font-size: calc(24px + 8 * ((100vw - 768px) / 256));
+            font-size: calc(24px + 8 * (100vw - 768px) / 256);
           }
         }
 
@@ -412,11 +412,11 @@ $type-styles: (
         font-size: 16px;
 
         @media (min-width: 320px) {
-          font-size: calc(16px + 8 * ((100vw - 320px) / 448));
+          font-size: calc(16px + 8 * (100vw - 320px) / 448);
         }
 
         @media (min-width: 768px) {
-          font-size: calc(24px + 8 * ((100vw - 768px) / 256));
+          font-size: calc(24px + 8 * (100vw - 768px) / 256);
         }
 
         @media (min-width: 1024px) {
@@ -460,7 +460,7 @@ $type-styles: (
         margin-top: 50px;
 
         @media (min-width: 768px) {
-          margin-top: calc(50px + 50 * ((100vw - 768px) / 256));
+          margin-top: calc(50px + 50 * (100vw - 768px) / 256);
         }
 
         @media (min-width: 1024px) {
@@ -489,7 +489,7 @@ $type-styles: (
 
         @media (min-width: 768px) {
           :root {
-            --my-custom-property: calc(50px + 50 * ((100vw - 768px) / 256));
+            --my-custom-property: calc(50px + 50 * (100vw - 768px) / 256);
           }
         }
 
@@ -519,7 +519,7 @@ $type-styles: (
        margin-top: 50px;
 
        @media (min-height: 768px) {
-         margin-top: calc(50px + 50 * ((100vh - 768px) / 256));
+         margin-top: calc(50px + 50 * (100vh - 768px) / 256);
        }
 
        @media (min-height: 1024px) {
@@ -544,7 +544,7 @@ $type-styles: (
        margin-top: 50px;
 
        @media (min-width: 320px) {
-         margin-top: calc(50px + 50 * ((100vw - 320px) / 704));
+         margin-top: calc(50px + 50 * (100vw - 320px) / 704);
        }
 
        @media (min-width: 1024px) {
@@ -570,8 +570,8 @@ $type-styles: (
        margin-bottom: 50px;
 
        @media (min-width: 768px) {
-         margin-top: calc(50px + 50 * ((100vw - 768px) / 256));
-         margin-bottom: calc(50px + 50 * ((100vw - 768px) / 256));
+         margin-top: calc(50px + 50 * (100vw - 768px) / 256);
+         margin-bottom: calc(50px + 50 * (100vw - 768px) / 256);
        }
 
        @media (min-width: 1024px) {
@@ -598,7 +598,7 @@ $type-styles: (
        margin-top: -50px;
 
        @media (min-width: 768px) {
-         margin-top: calc(-50px + -50 * ((100vw - 768px) / 256));
+         margin-top: calc(-50px + -50 * (100vw - 768px) / 256);
        }
 
        @media (min-width: 1024px) {
@@ -624,7 +624,7 @@ $type-styles: (
        margin-top: 100px;
 
        @media (min-width: 768px) {
-         margin-top: calc(100px + 100 * ((100vw - 768px) / 256));
+         margin-top: calc(100px + 100 * (100vw - 768px) / 256);
        }
 
        @media (min-width: 1024px) {
@@ -650,7 +650,7 @@ $type-styles: (
        margin-top: 65px;
 
        @media (min-width: 768px) {
-         margin-top: calc(65px + 50 * ((100vw - 768px) / 256));
+         margin-top: calc(65px + 50 * (100vw - 768px) / 256);
        }
 
        @media (min-width: 1024px) {
@@ -676,7 +676,7 @@ $type-styles: (
        margin-top: 35px;
 
        @media (min-width: 768px) {
-         margin-top: calc(35px + 50 * ((100vw - 768px) / 256));
+         margin-top: calc(35px + 50 * (100vw - 768px) / 256);
        }
 
        @media (min-width: 1024px) {
@@ -703,7 +703,7 @@ $type-styles: (
        margin-top: -65px;
 
        @media (min-width: 768px) {
-         margin-top: calc(-65px + -50 * ((100vw - 768px) / 256));
+         margin-top: calc(-65px + -50 * (100vw - 768px) / 256);
        }
 
        @media (min-width: 1024px) {
@@ -775,7 +775,7 @@ $type-styles: (
       }
 
       @include expect {
-        margin-top: calc(calc(var(--fluid-size-xs) * 2 + 10px) * -1);
+        margin-top: calc((var(--fluid-size-xs) * 2 + 10px) * -1);
       }
     }
   }
@@ -800,7 +800,7 @@ $type-styles: (
       }
 
       @include expect {
-        margin-top: calc(calc(var(--fluid-size-m) * 1 + 0) * -1);
+        margin-top: calc((var(--fluid-size-m) * 1 + 0) * -1);
       }
     }
   }
@@ -812,7 +812,7 @@ $type-styles: (
       }
 
       @include expect {
-        margin-top: calc(calc(var(--fluid-size-m) * 1 + 15px) * 1);
+        margin-top: calc((var(--fluid-size-m) * 1 + 15px) * 1);
       }
     }
   }
@@ -892,13 +892,13 @@ $type-styles: (
 
         @media (min-width: 320px) {
           :root {
-            --fluid-size-s: calc(10px + 20 * ((100vw - 320px) / 448));
+            --fluid-size-s: calc(10px + 20 * (100vw - 320px) / 448);
           }
         }
 
         @media (min-width: 768px) {
           :root {
-            --fluid-size-s: calc(30px + 20 * ((100vw - 768px) / 672));
+            --fluid-size-s: calc(30px + 20 * (100vw - 768px) / 672);
           }
         }
 
@@ -914,13 +914,13 @@ $type-styles: (
 
         @media (min-width: 320px) {
           :root {
-            --fluid-size-m: calc(20px + 20 * ((100vw - 320px) / 448));
+            --fluid-size-m: calc(20px + 20 * (100vw - 320px) / 448);
           }
         }
 
         @media (min-width: 768px) {
           :root {
-            --fluid-size-m: calc(40px + 40 * ((100vw - 768px) / 672));
+            --fluid-size-m: calc(40px + 40 * (100vw - 768px) / 672);
           }
         }
 
