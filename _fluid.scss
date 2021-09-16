@@ -13,8 +13,8 @@
 // =========================================================================
 
 /// @param {list} $properties - list of properties to use
-/// @param {string} $min-size - minimum viewport size in pixels or the name of a map key in $mq-breakpoints
-/// @param {string} $max-size - maximum viewport size in pixels or the name of a map key in $mq-breakpoints
+/// @param {string} $min-size - minimum viewport size in pixels or the name of a map key in $breakpoints
+/// @param {string} $max-size - maximum viewport size in pixels or the name of a map key in $breakpoints
 /// @param {string} $min-value - minimum value in pixels
 /// @param {string} $max-value - maximum value in pixels
 /// @param {boolean} $negative - whether the value range should be negative
@@ -44,12 +44,12 @@
     $min-size: $fluid-min-width;
   }
   
-  @if $mq-breakpoints and map-has-key($mq-breakpoints, $min-size) {
-    $min-size: map-get($mq-breakpoints, $min-size);
+  @if $breakpoints and map-has-key($breakpoints, $min-size) {
+    $min-size: map-get($breakpoints, $min-size);
   }
 
-  @if $mq-breakpoints and map-has-key($mq-breakpoints, $max-size) {
-    $max-size: map-get($mq-breakpoints, $max-size);
+  @if $breakpoints and map-has-key($breakpoints, $max-size) {
+    $max-size: map-get($breakpoints, $max-size);
   }
 
   @if $negative {
@@ -76,7 +76,7 @@
     }
   }
 
-  @media screen and (min-#{$size-unit}: $min-size) {
+  @media (min-#{$size-unit}: $min-size) {
     $val: calc(#{$min-value} + #{strip-unit($max-value - $min-value)} * ((100#{$viewport-unit} - #{$min-size}) / #{strip-unit($max-size - $min-size)}));
 
     @if $custom-property-name {
@@ -90,7 +90,7 @@
   }
 
   @if $include-max {
-    @media screen and (min-#{$size-unit}: $max-size) {
+    @media (min-#{$size-unit}: $max-size) {
       @if $custom-property-name {
         :root { --#{$custom-property-name}: #{$max-value}; }
       }
