@@ -43,16 +43,18 @@ By default all helpers are output, to turn them off just add the variable and se
 
 #### Media Queries
 
-Sass Toolkit uses [sass-mq](https://github.com/sass-mq/sass-mq) for responsive adjustments, which expects you to have a global `$mq-breakpoints` variable that defines your mobile-first breakpoints. The exact sizes you have defined for these breakpoints can be anything, and you can specify additional breakpoints:
+Sass Toolkit doesn't make any assumptions about what you're using to output media queries, but it does require that you define your breakpoints in a map called `$breakpoints`. The specific breakpoints included can have whatever names or values you want, but they should be in the following format:
 
 ```scss
-$mq-breakpoints: (
+$breakpoints: (
   small: 500px,
   medium: 768px,
   large: 1024px,
   xlarge: 1400px
 );
 ```
+
+If you're interested in using a Sass library to help with outputting media queries based on this map of breakpoints, we recommend [include-media](https://www.npmjs.com/package/include-media), which also expects a map called `$breakpoints`.
 
 ### Color
 

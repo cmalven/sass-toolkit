@@ -1,6 +1,5 @@
 @import "map-deep-get";
 @import "font-smoothing";
-@import "node_modules/sass-mq/mq";
 @import "fluid-size";
 
 // ---------------------------------------------------------------
@@ -163,12 +162,12 @@ $type-styles: (
   }
   @else {
     @each $break, $size in $responsive-sizes {
-      @include mq($break) {
+      $bp-width: map-get($breakpoints, $break);
+      @media (min-width: $bp-width) {
         font-size: format-font-size($size);
       }
     }
   }
-
 }
 
 
