@@ -800,7 +800,7 @@ $type-styles: (
       }
 
       @include expect {
-        margin-top: calc((var(--fluid-size-m) * 1 + 0) * -1);
+        margin-top: calc((var(--fluid-size-m) * 1) * -1);
       }
     }
   }
