@@ -15,7 +15,7 @@
   "license": "MIT",
   "homepage": "https://github.com/cmalven/sass-toolkit",
   "dependencies": {
-    "sass-mq": "^5.0.0"
+    "sass-mq": "^6.0.0"
   },
   "devDependencies": {
     "chokidar-cli": "^2.0.0",
