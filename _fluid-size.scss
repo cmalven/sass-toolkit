@@ -23,6 +23,8 @@ $fluid-sizes: (
   )
 ) !default;
 
+$breakpoints: () !default;
+
 $fluid-min-width: 320px !default;
 $output-fluid-size-helpers: true !default;
 $output-fluid-size-custom-properties: true !default;
