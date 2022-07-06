@@ -73,8 +73,6 @@ $shade-mix: #000 !default;
   template markup.
 */
 
-$output-color-helpers: true !default;
-
 @mixin output-color-helpers {
   @each $color in map-keys($colors) {
     #{'.h-color-text-' + $color} {
@@ -84,8 +82,4 @@ $output-color-helpers: true !default;
       background-color: color($color);
     }
   }
-}
-
-@if $output-color-helpers {
-  @include output-color-helpers;
 }

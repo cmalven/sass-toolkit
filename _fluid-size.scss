@@ -26,8 +26,6 @@ $fluid-sizes: (
 $breakpoints: () !default;
 
 $fluid-min-width: 320px !default;
-$output-fluid-size-helpers: true !default;
-$output-fluid-size-custom-properties: true !default;
 
 
 //---------------------------------------------------------------
@@ -187,10 +185,6 @@ $output-fluid-size-custom-properties: true !default;
   }
 }
 
-@if $output-fluid-size-helpers {
-  @include output-fluid-size-helpers;
-}
-
 
 //---------------------------------------------------------------
 // Output Fluid Size Custom Properties
@@ -204,8 +198,4 @@ $output-fluid-size-custom-properties: true !default;
   @each $key, $val in $fluid-sizes {
     @include output-fluid-sizes($val, margin, $custom-property-name: 'fluid-size-#{$key}');
   }
-}
-
-@if $output-fluid-size-custom-properties {
-  @include output-fluid-size-custom-properties;
 }

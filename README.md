@@ -21,6 +21,9 @@ npm install sass-toolkit --save
 @import "sass-toolkit/type-styles";
 @import "sass-toolkit/fluid-size";
 @import "sass-toolkit/fluid";
+
+// Generate custom properties 
+@include output-fluid-size-custom-properties;
 ```
 
 ## Use
@@ -31,14 +34,12 @@ The included tools are based heavily on the frontend development process at Malv
 
 #### Outputting Helpers
 
-There are variables included for outputting helpers. One for each toolkit file.
+There are mixins included for outputting helpers. One for each toolkit file..
 ```
-$output-color-helpers;
-$output-type-helpers;
-$output-fluid-size-helpers;
+@include output-color-helpers;
+@include output-type-helpers;
+@include output-fluid-size-helpers;
 ```
-
-By default all helpers are output, to turn them off just add the variable and set the variable to `false`.
 
 
 #### Media Queries
