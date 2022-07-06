@@ -1,6 +1,6 @@
 {
   "name": "@malven/sass-toolkit",
-  "version": "4.0.2",
+  "version": "5.0.0",
   "description": "A collection of foundational utilities for Sass",
   "repository": {
     "type": "git",
