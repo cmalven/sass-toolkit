@@ -46,50 +46,56 @@ $type-styles: (
     stack: helvetica,
     font-smoothing: true,
     sizes: (
-      default: 16,
-      medium: 24,
-      large: 32
+      default: (
+        font-size: 1.6rem,
+        line-height: 1.55
+      ),
+      medium: 2.4rem,
+      large: 3.2rem
     ),
-    properties: (
-      line-height: 1.55
-    )
   ),
   b: (
     stack: helvetica,
     font-smoothing: false,
     sizes: (
-      default: 16,
-      medium: 24,
-      large: 32
-    ),
-    properties: (
-      line-height: 1.55,
-      text-transform: uppercase,
-      letter-spacing: 0.1em
+      default: (
+        font-size: 1.6rem,
+        line-height: 1.55,
+        text-transform: uppercase,
+        letter-spacing: 0.1em
+      ),
+      medium: 2.4rem,
+      large: 3.2rem
     )
   ),
   c: (
     stack: helvetica,
     font-smoothing: false,
     sizes: (
-      default: 16px,
-      medium: 24px,
+      default: (
+        font-size: 16px,
+        line-height: 1.55
+      ),
+      medium: (
+        font-size: 24px,
+        line-height: 1.7
+      ),
       large: 32px
     ),
-    properties: (
-      line-height: 1.55
-    )
   ),
   d: (
     stack: helvetica,
     sizes: (
-      default: 16
+      default: 1.6rem
     )
   ),
   e: (
     stack: helvetica,
     sizes: (
-      default: 16px,
+      default: (
+        font-size: 16px,
+        line-height: 1.55
+      ),
       medium: 24px,
       large: 32px
     ),
@@ -252,12 +258,12 @@ $type-styles: (
       }
       @include expect {
         .h-type-a {
-          font-size: 1.6rem;
           -moz-osx-font-smoothing: grayscale;
           -webkit-font-smoothing: antialiased;
           font-family: "Helvetica Neue", arial, sans-serif;
           font-weight: normal;
           font-style: normal;
+          font-size: 1.6rem;
           line-height: 1.55;
         }
 
@@ -274,10 +280,10 @@ $type-styles: (
         }
 
         .h-type-b {
-          font-size: 1.6rem;
           font-family: "Helvetica Neue", arial, sans-serif;
           font-weight: normal;
           font-style: normal;
+          font-size: 1.6rem;
           line-height: 1.55;
           text-transform: uppercase;
           letter-spacing: 0.1em;
@@ -296,16 +302,17 @@ $type-styles: (
         }
 
         .h-type-c {
-          font-size: 16px;
           font-family: "Helvetica Neue", arial, sans-serif;
           font-weight: normal;
           font-style: normal;
+          font-size: 16px;
           line-height: 1.55;
         }
 
         @media (min-width: 768px) {
           .h-type-c {
             font-size: 24px;
+            line-height: 1.7;
           }
         }
 
@@ -316,17 +323,18 @@ $type-styles: (
         }
 
         .h-type-d {
-          font-size: 1.6rem;
           font-family: "Helvetica Neue", arial, sans-serif;
           font-weight: normal;
           font-style: normal;
+          font-size: 1.6rem;
         }
 
         .h-type-e {
-          font-size: 16px;
           font-family: "Helvetica Neue", arial, sans-serif;
           font-weight: normal;
           font-style: normal;
+          font-size: 16px;
+          line-height: 1.55;
           font-size: 16px;
         }
 
@@ -357,12 +365,12 @@ $type-styles: (
         @include type-style(a);
       }
       @include expect {
-        font-size: 1.6rem;
         -moz-osx-font-smoothing: grayscale;
         -webkit-font-smoothing: antialiased;
         font-family: "Helvetica Neue", arial, sans-serif;
         font-weight: normal;
         font-style: normal;
+        font-size: 1.6rem;
         line-height: 1.55;
 
         @media (min-width: 768px) {
@@ -382,14 +390,15 @@ $type-styles: (
         @include type-style(c);
       }
       @include expect {
-        font-size: 16px;
         font-family: "Helvetica Neue", arial, sans-serif;
         font-weight: normal;
         font-style: normal;
+        font-size: 16px;
         line-height: 1.55;
 
         @media (min-width: 768px) {
           font-size: 24px;
+          line-height: 1.7;
         }
 
         @media (min-width: 1024px) {
@@ -405,10 +414,11 @@ $type-styles: (
         @include type-style(e);
       }
       @include expect {
-        font-size: 16px;
         font-family: "Helvetica Neue", arial, sans-serif;
         font-weight: normal;
         font-style: normal;
+        font-size: 16px;
+        line-height: 1.55;
         font-size: 16px;
 
         @media (min-width: 320px) {
@@ -432,504 +442,503 @@ $type-styles: (
         @include get-type-style(a, medium);
       }
       @include expect {
-        font-size: 2.4rem;
         -moz-osx-font-smoothing: grayscale;
         -webkit-font-smoothing: antialiased;
         font-family: "Helvetica Neue", arial, sans-serif;
         font-weight: normal;
         font-style: normal;
-        line-height: 1.55;
+        font-size: 2.4rem;
       }
     }
   }
-}
-
-@include test-module('Fluid') {
-  @include test('Outputs correctly') {
-    @include assert {
-      @include output {
-        @include fluid(
-          margin-top,
-          map-get($breakpoints, medium),
-          map-get($breakpoints, large),
-          50px,
-          100px
-        );
-      }
-      @include expect {
-        margin-top: 50px;
-
-        @media (min-width: 768px) {
-          margin-top: calc(50px + 50 * (100vw - 768px) / 256);
-        }
-
-        @media (min-width: 1024px) {
-          margin-top: 100px;
-        }
-      }
-    }
-  }
-
-  @include test('Outputs only custom properties') {
-    @include assert {
-      @include output {
-        @include fluid(
-          margin-top,
-          map-get($breakpoints, medium),
-          map-get($breakpoints, large),
-          50px,
-          100px,
-          $custom-property-name: 'my-custom-property'
-        );
-      }
-      @include expect {
-        :root {
-          --my-custom-property: 50px;
-        }
-
-        @media (min-width: 768px) {
-          :root {
-            --my-custom-property: calc(50px + 50 * (100vw - 768px) / 256);
-          }
-        }
-
-        @media (min-width: 1024px) {
-          :root {
-            --my-custom-property: 100px;
-          }
-        }
-      }
-    }
-  }
-
-  @include test('With height') {
-    @include assert {
-      @include output {
-        @include fluid(
-          margin-top,
-          map-get($breakpoints, medium),
-          map-get($breakpoints, large),
-          50px,
-          100px,
-          $size-unit: height,
-          $viewport-unit: vh
-        );
-      }
-      @include expect {
-       margin-top: 50px;
-
-       @media (min-height: 768px) {
-         margin-top: calc(50px + 50 * (100vh - 768px) / 256);
-       }
-
-       @media (min-height: 1024px) {
-         margin-top: 100px;
-       }
-      }
-    }
-  }
-
-  @include test('With map keys for sizes') {
-    @include assert {
-      @include output {
-        @include fluid(
-          margin-top,
-          default,
-          large,
-          50px,
-          100px
-        );
-      }
-      @include expect {
-       margin-top: 50px;
-
-       @media (min-width: 320px) {
-         margin-top: calc(50px + 50 * (100vw - 320px) / 704);
-       }
-
-       @media (min-width: 1024px) {
-         margin-top: 100px;
-       }
-      }
-    }
-  }
-
-  @include test('With multiple properties') {
-    @include assert {
-      @include output {
-        @include fluid(
-          (margin-top, margin-bottom),
-          map-get($breakpoints, medium),
-          map-get($breakpoints, large),
-          50px,
-          100px
-        );
-      }
-      @include expect {
-       margin-top: 50px;
-       margin-bottom: 50px;
-
-       @media (min-width: 768px) {
-         margin-top: calc(50px + 50 * (100vw - 768px) / 256);
-         margin-bottom: calc(50px + 50 * (100vw - 768px) / 256);
-       }
-
-       @media (min-width: 1024px) {
-         margin-top: 100px;
-         margin-bottom: 100px;
-       }
-      }
-    }
-  }
-
-  @include test('With negative') {
-    @include assert {
-      @include output {
-        @include fluid(
-          margin-top,
-          map-get($breakpoints, medium),
-          map-get($breakpoints, large),
-          50px,
-          100px,
-          $negative: true
-        );
-      }
-      @include expect {
-       margin-top: -50px;
-
-       @media (min-width: 768px) {
-         margin-top: calc(-50px + -50 * (100vw - 768px) / 256);
-       }
-
-       @media (min-width: 1024px) {
-         margin-top: -100px;
-       }
-      }
-    }
-  }
-
-  @include test('With scale value') {
-    @include assert {
-      @include output {
-        @include fluid(
-          margin-top,
-          map-get($breakpoints, medium),
-          map-get($breakpoints, large),
-          50px,
-          100px,
-          $scale: 2
-        );
-      }
-      @include expect {
-       margin-top: 100px;
-
-       @media (min-width: 768px) {
-         margin-top: calc(100px + 100 * (100vw - 768px) / 256);
-       }
-
-       @media (min-width: 1024px) {
-         margin-top: 200px;
-       }
-      }
-    }
-  }
-
-  @include test('With positive adjust value') {
-    @include assert {
-      @include output {
-        @include fluid(
-          margin-top,
-          map-get($breakpoints, medium),
-          map-get($breakpoints, large),
-          50px,
-          100px,
-          $adjust: 15px
-        );
-      }
-      @include expect {
-       margin-top: 65px;
-
-       @media (min-width: 768px) {
-         margin-top: calc(65px + 50 * (100vw - 768px) / 256);
-       }
-
-       @media (min-width: 1024px) {
-         margin-top: 115px;
-       }
-      }
-    }
-  }
-
-  @include test('With negative adjust value') {
-    @include assert {
-      @include output {
-        @include fluid(
-          margin-top,
-          map-get($breakpoints, medium),
-          map-get($breakpoints, large),
-          50px,
-          100px,
-          $adjust: -15px
-        );
-      }
-      @include expect {
-       margin-top: 35px;
-
-       @media (min-width: 768px) {
-         margin-top: calc(35px + 50 * (100vw - 768px) / 256);
-       }
-
-       @media (min-width: 1024px) {
-         margin-top: 85px;
-       }
-      }
-    }
-  }
-
-  @include test('With negative adjust value and negative: true') {
-    @include assert {
-      @include output {
-        @include fluid(
-          margin-top,
-          map-get($breakpoints, medium),
-          map-get($breakpoints, large),
-          50px,
-          100px,
-          $negative: true,
-          $adjust: -15px
-        );
-      }
-      @include expect {
-       margin-top: -65px;
-
-       @media (min-width: 768px) {
-         margin-top: calc(-65px + -50 * (100vw - 768px) / 256);
-       }
-
-       @media (min-width: 1024px) {
-         margin-top: -115px;
-       }
-      }
-    }
-  }
-}
-
-// ---------------------------------------------------------------
-// Fluid Size
-// ---------------------------------------------------------------
-
-@include test-module('Fluid Size') {
-  @include test('Get fluid size function') {
-    @include assert-equal(
-      get-fluid-size(m, default), 20px
-    );
-    @include assert-equal(
-      get-fluid-size(m, medium), 40px
-    );
-    @include assert-equal(
-      get-fluid-size(m, max),80px
-    );
-  }
-
-  @include test('Fluid size mixin') {
-    @include assert {
-      @include output {
-        @include fluid-size(m);
-      }
-
-      @include expect {
-        margin-top: var(--fluid-size-m);
-      }
-    }
-  }
-
-  @include test('With only one breakpoint') {
-    @include assert {
-      @include output {
-        @include fluid-size(xs);
-      }
-
-      @include expect {
-        margin-top: var(--fluid-size-xs);
-      }
-    }
-  }
-
-  @include test('With only one breakpoint and multiple properties') {
-    @include assert {
-      @include output {
-        @include fluid-size(xs, width height);
-      }
-
-      @include expect {
-        width: var(--fluid-size-xs);
-        height: var(--fluid-size-xs);
-      }
-    }
-  }
-
-  @include test('With only one breakpoint plus negative, scale, and adjust') {
-    @include assert {
-      @include output {
-        @include fluid-size(xs, $negative: true, $scale: 2, $adjust: 10px);
-      }
-
-      @include expect {
-        margin-top: calc((var(--fluid-size-xs) * 2 + 10px) * -1);
-      }
-    }
-  }
-
-  @include test('With custom property') {
-    @include assert {
-      @include output {
-        @include fluid-size(m, padding-top padding-bottom);
-      }
-
-      @include expect {
-        padding-top: var(--fluid-size-m);
-        padding-bottom: var(--fluid-size-m);
-      }
-    }
-  }
-
-  @include test('With negative') {
-    @include assert {
-      @include output {
-        @include fluid-size(m, $negative: true);
-      }
-
-      @include expect {
-        margin-top: calc((var(--fluid-size-m) * 1) * -1);
-      }
-    }
-  }
-
-  @include test('With adjust value') {
-    @include assert {
-      @include output {
-        @include fluid-size(m, $adjust: 15px);
-      }
-
-      @include expect {
-        margin-top: calc((var(--fluid-size-m) * 1 + 15px) * 1);
-      }
-    }
-  }
-
-  @include test('Outputs helper classes') {
-    @include assert {
-      @include output {
-        @include output-fluid-size-helpers;
-      }
-
-      @include expect {
-        .h-fluid-size-top-margin-xs {
-          margin-top: var(--fluid-size-xs);
-        }
-
-        .h-fluid-size-bottom-margin-xs {
-          margin-bottom: var(--fluid-size-xs);
-        }
-
-        .h-fluid-size-top-padding-xs {
-          padding-top: var(--fluid-size-xs);
-        }
-
-        .h-fluid-size-bottom-padding-xs {
-          padding-bottom: var(--fluid-size-xs);
-        }
-
-        .h-fluid-size-top-margin-s {
-          margin-top: var(--fluid-size-s);
-        }
-
-        .h-fluid-size-bottom-margin-s {
-          margin-bottom: var(--fluid-size-s);
-        }
-
-        .h-fluid-size-top-padding-s {
-          padding-top: var(--fluid-size-s);
-        }
-
-        .h-fluid-size-bottom-padding-s {
-          padding-bottom: var(--fluid-size-s);
-        }
-
-        .h-fluid-size-top-margin-m {
-          margin-top: var(--fluid-size-m);
-        }
-
-        .h-fluid-size-bottom-margin-m {
-          margin-bottom: var(--fluid-size-m);
-        }
-
-        .h-fluid-size-top-padding-m {
-          padding-top: var(--fluid-size-m);
-        }
-
-        .h-fluid-size-bottom-padding-m {
-          padding-bottom: var(--fluid-size-m);
-        }
-      }
-    }
-  }
-
-  @include test('Outputs custom properties') {
-    @include assert {
-      @include output {
-        @include output-fluid-size-custom-properties;
-      }
-
-      @include expect {
-        :root {
-          --fluid-size-xs: 20px;
-        }
-
-        :root {
-          --fluid-size-s: 10px;
-        }
-
-        @media (min-width: 320px) {
-          :root {
-            --fluid-size-s: calc(10px + 20 * (100vw - 320px) / 448);
-          }
-        }
-
-        @media (min-width: 768px) {
-          :root {
-            --fluid-size-s: calc(30px + 20 * (100vw - 768px) / 672);
-          }
-        }
-
-        @media (min-width: 1440px) {
-          :root {
-            --fluid-size-s: 50px;
-          }
-        }
-
-        :root {
-          --fluid-size-m: 20px;
-        }
-
-        @media (min-width: 320px) {
-          :root {
-            --fluid-size-m: calc(20px + 20 * (100vw - 320px) / 448);
-          }
-        }
-
-        @media (min-width: 768px) {
-          :root {
-            --fluid-size-m: calc(40px + 40 * (100vw - 768px) / 672);
-          }
-        }
-
-        @media (min-width: 1440px) {
-          :root {
-            --fluid-size-m: 80px;
-          }
-        }
-      }
-    }
-  }
+//}
+//
+//@include test-module('Fluid') {
+//  @include test('Outputs correctly') {
+//    @include assert {
+//      @include output {
+//        @include fluid(
+//          margin-top,
+//          map-get($breakpoints, medium),
+//          map-get($breakpoints, large),
+//          50px,
+//          100px
+//        );
+//      }
+//      @include expect {
+//        margin-top: 50px;
+//
+//        @media (min-width: 768px) {
+//          margin-top: calc(50px + 50 * (100vw - 768px) / 256);
+//        }
+//
+//        @media (min-width: 1024px) {
+//          margin-top: 100px;
+//        }
+//      }
+//    }
+//  }
+//
+//  @include test('Outputs only custom properties') {
+//    @include assert {
+//      @include output {
+//        @include fluid(
+//          margin-top,
+//          map-get($breakpoints, medium),
+//          map-get($breakpoints, large),
+//          50px,
+//          100px,
+//          $custom-property-name: 'my-custom-property'
+//        );
+//      }
+//      @include expect {
+//        :root {
+//          --my-custom-property: 50px;
+//        }
+//
+//        @media (min-width: 768px) {
+//          :root {
+//            --my-custom-property: calc(50px + 50 * (100vw - 768px) / 256);
+//          }
+//        }
+//
+//        @media (min-width: 1024px) {
+//          :root {
+//            --my-custom-property: 100px;
+//          }
+//        }
+//      }
+//    }
+//  }
+//
+//  @include test('With height') {
+//    @include assert {
+//      @include output {
+//        @include fluid(
+//          margin-top,
+//          map-get($breakpoints, medium),
+//          map-get($breakpoints, large),
+//          50px,
+//          100px,
+//          $size-unit: height,
+//          $viewport-unit: vh
+//        );
+//      }
+//      @include expect {
+//       margin-top: 50px;
+//
+//       @media (min-height: 768px) {
+//         margin-top: calc(50px + 50 * (100vh - 768px) / 256);
+//       }
+//
+//       @media (min-height: 1024px) {
+//         margin-top: 100px;
+//       }
+//      }
+//    }
+//  }
+//
+//  @include test('With map keys for sizes') {
+//    @include assert {
+//      @include output {
+//        @include fluid(
+//          margin-top,
+//          default,
+//          large,
+//          50px,
+//          100px
+//        );
+//      }
+//      @include expect {
+//       margin-top: 50px;
+//
+//       @media (min-width: 320px) {
+//         margin-top: calc(50px + 50 * (100vw - 320px) / 704);
+//       }
+//
+//       @media (min-width: 1024px) {
+//         margin-top: 100px;
+//       }
+//      }
+//    }
+//  }
+//
+//  @include test('With multiple properties') {
+//    @include assert {
+//      @include output {
+//        @include fluid(
+//          (margin-top, margin-bottom),
+//          map-get($breakpoints, medium),
+//          map-get($breakpoints, large),
+//          50px,
+//          100px
+//        );
+//      }
+//      @include expect {
+//       margin-top: 50px;
+//       margin-bottom: 50px;
+//
+//       @media (min-width: 768px) {
+//         margin-top: calc(50px + 50 * (100vw - 768px) / 256);
+//         margin-bottom: calc(50px + 50 * (100vw - 768px) / 256);
+//       }
+//
+//       @media (min-width: 1024px) {
+//         margin-top: 100px;
+//         margin-bottom: 100px;
+//       }
+//      }
+//    }
+//  }
+//
+//  @include test('With negative') {
+//    @include assert {
+//      @include output {
+//        @include fluid(
+//          margin-top,
+//          map-get($breakpoints, medium),
+//          map-get($breakpoints, large),
+//          50px,
+//          100px,
+//          $negative: true
+//        );
+//      }
+//      @include expect {
+//       margin-top: -50px;
+//
+//       @media (min-width: 768px) {
+//         margin-top: calc(-50px + -50 * (100vw - 768px) / 256);
+//       }
+//
+//       @media (min-width: 1024px) {
+//         margin-top: -100px;
+//       }
+//      }
+//    }
+//  }
+//
+//  @include test('With scale value') {
+//    @include assert {
+//      @include output {
+//        @include fluid(
+//          margin-top,
+//          map-get($breakpoints, medium),
+//          map-get($breakpoints, large),
+//          50px,
+//          100px,
+//          $scale: 2
+//        );
+//      }
+//      @include expect {
+//       margin-top: 100px;
+//
+//       @media (min-width: 768px) {
+//         margin-top: calc(100px + 100 * (100vw - 768px) / 256);
+//       }
+//
+//       @media (min-width: 1024px) {
+//         margin-top: 200px;
+//       }
+//      }
+//    }
+//  }
+//
+//  @include test('With positive adjust value') {
+//    @include assert {
+//      @include output {
+//        @include fluid(
+//          margin-top,
+//          map-get($breakpoints, medium),
+//          map-get($breakpoints, large),
+//          50px,
+//          100px,
+//          $adjust: 15px
+//        );
+//      }
+//      @include expect {
+//       margin-top: 65px;
+//
+//       @media (min-width: 768px) {
+//         margin-top: calc(65px + 50 * (100vw - 768px) / 256);
+//       }
+//
+//       @media (min-width: 1024px) {
+//         margin-top: 115px;
+//       }
+//      }
+//    }
+//  }
+//
+//  @include test('With negative adjust value') {
+//    @include assert {
+//      @include output {
+//        @include fluid(
+//          margin-top,
+//          map-get($breakpoints, medium),
+//          map-get($breakpoints, large),
+//          50px,
+//          100px,
+//          $adjust: -15px
+//        );
+//      }
+//      @include expect {
+//       margin-top: 35px;
+//
+//       @media (min-width: 768px) {
+//         margin-top: calc(35px + 50 * (100vw - 768px) / 256);
+//       }
+//
+//       @media (min-width: 1024px) {
+//         margin-top: 85px;
+//       }
+//      }
+//    }
+//  }
+//
+//  @include test('With negative adjust value and negative: true') {
+//    @include assert {
+//      @include output {
+//        @include fluid(
+//          margin-top,
+//          map-get($breakpoints, medium),
+//          map-get($breakpoints, large),
+//          50px,
+//          100px,
+//          $negative: true,
+//          $adjust: -15px
+//        );
+//      }
+//      @include expect {
+//       margin-top: -65px;
+//
+//       @media (min-width: 768px) {
+//         margin-top: calc(-65px + -50 * (100vw - 768px) / 256);
+//       }
+//
+//       @media (min-width: 1024px) {
+//         margin-top: -115px;
+//       }
+//      }
+//    }
+//  }
+//}
+//
+//// ---------------------------------------------------------------
+//// Fluid Size
+//// ---------------------------------------------------------------
+//
+//@include test-module('Fluid Size') {
+//  @include test('Get fluid size function') {
+//    @include assert-equal(
+//      get-fluid-size(m, default), 20px
+//    );
+//    @include assert-equal(
+//      get-fluid-size(m, medium), 40px
+//    );
+//    @include assert-equal(
+//      get-fluid-size(m, max),80px
+//    );
+//  }
+//
+//  @include test('Fluid size mixin') {
+//    @include assert {
+//      @include output {
+//        @include fluid-size(m);
+//      }
+//
+//      @include expect {
+//        margin-top: var(--fluid-size-m);
+//      }
+//    }
+//  }
+//
+//  @include test('With only one breakpoint') {
+//    @include assert {
+//      @include output {
+//        @include fluid-size(xs);
+//      }
+//
+//      @include expect {
+//        margin-top: var(--fluid-size-xs);
+//      }
+//    }
+//  }
+//
+//  @include test('With only one breakpoint and multiple properties') {
+//    @include assert {
+//      @include output {
+//        @include fluid-size(xs, width height);
+//      }
+//
+//      @include expect {
+//        width: var(--fluid-size-xs);
+//        height: var(--fluid-size-xs);
+//      }
+//    }
+//  }
+//
+//  @include test('With only one breakpoint plus negative, scale, and adjust') {
+//    @include assert {
+//      @include output {
+//        @include fluid-size(xs, $negative: true, $scale: 2, $adjust: 10px);
+//      }
+//
+//      @include expect {
+//        margin-top: calc((var(--fluid-size-xs) * 2 + 10px) * -1);
+//      }
+//    }
+//  }
+//
+//  @include test('With custom property') {
+//    @include assert {
+//      @include output {
+//        @include fluid-size(m, padding-top padding-bottom);
+//      }
+//
+//      @include expect {
+//        padding-top: var(--fluid-size-m);
+//        padding-bottom: var(--fluid-size-m);
+//      }
+//    }
+//  }
+//
+//  @include test('With negative') {
+//    @include assert {
+//      @include output {
+//        @include fluid-size(m, $negative: true);
+//      }
+//
+//      @include expect {
+//        margin-top: calc((var(--fluid-size-m) * 1) * -1);
+//      }
+//    }
+//  }
+//
+//  @include test('With adjust value') {
+//    @include assert {
+//      @include output {
+//        @include fluid-size(m, $adjust: 15px);
+//      }
+//
+//      @include expect {
+//        margin-top: calc((var(--fluid-size-m) * 1 + 15px) * 1);
+//      }
+//    }
+//  }
+//
+//  @include test('Outputs helper classes') {
+//    @include assert {
+//      @include output {
+//        @include output-fluid-size-helpers;
+//      }
+//
+//      @include expect {
+//        .h-fluid-size-top-margin-xs {
+//          margin-top: var(--fluid-size-xs);
+//        }
+//
+//        .h-fluid-size-bottom-margin-xs {
+//          margin-bottom: var(--fluid-size-xs);
+//        }
+//
+//        .h-fluid-size-top-padding-xs {
+//          padding-top: var(--fluid-size-xs);
+//        }
+//
+//        .h-fluid-size-bottom-padding-xs {
+//          padding-bottom: var(--fluid-size-xs);
+//        }
+//
+//        .h-fluid-size-top-margin-s {
+//          margin-top: var(--fluid-size-s);
+//        }
+//
+//        .h-fluid-size-bottom-margin-s {
+//          margin-bottom: var(--fluid-size-s);
+//        }
+//
+//        .h-fluid-size-top-padding-s {
+//          padding-top: var(--fluid-size-s);
+//        }
+//
+//        .h-fluid-size-bottom-padding-s {
+//          padding-bottom: var(--fluid-size-s);
+//        }
+//
+//        .h-fluid-size-top-margin-m {
+//          margin-top: var(--fluid-size-m);
+//        }
+//
+//        .h-fluid-size-bottom-margin-m {
+//          margin-bottom: var(--fluid-size-m);
+//        }
+//
+//        .h-fluid-size-top-padding-m {
+//          padding-top: var(--fluid-size-m);
+//        }
+//
+//        .h-fluid-size-bottom-padding-m {
+//          padding-bottom: var(--fluid-size-m);
+//        }
+//      }
+//    }
+//  }
+//
+//  @include test('Outputs custom properties') {
+//    @include assert {
+//      @include output {
+//        @include output-fluid-size-custom-properties;
+//      }
+//
+//      @include expect {
+//        :root {
+//          --fluid-size-xs: 20px;
+//        }
+//
+//        :root {
+//          --fluid-size-s: 10px;
+//        }
+//
+//        @media (min-width: 320px) {
+//          :root {
+//            --fluid-size-s: calc(10px + 20 * (100vw - 320px) / 448);
+//          }
+//        }
+//
+//        @media (min-width: 768px) {
+//          :root {
+//            --fluid-size-s: calc(30px + 20 * (100vw - 768px) / 672);
+//          }
+//        }
+//
+//        @media (min-width: 1440px) {
+//          :root {
+//            --fluid-size-s: 50px;
+//          }
+//        }
+//
+//        :root {
+//          --fluid-size-m: 20px;
+//        }
+//
+//        @media (min-width: 320px) {
+//          :root {
+//            --fluid-size-m: calc(20px + 20 * (100vw - 320px) / 448);
+//          }
+//        }
+//
+//        @media (min-width: 768px) {
+//          :root {
+//            --fluid-size-m: calc(40px + 40 * (100vw - 768px) / 672);
+//          }
+//        }
+//
+//        @media (min-width: 1440px) {
+//          :root {
+//            --fluid-size-m: 80px;
+//          }
+//        }
+//      }
+//    }
+//  }
 }

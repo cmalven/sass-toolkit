@@ -66,21 +66,6 @@ $breakpoints: () !default;
   }
 }
 
-// ---------------------------------------------------------------
-// Format Font Size
-// ---------------------------------------------------------------
-/*
-  Returns a font size either converted to rem or as original units
-  @param $value (string)  - Value to process
-*/
-@function format-font-size($value) {
-  $unit: unit($value);
-  @if $unit == '' {
-    @return math.div($value, 10) * 1rem;
-  }
-  @return $value;
-}
-
 
 // ---------------------------------------------------------------
 // Font Stack Styles
@@ -103,6 +88,85 @@ $breakpoints: () !default;
 
 
 // ---------------------------------------------------------------
+// Get Properties for Size Set
+// ---------------------------------------------------------------
+/*
+  Returns a map of all properties for a specific size set.
+  @param $size-set (map)              - The size map to get properties from
+  @param $filter-properties (map)     - A list of specific properties you want returned
+*/
+@function get-properties-for-size-set($size-set, $filter-properties: ()) {
+$properties: ();
+
+  // Is the object a map or a value?
+  @if type-of($size-set) == 'map' {
+    // If it's a map, return the size set unaltered
+    $properties: $size-set;
+  } @else {
+    // If it's a value, return a map with the font-size
+    $properties: (
+      font-size: $size-set
+    );
+  }
+
+  // Filter any properties that are not in the filter list
+  @if length($filter-properties) > 0 {
+    $filtered-properties: ();
+    @each $property in $filter-properties {
+      @if map_has_key($properties, $property) {
+        $filtered-properties: map_merge($filtered-properties, (
+          $property: map_get($properties, $property)
+        ));
+      }
+    }
+    $properties: $filtered-properties;
+  }
+
+  @return $properties;
+}
+
+
+// ---------------------------------------------------------------
+// Get Properties for Sizes
+// ---------------------------------------------------------------
+/*
+  Returns a map of all properties for all sizes.
+  @param $sizes (map)                - The map of size sets
+  @param $filter-properties (map)    - A list of specific properties you want returned
+*/
+@function get-properties-for-sizes($sizes, $filter-properties: ()) {
+  $properties: ();
+
+  @each $key, $val in $sizes {
+    $properties: map_merge($properties, (
+      $key: get-properties-for-size-set(map_get($sizes, $key), $filter-properties)
+    ));
+  }
+
+  @return $properties;
+}
+
+// ---------------------------------------------------------------
+// Flatten Properties
+// ---------------------------------------------------------------
+/*
+  Takes a map of size sets and flattens them so that each breakpoint has a single value
+  @param $size-properties (map)      - The map of properties
+*/
+@function flatten-properties($size-properties) {
+  $sizes: ();
+
+  @each $size, $val in $size-properties {
+    // Get the first item iin the $val map
+    $sizes: map_merge($sizes, (
+      $size: nth(map_values($val), 1)
+    ));
+  }
+
+  @return $sizes;
+}
+
+// ---------------------------------------------------------------
 // Get Type Style
 // ---------------------------------------------------------------
 /*
@@ -115,25 +179,27 @@ $breakpoints: () !default;
   @if map-has-key($map, $key){
     // Get the style map from within our $type-styles map
     $map-style: get-style-map($key, $map);
+
     // Use $key to get the 'sizes' map from within the styles map
     $map-sizes: map-deep-get($map, $key, 'sizes');
-    // Get the  size from that size map
-    $font-size: map-get($map-sizes, $size);
 
-    // Set font-size
-    font-size: format-font-size($font-size);
+    // Get the size set
+    $size-set: map-get($map-sizes, $size);
 
+    // Get list of properties from the size set
+    $properties: get-properties-for-size-set($size-set);
+
+    // Apply font smoothing
     @if map_has_key($map, $key) and map-get($map-style, font-smoothing)  {
       @include font-smoothing();
     }
+
     // Set font-family
     @include font-stack-styles(map-get($map-style, 'stack'));
 
-    // Set arbitrary properties
-    @if map_has_key($map-style, 'properties') {
-      @each $property, $value in map-get($map-style, 'properties') {
-        #{$property}: $value;
-      }
+    // Output all properties
+    @each $property, $value in $properties {
+      #{$property}: $value;
     }
   }
   @else {
@@ -159,15 +225,24 @@ $breakpoints: () !default;
 
   // Is the resizing fluid?
   $isFluid: map-deep-get($map, $key, 'fluid');
-  
+
   @if $isFluid {
-    @include output-fluid-sizes($map-sizes, font-size)
+    $font-size-properties: get-properties-for-sizes($map-sizes, 'font-size');
+    $flattened-font-sizes: flatten-properties($font-size-properties);
+    @include output-fluid-sizes($flattened-font-sizes, font-size);
   }
   @else {
+    $all-properties: get-properties-for-sizes($responsive-sizes);
+
+    // For each breakpoint, get all properties for that breakpoint and output them
     @each $break, $size in $responsive-sizes {
       $bp-width: map-get($breakpoints, $break);
+      $properties: map-get($all-properties, $break);
+
       @media (min-width: $bp-width) {
-        font-size: format-font-size($size);
+        @each $property, $value in $properties {
+          #{$property}: $value;
+        }
       }
     }
   }
