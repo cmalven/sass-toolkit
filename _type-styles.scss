@@ -1,5 +1,8 @@
 @use "sass:math";
-@import "map-deep-get";
+@use "sass:map";
+@use "sass:list";
+@use "sass:meta";
+@import "util/map-deep-get";
 @import "font-smoothing";
 @import "fluid-size";
 
@@ -35,7 +38,6 @@ $type-styles: (
       line-height: 1.4,
     )
   ),
-
   body: (
     stack: serif,
     sizes: (
@@ -80,8 +82,7 @@ $breakpoints: () !default;
     font-family: map-deep-get($map, $key, 'font-family');
     font-weight: map-deep-get($map, $key, 'font-weight');
     font-style: map-deep-get($map, $key, 'font-style');
-  }
-  @else {
+  } @else {
     @error "Key `#{$key}` doesn't exist in map `#{$map}`";
   }
 }
@@ -95,8 +96,8 @@ $breakpoints: () !default;
   @param $size-set (map)              - The size map to get properties from
   @param $filter-properties (map)     - A list of specific properties you want returned
 */
-@function get-properties-for-size-set($size-set, $filter-properties: ()) {
-$properties: ();
+@function get-properties-for-type-size-set($size-set, $filter-properties: ()) {
+  $properties: ();
 
   // Is the object a map or a value?
   @if type-of($size-set) == 'map' {
@@ -134,17 +135,18 @@ $properties: ();
   @param $sizes (map)                - The map of size sets
   @param $filter-properties (map)    - A list of specific properties you want returned
 */
-@function get-properties-for-sizes($sizes, $filter-properties: ()) {
+@function get-properties-for-type-sizes($sizes, $filter-properties: ()) {
   $properties: ();
 
   @each $key, $val in $sizes {
     $properties: map_merge($properties, (
-      $key: get-properties-for-size-set(map_get($sizes, $key), $filter-properties)
+      $key: get-properties-for-type-size-set(map_get($sizes, $key), $filter-properties)
     ));
   }
 
   @return $properties;
 }
+
 
 // ---------------------------------------------------------------
 // Flatten Properties
@@ -153,17 +155,95 @@ $properties: ();
   Takes a map of size sets and flattens them so that each breakpoint has a single value
   @param $size-properties (map)      - The map of properties
 */
-@function flatten-properties($size-properties) {
+@function flatten-type-properties($size-properties) {
   $sizes: ();
 
   @each $size, $val in $size-properties {
-    // Get the first item iin the $val map
-    $sizes: map_merge($sizes, (
-      $size: nth(map_values($val), 1)
-    ));
+    // If size has values
+    @if length($val) > 0 {
+      // Get the first item in the $val map
+      $sizes: map_merge($sizes, (
+        $size: nth(map_values($val), 1)
+      ));
+    }
   }
 
   @return $sizes;
+}
+
+
+// ---------------------------------------------------------------
+// Filter Fluid Properties
+// ---------------------------------------------------------------
+/*
+  Take sizes for a type style and return properties that are or are not fluid compatible
+  @param $size-properties (map)      - The map of properties
+  @param $filter-fluid (boolean)     - Whether to return properties that are or are not filterable
+*/
+@function filter-fluid-properties($size-properties, $breakpoints, $filter-fluid: true) {
+  $sizes: ();
+  $properties-list: ();
+  $formatted-size-properties: get-properties-for-type-sizes($size-properties);
+
+  // First, we need a flattened list of all properties at all breakpoints
+  $flattened-properties: ();
+
+  // We need the first breakpoint unit to compare against
+  $first-breakpoint: nth(map.values($breakpoints), 1);
+
+  // Loop through each property in each size, adding to a list of unique properties
+  @each $size, $size-values in $formatted-size-properties {
+    @each $property-name, $property-value in $size-values {
+      // If the property doesn't already exist, add it
+      @if not list.index($flattened-properties, $property-name) {
+        $flattened-properties: list.append($flattened-properties, $property-name);
+      }
+    }
+  }
+
+  // Loop through each property
+  @each $property-name in $flattened-properties {
+    // Our goal is to check if the same unit is used each time this property appears
+    $all-unit-match: false;
+    $unit: null;
+
+    // Loop through each size for each property and get the value of the property
+    @each $size, $size-values in $formatted-size-properties {
+      $property: map_get($size-values, $property-name);
+
+      @if $property {
+        @if not $unit {
+          $unit: $property;
+        }
+
+        // If a unit is set, we need to compare the unit
+        @if $unit {
+          @if meta.type-of($property) == 'number' {
+            $all-unit-match: compare-unit($unit $property) and compare-unit($property $first-breakpoint);
+          }
+        }
+      }
+    }
+
+    @if $all-unit-match == $filter-fluid {
+      // Add this property for each size
+      @each $size, $size-values in $formatted-size-properties {
+        $property: map_get($size-values, $property-name);
+        @if $property {
+          $sizes: map-extend($sizes, (
+            $size: (
+              $property-name: $property
+            )
+          ), true);
+        }
+      }
+
+      // Add to the list of properties
+      $properties-list: list.append($properties-list, $property-name);
+    }
+  }
+
+  @return (sizes: $sizes, properties-list: $properties-list);
 }
 
 // ---------------------------------------------------------------
@@ -176,7 +256,7 @@ $properties: ();
   @param $map (map)     - Map to search for $key [$font-stacks]
 */
 @mixin get-type-style($key, $size: default, $map: $type-styles) {
-  @if map-has-key($map, $key){
+  @if map-has-key($map, $key) {
     // Get the style map from within our $type-styles map
     $map-style: get-style-map($key, $map);
 
@@ -187,10 +267,10 @@ $properties: ();
     $size-set: map-get($map-sizes, $size);
 
     // Get list of properties from the size set
-    $properties: get-properties-for-size-set($size-set);
+    $properties: get-properties-for-type-size-set($size-set);
 
     // Apply font smoothing
-    @if map_has_key($map, $key) and map-get($map-style, font-smoothing)  {
+    @if map_has_key($map, $key) and map-get($map-style, font-smoothing) {
       @include font-smoothing();
     }
 
@@ -201,8 +281,7 @@ $properties: ();
     @each $property, $value in $properties {
       #{$property}: $value;
     }
-  }
-  @else {
+  } @else {
     @error "Key `#{$key}` doesn't exist in map `#{$map}`";
   }
 }
@@ -223,26 +302,35 @@ $properties: ();
   $map-sizes: map-deep-get($map, $key, 'sizes');
   $responsive-sizes: map-remove($map-sizes, default);
 
-  // Is the resizing fluid?
+  $non-fluid-property-sizes: get-properties-for-type-sizes($responsive-sizes);
+
+  // Output fluid properties
+
   $isFluid: map-deep-get($map, $key, 'fluid');
-
   @if $isFluid {
-    $font-size-properties: get-properties-for-sizes($map-sizes, 'font-size');
-    $flattened-font-sizes: flatten-properties($font-size-properties);
-    @include output-fluid-sizes($flattened-font-sizes, font-size);
+    $fluid-properties: filter-fluid-properties($map-sizes, $breakpoints, true);
+    $non-fluid-property-sizes: get-properties-for-type-sizes(map.get(filter-fluid-properties($responsive-sizes, $breakpoints, false), 'sizes'));
+    $sizes: map.get($fluid-properties, 'sizes');
+    $property-list: map.get($fluid-properties, 'properties-list');
+    // If properties is not empty, output the fluid styles
+    @if length($property-list) > 0 {
+      @each $property in $property-list {
+        $properties: get-properties-for-type-sizes($sizes, $property);
+        $flattened: flatten-type-properties($properties);
+        @include output-fluid-sizes($flattened, $property);
+      }
+    }
   }
-  @else {
-    $all-properties: get-properties-for-sizes($responsive-sizes);
 
-    // For each breakpoint, get all properties for that breakpoint and output them
-    @each $break, $size in $responsive-sizes {
-      $bp-width: map-get($breakpoints, $break);
-      $properties: map-get($all-properties, $break);
+  // Output non-fluid properties
 
-      @media (min-width: $bp-width) {
-        @each $property, $value in $properties {
-          #{$property}: $value;
-        }
+  @each $break, $size in $non-fluid-property-sizes {
+    $bp-width: map-get($breakpoints, $break);
+    $properties: map-get($non-fluid-property-sizes, $break);
+
+    @media (min-width: $bp-width) {
+      @each $property, $value in $properties {
+        #{$property}: $value;
       }
     }
   }

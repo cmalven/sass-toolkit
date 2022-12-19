@@ -1,0 +1,35 @@
+//===============================================================
+// Map Has Keys
+//===============================================================
+
+// Example:
+
+// $grid-configuration: (
+//   'columns': 12,
+//   'layouts': (
+//     'small': 800px,
+//     'medium': 1000px,
+//     'large': 1200px,
+//   ),
+// );
+//
+// $depth: map-has-keys($grid-configuration, 'columns', 'layouts');
+// // -> true
+//
+// $depth: map-has-keys($grid-configuration, 'columns', 'options');
+// // -> false
+
+/// Test if map got all `$keys` at first level
+/// @author Hugo Giraudel
+/// @param {Map} $map - Map
+/// @param {Arglist} $keys - Keys to test
+/// @return {Bool}
+@function map-has-keys($map, $keys...) {
+  @each $key in $keys {
+    @if not map-has-key($map, $key) {
+      @return false;
+    }
+  }
+
+  @return true;
+}
