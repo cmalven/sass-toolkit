@@ -3,6 +3,7 @@
 @use "sass:list";
 @use "sass:meta";
 @import "util/map-deep-get";
+@import "util/map-extend";
 @import "font-smoothing";
 @import "size";
 
