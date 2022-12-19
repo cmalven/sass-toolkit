@@ -21,7 +21,7 @@ $colors: (
   peaches-and-cream: #f8c6b8
 );
 
-$fluid-sizes: (
+$sizes: (
   xs: (
     default: 20px
   ),
@@ -117,7 +117,7 @@ $type-styles: (
 @import 'color';
 @import 'type-styles';
 @import 'fluid';
-@import 'fluid-size';
+@import 'size';
 @import 'util/strip-unit';
 @import 'util/compare-unit';
 
@@ -984,30 +984,30 @@ $type-styles: (
 }
 
 // ---------------------------------------------------------------
-// Fluid Size
+// Size
 // ---------------------------------------------------------------
 
-@include test-module('Fluid Size') {
-  @include test('Get fluid size function') {
+@include test-module('Size') {
+  @include test('Get size function') {
     @include assert-equal(
-      get-fluid-size(m, default), 20px
+      get-size(m, default), 20px
     );
     @include assert-equal(
-      get-fluid-size(m, medium), 40px
+      get-size(m, medium), 40px
     );
     @include assert-equal(
-      get-fluid-size(m, max),80px
+      get-size(m, max),80px
     );
   }
 
-  @include test('Fluid size mixin') {
+  @include test('Size mixin') {
     @include assert {
       @include output {
-        @include fluid-size(m);
+        @include size(m);
       }
 
       @include expect {
-        margin-top: var(--fluid-size-m);
+        margin-top: var(--size-m);
       }
     }
   }
@@ -1015,11 +1015,11 @@ $type-styles: (
   @include test('With only one breakpoint') {
     @include assert {
       @include output {
-        @include fluid-size(xs);
+        @include size(xs);
       }
 
       @include expect {
-        margin-top: var(--fluid-size-xs);
+        margin-top: var(--size-xs);
       }
     }
   }
@@ -1027,12 +1027,12 @@ $type-styles: (
   @include test('With only one breakpoint and multiple properties') {
     @include assert {
       @include output {
-        @include fluid-size(xs, width height);
+        @include size(xs, width height);
       }
 
       @include expect {
-        width: var(--fluid-size-xs);
-        height: var(--fluid-size-xs);
+        width: var(--size-xs);
+        height: var(--size-xs);
       }
     }
   }
@@ -1040,11 +1040,11 @@ $type-styles: (
   @include test('With only one breakpoint plus negative, scale, and adjust') {
     @include assert {
       @include output {
-        @include fluid-size(xs, $negative: true, $scale: 2, $adjust: 10px);
+        @include size(xs, $negative: true, $scale: 2, $adjust: 10px);
       }
 
       @include expect {
-        margin-top: calc((var(--fluid-size-xs) * 2 + 10px) * -1);
+        margin-top: calc((var(--size-xs) * 2 + 10px) * -1);
       }
     }
   }
@@ -1052,12 +1052,12 @@ $type-styles: (
   @include test('With custom property') {
     @include assert {
       @include output {
-        @include fluid-size(m, padding-top padding-bottom);
+        @include size(m, padding-top padding-bottom);
       }
 
       @include expect {
-        padding-top: var(--fluid-size-m);
-        padding-bottom: var(--fluid-size-m);
+        padding-top: var(--size-m);
+        padding-bottom: var(--size-m);
       }
     }
   }
@@ -1065,11 +1065,11 @@ $type-styles: (
   @include test('With negative') {
     @include assert {
       @include output {
-        @include fluid-size(m, $negative: true);
+        @include size(m, $negative: true);
       }
 
       @include expect {
-        margin-top: calc((var(--fluid-size-m) * 1) * -1);
+        margin-top: calc((var(--size-m) * 1) * -1);
       }
     }
   }
@@ -1077,11 +1077,11 @@ $type-styles: (
   @include test('With adjust value') {
     @include assert {
       @include output {
-        @include fluid-size(m, $adjust: 15px);
+        @include size(m, $adjust: 15px);
       }
 
       @include expect {
-        margin-top: calc((var(--fluid-size-m) * 1 + 15px) * 1);
+        margin-top: calc((var(--size-m) * 1 + 15px) * 1);
       }
     }
   }
@@ -1089,56 +1089,56 @@ $type-styles: (
   @include test('Outputs helper classes') {
     @include assert {
       @include output {
-        @include output-fluid-size-helpers;
+        @include output-size-helpers;
       }
 
       @include expect {
-        .h-fluid-size-top-margin-xs {
-          margin-top: var(--fluid-size-xs);
+        .h-size-top-margin-xs {
+          margin-top: var(--size-xs);
         }
 
-        .h-fluid-size-bottom-margin-xs {
-          margin-bottom: var(--fluid-size-xs);
+        .h-size-bottom-margin-xs {
+          margin-bottom: var(--size-xs);
         }
 
-        .h-fluid-size-top-padding-xs {
-          padding-top: var(--fluid-size-xs);
+        .h-size-top-padding-xs {
+          padding-top: var(--size-xs);
         }
 
-        .h-fluid-size-bottom-padding-xs {
-          padding-bottom: var(--fluid-size-xs);
+        .h-size-bottom-padding-xs {
+          padding-bottom: var(--size-xs);
         }
 
-        .h-fluid-size-top-margin-s {
-          margin-top: var(--fluid-size-s);
+        .h-size-top-margin-s {
+          margin-top: var(--size-s);
         }
 
-        .h-fluid-size-bottom-margin-s {
-          margin-bottom: var(--fluid-size-s);
+        .h-size-bottom-margin-s {
+          margin-bottom: var(--size-s);
         }
 
-        .h-fluid-size-top-padding-s {
-          padding-top: var(--fluid-size-s);
+        .h-size-top-padding-s {
+          padding-top: var(--size-s);
         }
 
-        .h-fluid-size-bottom-padding-s {
-          padding-bottom: var(--fluid-size-s);
+        .h-size-bottom-padding-s {
+          padding-bottom: var(--size-s);
         }
 
-        .h-fluid-size-top-margin-m {
-          margin-top: var(--fluid-size-m);
+        .h-size-top-margin-m {
+          margin-top: var(--size-m);
         }
 
-        .h-fluid-size-bottom-margin-m {
-          margin-bottom: var(--fluid-size-m);
+        .h-size-bottom-margin-m {
+          margin-bottom: var(--size-m);
         }
 
-        .h-fluid-size-top-padding-m {
-          padding-top: var(--fluid-size-m);
+        .h-size-top-padding-m {
+          padding-top: var(--size-m);
         }
 
-        .h-fluid-size-bottom-padding-m {
-          padding-bottom: var(--fluid-size-m);
+        .h-size-bottom-padding-m {
+          padding-bottom: var(--size-m);
         }
       }
     }
@@ -1147,55 +1147,55 @@ $type-styles: (
   @include test('Outputs custom properties') {
     @include assert {
       @include output {
-        @include output-fluid-size-custom-properties;
+        @include output-size-custom-properties;
       }
 
       @include expect {
         :root {
-          --fluid-size-xs: 20px;
+          --size-xs: 20px;
         }
 
         :root {
-          --fluid-size-s: 10px;
+          --size-s: 10px;
         }
 
         @media (min-width: 320px) {
           :root {
-            --fluid-size-s: calc(10px + 20 * (100vw - 320px) / 448);
+            --size-s: calc(10px + 20 * (100vw - 320px) / 448);
           }
         }
 
         @media (min-width: 768px) {
           :root {
-            --fluid-size-s: calc(30px + 20 * (100vw - 768px) / 672);
+            --size-s: calc(30px + 20 * (100vw - 768px) / 672);
           }
         }
 
         @media (min-width: 1440px) {
           :root {
-            --fluid-size-s: 50px;
+            --size-s: 50px;
           }
         }
 
         :root {
-          --fluid-size-m: 20px;
+          --size-m: 20px;
         }
 
         @media (min-width: 320px) {
           :root {
-            --fluid-size-m: calc(20px + 20 * (100vw - 320px) / 448);
+            --size-m: calc(20px + 20 * (100vw - 320px) / 448);
           }
         }
 
         @media (min-width: 768px) {
           :root {
-            --fluid-size-m: calc(40px + 40 * (100vw - 768px) / 672);
+            --size-m: calc(40px + 40 * (100vw - 768px) / 672);
           }
         }
 
         @media (min-width: 1440px) {
           :root {
-            --fluid-size-m: 80px;
+            --size-m: 80px;
           }
         }
       }

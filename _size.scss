@@ -1,15 +1,15 @@
 @import "fluid";
 
 //===============================================================
-// Fluid Size
+// Size
 //===============================================================
 /*
   Mixin to provide sizing (often either margin or padding, but can be any numeric property) to a defined
   location of an element and have that spacing scale fluidly between screen sizes.
-  Relies on a $fluid-sizes map variable existing in the following format:
+  Relies on a $sizes map variable existing in the following format:
 */
 
-$fluid-sizes: (
+$sizes: (
   s: (
     default: 20px,
     medium: 40px,
@@ -29,16 +29,16 @@ $fluid-min-width: 320px !default;
 
 
 //---------------------------------------------------------------
-// Get Fluid Size
+// Get Size
 //---------------------------------------------------------------
 /*
-  Function for getting a specific size/breakpoint value from the $fluid-sizes map.
+  Function for getting a specific size/breakpoint value from the $sizes map.
   @param $size (string)           - Key size you want
   @param $breakpoint (string)     - The breakpoint you want sizing at
 */
-@function get-fluid-size($size, $breakpoint: null) {
-  @if map-has-key($fluid-sizes, $size) {
-    $size-set: map-get($fluid-sizes, $size);
+@function get-size($size, $breakpoint: null) {
+  @if map-has-key($sizes, $size) {
+    $size-set: map-get($sizes, $size);
     @if map-has-key($size-set, $breakpoint) {
       @return map-get($size-set, $breakpoint);
     } @else {
@@ -54,10 +54,10 @@ $fluid-min-width: 320px !default;
 // Get Size Set
 //---------------------------------------------------------------
 /*
-  Function for getting a specific size set from the $fluid-sizes map.
+  Function for getting a specific size set from the $sizes map.
   @param $size (string)  - Size set you want
 */
-@function get-spacing-size($size, $map: $fluid-sizes) {
+@function get-spacing-size($size, $map: $sizes) {
   @if map-has-key($map, $size) {
     @return map-get($map, $size);
   }
@@ -71,19 +71,19 @@ $fluid-min-width: 320px !default;
 // Output Size Markup
 //---------------------------------------------------------------
 /*
-  Generates fluid size and applies it to the supplied property.
-  @param $size (key)                   - Key size you want (from the $fluid-sizes map)
+  Generates responsive size and applies it to the supplied property.
+  @param $size (key)                   - Key size you want (from the $sizes map)
   @param $property (string)            - The css property you'd like to apply the size to
                                          will only be applied up until this breakpoint.
   @param $negative (boolean)           - If true, returns a negative range
   @param $adjust (pixel value)         - Adjusts all resulting values by a given amount
   @param $scale (number)               - Multiplies all resulting values by a given amount
 */
-@mixin fluid-size($size, $property: margin-top, $negative: false, $adjust: null, $scale: 1) {
-  @if map-has-key($fluid-sizes, $size) {
+@mixin size($size, $property: margin-top, $negative: false, $adjust: null, $scale: 1) {
+  @if map-has-key($sizes, $size) {
     @each $prop in $property {
       // If we're customizing the original value we need a more complicated calc…
-      $val: var(--fluid-size-#{$size});
+      $val: var(--size-#{$size});
       @if $negative or $adjust != null or $scale != 1 {
         $mult: 1;
         @if $negative { $mult: -1; }
@@ -100,7 +100,7 @@ $fluid-min-width: 320px !default;
     }
   }
   @else {
-    @error "Key `#{$size}` doesn't exist in map `$fluid-sizes`";
+    @error "Key `#{$size}` doesn't exist in map `$sizes`";
   }
 }
 
@@ -109,8 +109,8 @@ $fluid-min-width: 320px !default;
 // Output Fluid Breakpoints
 //---------------------------------------------------------------
 /*
-  Loops through breakpoints and outputs fluid sizes
-  @param $size-set (map)                   - Size set you want (from the $fluid-sizes map)
+  Loops through breakpoints and outputs responsive sizes
+  @param $size-set (map)                   - Size set you want (from the $sizes map)
   @param $properties (list)                - The css property you'd like to apply the size to
                                              will only be applied up until this breakpoint.
   @param $negative (boolean)               - If true, returns a negative range
@@ -118,7 +118,7 @@ $fluid-min-width: 320px !default;
   @param $scale (number)                   - Multiplies all resulting values by a given amount
   @param $custom-property-name (string)    - If set, a CSS custom property (variable) will be created an :root
 */
-@mixin output-fluid-sizes(
+@mixin output-sizes(
   $size-set,
   $properties,
   $negative: false,
@@ -179,42 +179,42 @@ $fluid-min-width: 320px !default;
 // Output Helper Classes
 //---------------------------------------------------------------
 /*
-  Loop through the $fluid-sizes map (defined in `_base/variables.scss`)
+  Loop through the $sizes map (defined in `_base/variables.scss`)
   and generate helpers classes we can use to apply directly into our
   template markup.
 */
 
-@mixin output-fluid-size-helpers {
-  @each $size-key in map-keys($fluid-sizes) {
-    .h-fluid-size-top-margin-#{$size-key} {
-      @include fluid-size($size-key);
+@mixin output-size-helpers {
+  @each $size-key in map-keys($sizes) {
+    .h-size-top-margin-#{$size-key} {
+      @include size($size-key);
     }
 
-    .h-fluid-size-bottom-margin-#{$size-key} {
-      @include fluid-size($size-key, margin-bottom);
+    .h-size-bottom-margin-#{$size-key} {
+      @include size($size-key, margin-bottom);
     }
 
-    .h-fluid-size-top-padding-#{$size-key} {
-      @include fluid-size($size-key, padding-top);
+    .h-size-top-padding-#{$size-key} {
+      @include size($size-key, padding-top);
     }
 
-    .h-fluid-size-bottom-padding-#{$size-key} {
-      @include fluid-size($size-key, padding-bottom);
+    .h-size-bottom-padding-#{$size-key} {
+      @include size($size-key, padding-bottom);
     }
   }
 }
 
 
 //---------------------------------------------------------------
-// Output Fluid Size Custom Properties
+// Output Size Custom Properties
 //---------------------------------------------------------------
 /*
-  Loop through the $fluid-sizes map (defined in `_base/variables.scss`)
+  Loop through the $sizes map (defined in `_base/variables.scss`)
   and generate a responsive CSS custom property (variable) for each.
 */
 
-@mixin output-fluid-size-custom-properties {
-  @each $key, $val in $fluid-sizes {
-    @include output-fluid-sizes($val, margin, $custom-property-name: 'fluid-size-#{$key}');
+@mixin output-size-custom-properties {
+  @each $key, $val in $sizes {
+    @include output-sizes($val, margin, $custom-property-name: 'size-#{$key}');
   }
 }

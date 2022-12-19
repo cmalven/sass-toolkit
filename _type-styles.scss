@@ -4,7 +4,7 @@
 @use "sass:meta";
 @import "util/map-deep-get";
 @import "font-smoothing";
-@import "fluid-size";
+@import "size";
 
 // ---------------------------------------------------------------
 // Type Styles
@@ -317,7 +317,7 @@ $breakpoints: () !default;
       @each $property in $property-list {
         $properties: get-properties-for-type-sizes($sizes, $property);
         $flattened: flatten-type-properties($properties);
-        @include output-fluid-sizes($flattened, $property);
+        @include output-sizes($flattened, $property);
       }
     }
   }
