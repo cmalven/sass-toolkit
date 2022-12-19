@@ -50,7 +50,6 @@ $font-stacks: (
 $type-styles: (
   a: (
     stack: helvetica,
-    font-smoothing: true,
     sizes: (
       default: (
         font-size: 1.6rem,
@@ -62,7 +61,6 @@ $type-styles: (
   ),
   b: (
     stack: helvetica,
-    font-smoothing: false,
     sizes: (
       default: (
         font-size: 1.6rem,
@@ -76,7 +74,6 @@ $type-styles: (
   ),
   c: (
     stack: helvetica,
-    font-smoothing: false,
     sizes: (
       default: (
         font-size: 16px,
@@ -484,8 +481,6 @@ $type-styles: (
       }
       @include expect {
         .h-type-a {
-          -moz-osx-font-smoothing: grayscale;
-          -webkit-font-smoothing: antialiased;
           font-family: "Helvetica Neue", arial, sans-serif;
           font-weight: normal;
           font-style: normal;
@@ -611,8 +606,6 @@ $type-styles: (
         @include type-style(a);
       }
       @include expect {
-        -moz-osx-font-smoothing: grayscale;
-        -webkit-font-smoothing: antialiased;
         font-family: "Helvetica Neue", arial, sans-serif;
         font-weight: normal;
         font-style: normal;
@@ -702,8 +695,6 @@ $type-styles: (
         @include get-type-style(a, medium);
       }
       @include expect {
-        -moz-osx-font-smoothing: grayscale;
-        -webkit-font-smoothing: antialiased;
         font-family: "Helvetica Neue", arial, sans-serif;
         font-weight: normal;
         font-style: normal;

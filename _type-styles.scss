@@ -4,7 +4,6 @@
 @use "sass:meta";
 @import "util/map-deep-get";
 @import "util/map-extend";
-@import "font-smoothing";
 @import "size";
 
 // ---------------------------------------------------------------
@@ -269,11 +268,6 @@ $breakpoints: () !default;
 
     // Get list of properties from the size set
     $properties: get-properties-for-type-size-set($size-set);
-
-    // Apply font smoothing
-    @if map_has_key($map, $key) and map-get($map-style, font-smoothing) {
-      @include font-smoothing();
-    }
 
     // Set font-family
     @include font-stack-styles(map-get($map-style, 'stack'));

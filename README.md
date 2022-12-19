@@ -134,7 +134,6 @@ $type-styles: (
 
   body: (
     stack: helvetica,
-    font-smoothing: true,
     sizes: (
       default: 16,
       medium: 24
