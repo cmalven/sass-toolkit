@@ -393,7 +393,7 @@ p {
 }
 
 /* Substitute vertical units, for queries that respond to device height */
-@include fluid(margin-top, 600px, 900px, 100px, 200px, $size-unit: height, $viewport-unit: vh );
+@include fluid(margin-top, 600px, 900px, 100px, 200px, $size-unit: height, $viewport-unit: vh);
 ```
 
 ## Development
