@@ -293,7 +293,7 @@ $sizes: (
 );
 ```
 
-Each set in `$sizes` can have any key (e.g. `s`) and _must_ include at least a `default` key/value, and can optionally include any other key/value pair representing another breakpoint. Each key/value pair inside of a set should have a key that matches a value from you `$mq-breakpoints` map, and a value that matches the desired value when the viewport width is at that breakpoint.
+Each set in `$sizes` can have any key (e.g. `xs`), _must_ include at least a `default` key/value, and can optionally include any other key/value pair representing another breakpoint. Each key/value pair inside of a set should have a key that matches a value from your `$breakpoints` map, and a value that matches the desired value when the viewport width is at that breakpoint.
 
 The `default` key here represents the minimum possible size/value, as defined by the `$fluid-min-width` variable, which is `320px` by default. You can adjust this value by setting a `$fluid-min-width` variable to the smallest possible viewport width you want to handle.
 
@@ -323,7 +323,7 @@ You can adjust the mixin to produce negative values from any `$sizes` set by set
 
 #### A note about units
 
-Due to some browser inconsistencies when using the CSS `calc()` function that is used by this mixin behind the scenes, we recommend setting all `$sizes` values in `px`, and all values _must_ include a unit, even `0` values (i.e. use `0px` instead of `0`). Failing to follow these guidelines probably won’t cause issues in all browsers, but cross-browser behavior may be inconsistent.
+Due to the implementation details of the `calc()` function that is used by this mixin behind the scenes, all `$sizes` values must use `px`, and all values _must_ include a unit, even `0` values (i.e. use `0px` instead of `0`).
 
 #### As an HTML class
 
