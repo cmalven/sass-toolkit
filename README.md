@@ -94,15 +94,11 @@ $colors: (
 
 ### Type Styles
 
-Automatically generates all of the type styles for a project, provides a mixin for grabbing a specific set of predefined styles, adjusts type responsively, and provides optional helper classes for your type styles that can be used directly in your HTML. A type style can be any collection of CSS properties. Anything you add to the `properties` key of the configuration map will be output by the mixin.
+Automatically generates all type styles for a project, provides a mixin for grabbing a specific set of predefined styles, adjusts type responsively, and provides optional helper classes for your type styles that can be used directly in your HTML. A type style can be any collection of CSS properties.
 
 #### Required Setup
 
-Assumes that you are using 10-based `rem` (e.g. `font-size: 1.4rem; // 14 px`) units for sizing across the site, via something like `html { font-size: 62.5%; }`
-
-Values in `sizes` can also be specified with a unit, if desired. For instance, `default: 14px` instead of `default: 14`.
-
-Also relies on $`type-styles` and `$font-stacks` map variables existing in the following format:
+Requires `$type-styles` and `$font-stacks` map variables existing in the following format:
 
 ```scss
 $font-stacks: (
@@ -122,34 +118,38 @@ $type-styles: (
   heading: (
     stack: futura-bold,
     sizes: (
-      default: 14,
-      medium: 18
-    ),
-    properties: (
-      line-height: 1,
-      text-transform: normal,
-      letter-spacing: 0,
+      default: (
+        font-size: 1.4rem,
+        line-height: 1,
+        text-transform: normal,
+        letter-spacing: 0
+      ),
+      // If you're not setting any properties for a size you only need the `font-size` value
+      medium: 1.8rem
     )
   ),
 
   body: (
     stack: helvetica,
     sizes: (
-      default: 16,
-      medium: 24
-    ),
-    properties: (
-      line-height: 1.4,
-      text-transform: uppercase,
-      letter-spacing: 1.2,
+      default: (
+        font-size: 1.6rem,
+        line-height: 1.4,
+        text-transform: uppercase,
+        letter-spacing: 1.2,
+      ),
+      medium: (
+        font-size: 2.4rem,
+        line-height: 1.5
+      )
     )
   )
 );
 ```
 
-### With fluid value
+#### With fluid value
 
-If you'd like the values for `font-size` to scale fluidly between breakpoints, just add `fluid: true`. This also requires that you add `px` to your values:
+If you'd like the values for `font-size` to scale fluidly between breakpoints, just add `fluid: true`. This also requires that you use `px` for your values:
 
 ```scss
 $type-styles: (
@@ -165,9 +165,33 @@ $type-styles: (
 )
 ```
 
+##### Fluid properties other than `font-size`
+
+`fluid: true` will fluidly scale properties other than `font-size` but only if every size for the property uses `px` for the unit:
+
+```scss
+$type-styles: (
+  heading: (
+    stack: futura-bold,
+    sizes: (
+      default: (
+        font-size: 14px,
+        line-height: 20px
+      ),
+      medium: (
+        font-size: 19px,
+        line-height: 24px
+      ),
+      large: 24px
+    ),
+    fluid: true
+  )
+)
+```
+
 #### As an SCSS mixin
 
-### With responsive sizing
+##### With responsive sizing
 
 ```scss
 .my-heading {
@@ -193,7 +217,7 @@ $type-styles: (
 */
 ```
 
-### Without responsive sizing
+##### Without responsive sizing
 
 If you'd like to get a type style at a specific size, without automatically including the responsive adjustments, you can use the `get-type-style` mixin:
 
@@ -215,7 +239,7 @@ If you'd like to get a type style at a specific size, without automatically incl
 */
 ```
 
-### Font stack only
+#### Font stack only
 
 And if you _only_ want the basic styling for a font stack, you can use the `font-stack-styles` mixin:
 
