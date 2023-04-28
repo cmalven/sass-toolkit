@@ -6,7 +6,7 @@ A collection of foundational utilities for Sass.
 
 - [Color](#color)
 - [Type Styles](#type-styles)
-- [Fluid Size](#fluid-size)
+- [Size](#size)
 - [Fluid](#fluid)
 
 ## Install
@@ -19,11 +19,11 @@ npm install sass-toolkit --save
 // in your main.scss
 @import "sass-toolkit/color";
 @import "sass-toolkit/type-styles";
-@import "sass-toolkit/fluid-size";
+@import "sass-toolkit/size";
 @import "sass-toolkit/fluid";
 
 // Generate custom properties 
-@include output-fluid-size-custom-properties;
+@include output-size-custom-properties;
 ```
 
 ## Use
@@ -38,7 +38,7 @@ There are mixins included for outputting helpers. One for each toolkit file..
 ```
 @include output-color-helpers;
 @include output-type-helpers;
-@include output-fluid-size-helpers;
+@include output-size-helpers;
 ```
 
 
@@ -94,15 +94,11 @@ $colors: (
 
 ### Type Styles
 
-Automatically generates all of the type styles for a project, provides a mixin for grabbing a specific set of predefined styles, adjusts type responsively, and provides optional helper classes for your type styles that can be used directly in your HTML. A type style can be any collection of CSS properties. Anything you add to the `properties` key of the configuration map will be output by the mixin.
+Automatically generates all type styles for a project, provides a mixin for grabbing a specific set of predefined styles, adjusts type responsively, and provides optional helper classes for your type styles that can be used directly in your HTML. A type style can be any collection of CSS properties.
 
 #### Required Setup
 
-Assumes that you are using 10-based `rem` (e.g. `font-size: 1.4rem; // 14 px`) units for sizing across the site, via something like `html { font-size: 62.5%; }`
-
-Values in `sizes` can also be specified with a unit, if desired. For instance, `default: 14px` instead of `default: 14`.
-
-Also relies on $`type-styles` and `$font-stacks` map variables existing in the following format:
+Requires `$type-styles` and `$font-stacks` map variables existing in the following format:
 
 ```scss
 $font-stacks: (
@@ -122,35 +118,38 @@ $type-styles: (
   heading: (
     stack: futura-bold,
     sizes: (
-      default: 14,
-      medium: 18
-    ),
-    properties: (
-      line-height: 1,
-      text-transform: normal,
-      letter-spacing: 0,
+      default: (
+        font-size: 1.4rem,
+        line-height: 1,
+        text-transform: normal,
+        letter-spacing: 0
+      ),
+      // If you're not setting any properties for a size you only need the `font-size` value
+      medium: 1.8rem
     )
   ),
 
   body: (
     stack: helvetica,
-    font-smoothing: true,
     sizes: (
-      default: 16,
-      medium: 24
-    ),
-    properties: (
-      line-height: 1.4,
-      text-transform: uppercase,
-      letter-spacing: 1.2,
+      default: (
+        font-size: 1.6rem,
+        line-height: 1.4,
+        text-transform: uppercase,
+        letter-spacing: 1.2,
+      ),
+      medium: (
+        font-size: 2.4rem,
+        line-height: 1.5
+      )
     )
   )
 );
 ```
 
-### With fluid value
+#### With fluid value
 
-If you'd like the values for `font-size` to scale fluidly between breakpoints, just add `fluid: true`. This also requires that you add `px` to your values:
+If you'd like the values for `font-size` to scale fluidly between breakpoints, just add `fluid: true`. This also requires that you use `px` for your values:
 
 ```scss
 $type-styles: (
@@ -166,9 +165,33 @@ $type-styles: (
 )
 ```
 
+##### Fluid properties other than `font-size`
+
+`fluid: true` will fluidly scale properties other than `font-size` but only if every size for the property uses `px` for the unit:
+
+```scss
+$type-styles: (
+  heading: (
+    stack: futura-bold,
+    sizes: (
+      default: (
+        font-size: 14px,
+        line-height: 20px
+      ),
+      medium: (
+        font-size: 19px,
+        line-height: 24px
+      ),
+      large: 24px
+    ),
+    fluid: true
+  )
+)
+```
+
 #### As an SCSS mixin
 
-### With responsive sizing
+##### With responsive sizing
 
 ```scss
 .my-heading {
@@ -194,7 +217,7 @@ $type-styles: (
 */
 ```
 
-### Without responsive sizing
+##### Without responsive sizing
 
 If you'd like to get a type style at a specific size, without automatically including the responsive adjustments, you can use the `get-type-style` mixin:
 
@@ -216,7 +239,7 @@ If you'd like to get a type style at a specific size, without automatically incl
 */
 ```
 
-### Font stack only
+#### Font stack only
 
 And if you _only_ want the basic styling for a font stack, you can use the `font-stack-styles` mixin:
 
@@ -242,16 +265,16 @@ And if you _only_ want the basic styling for a font stack, you can use the `font
 <h1 class="h-type-heading">Ground control to Major Tom</h1>
 ```
 
-### Fluid Size
+### Size
 
-The fluid size mixin makes it simple to smoothly adjust a value across a range of breakpoints, with precise control over the value at each breakpoint. It’s great for handling responsive margins and padding, but can be used for any numeric value, including font sizes, absolute/relative positioning values, etc. Internally, this mixin extends the `fluid` mixin mentioned later on. If you want a simpler, lower-level way to handle fluid property adjustments, check out the `fluid` mixin.
+The `size` mixin makes it simple to smoothly adjust a value across a range of breakpoints, with precise control over the value at each breakpoint. It’s great for handling responsive margins and padding, but can be used for any numeric value, including font sizes, absolute/relative positioning values, etc. Internally, this mixin extends the `fluid` mixin mentioned later on. If you want a simpler, lower-level way to handle fluid property adjustments, check out the `fluid` mixin.
 
 #### Required Setup
 
-Relies on a `$fluid-sizes` map variable existing in the following format:
+Relies on a `$sizes` map variable existing in the following format:
 
 ```scss
-$fluid-sizes: (
+$sizes: (
   xs: (
     default: 20px
   ),
@@ -270,7 +293,7 @@ $fluid-sizes: (
 );
 ```
 
-Each set in `$fluid-sizes` can have any key (e.g. `s`) and _must_ include at least a `default` key/value, and can optionally include any other key/value pair representing another breakpoint. Each key/value pair inside of a set should have a key that matches a value from you `$mq-breakpoints` map, and a value that matches the desired value when the viewport width is at that breakpoint.
+Each set in `$sizes` can have any key (e.g. `xs`), _must_ include at least a `default` key/value, and can optionally include any other key/value pair representing another breakpoint. Each key/value pair inside of a set should have a key that matches a value from your `$breakpoints` map, and a value that matches the desired value when the viewport width is at that breakpoint.
 
 The `default` key here represents the minimum possible size/value, as defined by the `$fluid-min-width` variable, which is `320px` by default. You can adjust this value by setting a `$fluid-min-width` variable to the smallest possible viewport width you want to handle.
 
@@ -278,65 +301,65 @@ The `default` key here represents the minimum possible size/value, as defined by
 
 ```scss
 * + * {
-  @include fluid-size(s); // by default, the value is applied to `margin-top`
+  @include size(s); // by default, the value is applied to `margin-top`
 }
 
 * + * {
-  @include fluid-size(m, padding-bottom); // applies the value to any property
+  @include size(m, padding-bottom); // applies the value to any property
 }
 ```
 
-When applied using the `$fluid-sizes` map in the example above, the first example here would output a `margin-top` value of `20px` at a viewport width of `320px` wide, which would scale up to a value of `40px` at the `medium` breakpoint, then scale up to a maximum value of `80px` at the `max` breakpoint. The value will never be less than `20px` and never more than `80px`
+When applied using the `$sizes` map in the example above, the first example here would output a `margin-top` value of `20px` at a viewport width of `320px` wide, which would scale up to a value of `40px` at the `medium` breakpoint, then scale up to a maximum value of `80px` at the `max` breakpoint. The value will never be less than `20px` and never more than `80px`
 
 #### With negative values
 
-You can adjust the mixin to produce negative values from any `$fluid-sizes` set by setting the `$negative` parameter to true:
+You can adjust the mixin to produce negative values from any `$sizes` set by setting the `$negative` parameter to true:
 
 ```scss
 * + * {
-  @include fluid-size(s, margin-top, $negative: true);
+  @include size(s, margin-top, $negative: true);
 }
 ```
 
 #### A note about units
 
-Due to some browser inconsistencies when using the CSS `calc()` function that is used by this mixin behind the scenes, we recommend setting all `$fluid-sizes` values in `px`, and all values _must_ include a unit, even `0` values (i.e. use `0px` instead of `0`). Failing to follow these guidelines probably won’t cause issues in all browsers, but cross-browser behavior may be inconsistent.
+Due to the implementation details of the `calc()` function that is used by this mixin behind the scenes, all `$sizes` values must use `px`, and all values _must_ include a unit, even `0` values (i.e. use `0px` instead of `0`).
 
 #### As an HTML class
 
 Works for any of the following classes:
 
-- `h-fluid-size-top-margin-{$amount}`
-- `h-fluid-size-bottom-margin-{$amount}`
-- `h-fluid-size-top-padding-{$amount}`
-- `h-fluid-size-bottom-padding-{$amount}`
+- `h-size-top-margin-{$amount}`
+- `h-size-bottom-margin-{$amount}`
+- `h-size-top-padding-{$amount}`
+- `h-size-bottom-padding-{$amount}`
 
 ```html
-<h1 class="h-fluid-size-top-margin-s">Ground control to Major Tom</h1>
+<h1 class="h-size-top-margin-s">Ground control to Major Tom</h1>
 ```
 
-The exact names of the keys in this map aren't important, as long as `@include fluid-size(foo)` has a matching key `foo` in the map.
+The exact names of the keys in this map aren't important, as long as `@include size(foo)` has a matching key `foo` in the map.
 
 #### CSS Custom Properties (variables)
 
-Sass Toolkit will loop through all size sets in the `$fluid-sizes` map and output corresponding, responsive CSS custom properties for each. These are used for the output of `@include fluid-sizes()`, but you can also use these custom properties directly (e.g. `margin-top: var(--fluid-size-s)`), or you can use them in your own `calc()` declarations. Using the above `$fluid-sizes`, you'd end up with the following:
+Sass Toolkit will loop through all size sets in the `$sizes` map and output corresponding, responsive CSS custom properties for each. These are used for the output of `@include sizes()`, but you can also use these custom properties directly (e.g. `margin-top: var(--size-s)`), or you can use them in your own `calc()` declarations. Using the above `$sizes`, you'd end up with the following:
 
 ```scss
-// Only values for the `s` size set are shown here, but you'd see something similar for all other sets in `$fluid-sizes`
+// Only values for the `s` size set are shown here, but you'd see something similar for all other sets in `$sizes`
 
 :root {
-  --fluid-size-s: 10px;
+  --size-s: 10px;
 }
 
 @media screen and (min-width: 320px) {
   :root {
-    --fluid-size-s: calc(10px + 20 * ((100vw - 320px) / 448));
+    --size-s: calc(10px + 20 * ((100vw - 320px) / 448));
   }
 }
 
 @media screen and (min-width: 768px) {
   :root {
-    --fluid-size-s: calc(30px + 20 * ((100vw - 768px) / 672));
+    --size-s: calc(30px + 20 * ((100vw - 768px) / 672));
   }
 }
 ```
@@ -370,7 +393,7 @@ p {
 }
 
 /* Substitute vertical units, for queries that respond to device height */
-@include fluid(margin-top, 600px, 900px, 100px, 200px, $size-unit: height, $viewport-unit: vh );
+@include fluid(margin-top, 600px, 900px, 100px, 200px, $size-unit: height, $viewport-unit: vh);
 ```
 
 ## Development

@@ -1,0 +1,79 @@
+//===============================================================
+// Map Extend
+//===============================================================
+
+// Example:
+
+// $grid-configuration-default: (
+//   'columns': 12,
+//   'layouts': (
+//     'small': 800px,
+//     'medium': 1000px,
+//     'large': 1200px,
+//   ),
+// );
+//
+// $grid-configuration-custom: (
+//   'layouts': (
+//     'large': 1300px,
+//     'huge': 1500px
+//   ),
+// );
+//
+// $grid-configuration-user: (
+//   'direction': 'ltr',
+//   'columns': 16,
+//   'layouts': (
+//     'large': 1300px,
+//     'huge': 1500px
+//   ),
+// );
+//
+// // Not deep
+// $grid-configuration: map-extend($grid-configuration-default, $grid-configuration-custom, $grid-configuration-user);
+// // -> ("columns": 16, "layouts": (("large": 1300px, "huge": 1500px)), "direction": "ltr")
+//
+// // Deep
+// $grid-configuration: map-extend($grid-configuration-default, $grid-configuration-custom, $grid-configuration-user, true);
+// // -> ("columns": 16, "layouts": (("small": 800px, "medium": 1000px, "large": 1300px, "huge": 1500px)), "direction": "ltr")
+
+
+/// jQuery-style extend function
+/// About `map-merge()`:
+/// * only takes 2 arguments
+/// * is not recursive
+/// @param {Map} $map - first map
+/// @param {ArgList} $maps - other maps
+/// @param {Bool} $deep - recursive mode
+/// @return {Map}
+@function map-extend($map, $maps.../*, $deep */) {
+  $last: nth($maps, -1);
+  $deep: $last == true;
+  $max: if($deep, length($maps) - 1, length($maps));
+
+  // Loop through all maps in $maps...
+  @for $i from 1 through $max {
+    // Store current map
+    $current: nth($maps, $i);
+
+    // If not in deep mode, simply merge current map with map
+    @if not $deep {
+      $map: map-merge($map, $current);
+    } @else {
+      // If in deep mode, loop through all tuples in current map
+      @each $key, $value in $current {
+
+        // If value is a nested map and same key from map is a nested map as well
+        @if type-of($value) == "map" and type-of(map-get($map, $key)) == "map" {
+          // Recursive extend
+          $value: map-extend(map-get($map, $key), $value, true);
+        }
+
+        // Merge current tuple with map
+        $map: map-merge($map, ($key: $value));
+      }
+    }
+  }
+
+  @return $map;
+}
