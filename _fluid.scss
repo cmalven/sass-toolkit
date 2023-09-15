@@ -77,7 +77,7 @@
   }
 
   @media (min-#{$size-unit}: $min-size) {
-    $val: calc(#{$min-value} + #{strip-unit($max-value - $min-value)} * (100#{$viewport-unit} - #{$min-size}) / #{strip-unit($max-size - $min-size)});
+    $val: calc(#{$min-value} + #{strip-unit($max-value - $min-value)} * (#{"100" + $viewport-unit} - #{$min-size}) / #{strip-unit($max-size - $min-size)});
 
     @if $custom-property-name {
       :root { --#{$custom-property-name}: #{$val}; }
