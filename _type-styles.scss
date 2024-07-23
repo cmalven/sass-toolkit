@@ -2,9 +2,9 @@
 @use "sass:map";
 @use "sass:list";
 @use "sass:meta";
-@import "util/map-deep-get";
-@import "util/map-extend";
 @import "size";
+@import "./util/map-deep-get";
+@import "./util/map-extend";
 
 // ---------------------------------------------------------------
 // Type Styles

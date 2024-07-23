@@ -1,10 +1,10 @@
 @import 'true';
-@import 'util/map-deep-get';
-@import 'util/map-deep-set';
-@import 'util/map-extend';
-@import 'util/map-has-keys';
-@import 'util/map-has-nested-keys';
-@import 'util/map-zip';
+@import '../util/map-deep-get';
+@import '../util/map-deep-set';
+@import '../util/map-extend';
+@import '../util/map-has-keys';
+@import '../util/map-has-nested-keys';
+@import '../util/map-zip';
 
 $breakpoints: (
   small: 500px,
@@ -111,12 +111,12 @@ $type-styles: (
   )
 );
 
-@import 'color';
-@import 'type-styles';
-@import 'fluid';
-@import 'size';
-@import 'util/strip-unit';
-@import 'util/compare-unit';
+@import '../color';
+@import '../type-styles';
+@import '../fluid';
+@import '../size';
+@import '../util/strip-unit';
+@import '../util/compare-unit';
 
 // ---------------------------------------------------------------
 // Utils

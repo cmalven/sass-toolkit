@@ -1,6 +1,6 @@
 {
   "name": "@malven/sass-toolkit",
-  "version": "6.0.1",
+  "version": "7.0.0",
   "description": "A collection of foundational utilities for Sass",
   "repository": {
     "type": "git",
@@ -14,12 +14,11 @@
   "author": "Chris Malven",
   "license": "MIT",
   "homepage": "https://github.com/cmalven/sass-toolkit",
-  "dependencies": {},
   "devDependencies": {
     "chokidar-cli": "^3.0.0",
-    "mocha": "^10.2.0",
-    "sass": "^1.57.0",
-    "sass-true": "^6.1.0"
+    "mocha": "^10.7.0",
+    "sass": "^1.77.8",
+    "sass-true": "^8.0.0"
   },
   "scripts": {
     "test": "mocha",
