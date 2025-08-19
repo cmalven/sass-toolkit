@@ -1,3 +1,6 @@
+@use 'sass:map';
+@use 'sass:list';
+
 //===============================================================
 // Map Deep Set
 //===============================================================
@@ -14,7 +17,7 @@
 // );
 //
 // // Without `map-deep-set`
-// $grid-configuration: map-merge($grid-configuration, map-merge(map-get($grid-configuration, 'layouts'), ('large': 1300px)));
+// $grid-configuration: map.merge($grid-configuration, map.merge(map.get($grid-configuration, 'layouts'), ('large': 1300px)));
 //
 // // With `map-deep-set`
 // $medium: map-deep-set($grid-configuration, 'layouts', 'medium', 1300px);
@@ -29,16 +32,16 @@
   $map-list: ($map,);
   $result: null;
 
-  @if length($keys) == 2 {
-    @return map-merge($map, (nth($keys, 1): nth($keys, -1)));
+  @if list.length($keys) == 2 {
+    @return map.merge($map, (list.nth($keys, 1): list.nth($keys, -1)));
   }
 
-  @for $i from 1 through length($keys) - 2 {
-    $map-list: append($map-list, map-get(nth($map-list, -1), nth($keys, $i)));
+  @for $i from 1 through list.length($keys) - 2 {
+    $map-list: list.append($map-list, map.get(list.nth($map-list, -1), list.nth($keys, $i)));
   }
 
-  @for $i from length($map-list) through 1 {
-    $result: map-merge(nth($map-list, $i), (nth($keys, $i): if($i == length($map-list), nth($keys, -1), $result)));
+  @for $i from list.length($map-list) through 1 {
+    $result: map.merge(list.nth($map-list, $i), (list.nth($keys, $i): if($i == list.length($map-list), list.nth($keys, -1), $result)));
   }
 
   @return $result;

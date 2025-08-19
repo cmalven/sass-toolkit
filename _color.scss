@@ -1,3 +1,5 @@
+@use 'sass:map';
+
 //===============================================================
 // Color
 //===============================================================
@@ -28,8 +30,8 @@ $shade-mix: #000 !default;
   @param $map (map)     - Map to search for $key [$colors]
 */
 @function color($key, $map: $colors) {
-  @if map-has-key($map, $key) {
-    @return map-get($map, $key);
+  @if map.has-key($map, $key) {
+    @return map.get($map, $key);
   } @else {
     @error "Key `#{$key}` doesn't exist in map `#{$map}`";
   }
@@ -74,7 +76,7 @@ $shade-mix: #000 !default;
 */
 
 @mixin output-color-helpers {
-  @each $color in map-keys($colors) {
+  @each $color in map.keys($colors) {
     #{'.h-color-text-' + $color} {
       color: color($color);
     }

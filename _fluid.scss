@@ -1,5 +1,9 @@
-@import "util/strip-unit";
-@import "util/compare-unit";
+@use 'sass:map';
+@use 'util/strip-unit' as *;
+@use 'util/compare-unit' as *;
+
+$breakpoints: () !default;
+$fluid-min-width: 320px !default;
 
 // =========================================================================
 //
@@ -44,12 +48,12 @@
     $min-size: $fluid-min-width;
   }
   
-  @if $breakpoints and map-has-key($breakpoints, $min-size) {
-    $min-size: map-get($breakpoints, $min-size);
+  @if $breakpoints and map.has-key($breakpoints, $min-size) {
+    $min-size: map.get($breakpoints, $min-size);
   }
 
-  @if $breakpoints and map-has-key($breakpoints, $max-size) {
-    $max-size: map-get($breakpoints, $max-size);
+  @if $breakpoints and map.has-key($breakpoints, $max-size) {
+    $max-size: map.get($breakpoints, $max-size);
   }
 
   @if $negative {
@@ -61,7 +65,7 @@
   $max-value: ($max-value * $scale) + $adjust;
 
   // Ensure that all values are consistent
-  @if compare-unit($min-size $max-size $min-value $max-value) != true {
+  @if not compare-unit($min-size $max-size $min-value $max-value) {
     @warn "All number values passed to `fluid` mixin should have the same unit";
   }
 

@@ -1,3 +1,7 @@
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:meta';
+
 //===============================================================
 // Map Extend
 //===============================================================
@@ -39,7 +43,7 @@
 
 
 /// jQuery-style extend function
-/// About `map-merge()`:
+/// About `map.merge()`:
 /// * only takes 2 arguments
 /// * is not recursive
 /// @param {Map} $map - first map
@@ -47,30 +51,30 @@
 /// @param {Bool} $deep - recursive mode
 /// @return {Map}
 @function map-extend($map, $maps.../*, $deep */) {
-  $last: nth($maps, -1);
+  $last: list.nth($maps, -1);
   $deep: $last == true;
-  $max: if($deep, length($maps) - 1, length($maps));
+  $max: if($deep, list.length($maps) - 1, list.length($maps));
 
   // Loop through all maps in $maps...
   @for $i from 1 through $max {
     // Store current map
-    $current: nth($maps, $i);
+    $current: list.nth($maps, $i);
 
     // If not in deep mode, simply merge current map with map
     @if not $deep {
-      $map: map-merge($map, $current);
+      $map: map.merge($map, $current);
     } @else {
       // If in deep mode, loop through all tuples in current map
       @each $key, $value in $current {
 
         // If value is a nested map and same key from map is a nested map as well
-        @if type-of($value) == "map" and type-of(map-get($map, $key)) == "map" {
+        @if meta.type-of($value) == "map" and meta.type-of(map.get($map, $key)) == "map" {
           // Recursive extend
-          $value: map-extend(map-get($map, $key), $value, true);
+          $value: map-extend(map.get($map, $key), $value, true);
         }
 
         // Merge current tuple with map
-        $map: map-merge($map, ($key: $value));
+        $map: map.merge($map, ($key: $value));
       }
     }
   }

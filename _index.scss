@@ -1,0 +1,43 @@
+$-breakpoints: () !default;
+$-font-stacks: () !default;
+$-type-styles: () !default;
+$-sizes: () !default;
+$-colors: () !default;
+
+@forward 'color' show
+  color,
+  output-color-helpers
+with (
+  $colors: $-colors
+);
+
+@forward 'fluid' show
+  fluid
+with (
+  $breakpoints: $-breakpoints,
+);
+
+@forward 'size' show
+  size,
+  output-sizes,
+  get-size,
+  output-size-custom-properties,
+  output-size-helpers
+with (
+  $breakpoints: $-breakpoints,
+  $sizes: $-sizes,
+);
+
+@forward 'type-styles' show
+  type-style,
+  get-type-style,
+  get-properties-for-type-size-set,
+  get-properties-for-type-sizes,
+  font-stack-styles,
+  filter-fluid-properties,
+  output-type-helpers
+with (
+  $breakpoints: $-breakpoints,
+  $font-stacks: $-font-stacks,
+  $type-styles: $-type-styles,
+);

@@ -1,4 +1,6 @@
-@import "fluid";
+@use 'sass:list';
+@use 'sass:map';
+@use "fluid" as *;
 
 //===============================================================
 // Size
@@ -37,10 +39,10 @@ $fluid-min-width: 320px !default;
   @param $breakpoint (string)     - The breakpoint you want sizing at
 */
 @function get-size($size, $breakpoint: null) {
-  @if map-has-key($sizes, $size) {
-    $size-set: map-get($sizes, $size);
-    @if map-has-key($size-set, $breakpoint) {
-      @return map-get($size-set, $breakpoint);
+  @if map.has-key($sizes, $size) {
+    $size-set: map.get($sizes, $size);
+    @if map.has-key($size-set, $breakpoint) {
+      @return map.get($size-set, $breakpoint);
     } @else {
       $breakpoints-length: length(map-values($size-set));
       $last-breakpoint-value: nth(map-values($size-set), $breakpoints-length);
@@ -58,8 +60,8 @@ $fluid-min-width: 320px !default;
   @param $size (string)  - Size set you want
 */
 @function get-spacing-size($size, $map: $sizes) {
-  @if map-has-key($map, $size) {
-    @return map-get($map, $size);
+  @if map.has-key($map, $size) {
+    @return map.get($map, $size);
   }
   @else {
     @error "Key `#{$size}` doesn't exist in map `#{$map}`";
@@ -80,7 +82,7 @@ $fluid-min-width: 320px !default;
   @param $scale (number)               - Multiplies all resulting values by a given amount
 */
 @mixin size($size, $property: margin-top, $negative: false, $adjust: null, $scale: 1) {
-  @if map-has-key($sizes, $size) {
+  @if map.has-key($sizes, $size) {
     @each $prop in $property {
       // If we're customizing the original value we need a more complicated calc…
       $val: var(--size-#{$size});
@@ -129,11 +131,11 @@ $fluid-min-width: 320px !default;
   // Create an index we can increment
   $idx: 1;
 
-  $size-set-length: length(map-keys($size-set));
+  $size-set-length: list.length(map.keys($size-set));
 
   // Set initial breakpoint
   $previous-breakpoint: $fluid-min-width;
-  $previous-size: map-get($size-set, default);
+  $previous-size: map.get($size-set, default);
 
   @if $size-set-length == 1 {
     @if $custom-property-name {
@@ -149,8 +151,8 @@ $fluid-min-width: 320px !default;
   }
   @else {
     @each $key, $value in $size-set {
-      @if map-has-key($breakpoints, $key) {
-        $new-breakpoint: map-get($breakpoints, $key);
+      @if map.has-key($breakpoints, $key) {
+        $new-breakpoint: map.get($breakpoints, $key);
         $include-min: $idx == 1;
         $include-max: $idx == $size-set-length - 1;
         @include fluid(
@@ -185,7 +187,7 @@ $fluid-min-width: 320px !default;
 */
 
 @mixin output-size-helpers {
-  @each $size-key in map-keys($sizes) {
+  @each $size-key in map.keys($sizes) {
     .h-size-top-margin-#{$size-key} {
       @include size($size-key);
     }
@@ -218,3 +220,6 @@ $fluid-min-width: 320px !default;
     @include output-sizes($val, margin, $custom-property-name: 'size-#{$key}');
   }
 }
+
+// Output the CSS custom properties required for fluid sizing
+@include output-size-custom-properties;

@@ -1,10 +1,13 @@
-@import 'true';
-@import '../util/map-deep-get';
-@import '../util/map-deep-set';
-@import '../util/map-extend';
-@import '../util/map-has-keys';
-@import '../util/map-has-nested-keys';
-@import '../util/map-zip';
+@use 'sass:map';
+@use '../node_modules/sass-true' as *;
+@use '../util/map-deep-get' as *;
+@use '../util/map-deep-set' as *;
+@use '../util/map-extend' as *;
+@use '../util/map-has-keys' as *;
+@use '../util/map-has-nested-keys' as *;
+@use '../util/map-zip' as *;
+@use '../util/strip-unit' as *;
+@use '../util/compare-unit' as *;
 
 $breakpoints: (
   small: 500px,
@@ -111,12 +114,13 @@ $type-styles: (
   )
 );
 
-@import '../color';
-@import '../type-styles';
-@import '../fluid';
-@import '../size';
-@import '../util/strip-unit';
-@import '../util/compare-unit';
+@use '../index' as toolkit with (
+  $-colors: $colors,
+  $-breakpoints: $breakpoints,
+  $-font-stacks: $font-stacks,
+  $-type-styles: $type-styles,
+  $-sizes: $sizes,
+) ;
 
 // ---------------------------------------------------------------
 // Utils
@@ -146,13 +150,13 @@ $type-styles: (
 }
 
 @include test-module('Get properties for type size set') {
-  $type-style: map-get($type-styles, 'a');
-  $sizes: map-get($type-style, 'sizes');
-  $size: map-get($sizes, 'default');
+  $type-style: map.get($type-styles, 'a');
+  $sizes: map.get($type-style, 'sizes');
+  $size: map.get($sizes, 'default');
 
   @include test('Without filtering') {
     @include assert-equal(
-      get-properties-for-type-size-set($size), (
+      toolkit.get-properties-for-type-size-set($size), (
         font-size: 1.6rem,
         line-height: 1.55
       )
@@ -161,7 +165,7 @@ $type-styles: (
 
   @include test('With filtering') {
     @include assert-equal(
-        get-properties-for-type-size-set($size, (line-height)), (
+        toolkit.get-properties-for-type-size-set($size, (line-height)), (
         line-height: 1.55
       )
     );
@@ -173,7 +177,7 @@ $type-styles: (
 
   @include test('Without filtering') {
     @include assert-equal(
-      get-properties-for-type-sizes($sizes), (
+      toolkit.get-properties-for-type-sizes($sizes), (
         default: (
           font-size: 1.6rem,
           line-height: 1.55
@@ -190,7 +194,7 @@ $type-styles: (
 
   @include test('With filtering') {
     @include assert-equal(
-        get-properties-for-type-sizes($sizes, ('line-height')), (
+        toolkit.get-properties-for-type-sizes($sizes, ('line-height')), (
         default: (
           line-height: 1.55
         ),
@@ -222,7 +226,7 @@ $type-styles: (
 
   @include test('Get fluid properties') {
     @include assert-equal(
-      filter-fluid-properties($sizes, $breakpoints, true),
+      toolkit.filter-fluid-properties($sizes, $breakpoints, true),
       (
         sizes: (
           default: (
@@ -245,7 +249,7 @@ $type-styles: (
 
   @include test('Get non-fluid properties') {
     @include assert-equal(
-      filter-fluid-properties($sizes, $breakpoints, false),
+      toolkit.filter-fluid-properties($sizes, $breakpoints, false),
         (
           sizes: (
             default: (
@@ -400,23 +404,23 @@ $type-styles: (
 @include test-module('Color') {
   @include test('Outputs the correct color') {
     @include assert-equal(
-      color(black), #000
+      toolkit.color(black), #000
     );
     @include assert-equal(
-      color(white), #fff
+      toolkit.color(white), #fff
     );
     @include assert-equal(
-      color(red), #ff0000
+      toolkit.color(red), #ff0000
     );
     @include assert-equal(
-      color(peaches-and-cream), #f8c6b8
+      toolkit.color(peaches-and-cream), #f8c6b8
     );
   }
 
   @include test('Outputs helper classes') {
     @include assert {
       @include output {
-        @include output-color-helpers;
+        @include toolkit.output-color-helpers;
       }
       @include expect {
         .h-color-text-black {
@@ -464,7 +468,7 @@ $type-styles: (
   @include test('Font stack styles mixin') {
     @include assert {
       @include output {
-        @include font-stack-styles(helvetica);
+        @include toolkit.font-stack-styles(helvetica);
       }
       @include expect {
         font-family: "Helvetica Neue", arial, sans-serif;
@@ -477,7 +481,7 @@ $type-styles: (
   @include test('Output helper classes') {
     @include assert {
       @include output {
-        @include output-type-helpers;
+        @include toolkit.output-type-helpers;
       }
       @include expect {
         .h-type-a {
@@ -603,7 +607,7 @@ $type-styles: (
   @include test('Type style mixin') {
     @include assert {
       @include output {
-        @include type-style(a);
+        @include toolkit.type-style(a);
       }
       @include expect {
         font-family: "Helvetica Neue", arial, sans-serif;
@@ -626,7 +630,7 @@ $type-styles: (
   @include test('Type style mixin with unit for sizes') {
     @include assert {
       @include output {
-        @include type-style(c);
+        @include toolkit.type-style(c);
       }
       @include expect {
         font-family: "Helvetica Neue", arial, sans-serif;
@@ -650,7 +654,7 @@ $type-styles: (
   @include test('Type style mixin with fluid size') {
     @include assert {
       @include output {
-        @include type-style(e);
+        @include toolkit.type-style(e);
       }
       @include expect {
         font-family: "Helvetica Neue", arial, sans-serif;
@@ -692,7 +696,7 @@ $type-styles: (
   @include test('Get type style mixin') {
     @include assert {
       @include output {
-        @include get-type-style(a, medium);
+        @include toolkit.get-type-style(a, medium);
       }
       @include expect {
         font-family: "Helvetica Neue", arial, sans-serif;
@@ -708,10 +712,10 @@ $type-styles: (
   @include test('Outputs correctly') {
     @include assert {
       @include output {
-        @include fluid(
+        @include toolkit.fluid(
           margin-top,
-          map-get($breakpoints, medium),
-          map-get($breakpoints, large),
+          map.get($breakpoints, medium),
+          map.get($breakpoints, large),
           50px,
           100px
         );
@@ -733,10 +737,10 @@ $type-styles: (
   @include test('Outputs only custom properties') {
     @include assert {
       @include output {
-        @include fluid(
+        @include toolkit.fluid(
           margin-top,
-          map-get($breakpoints, medium),
-          map-get($breakpoints, large),
+          map.get($breakpoints, medium),
+          map.get($breakpoints, large),
           50px,
           100px,
           $custom-property-name: 'my-custom-property'
@@ -765,10 +769,10 @@ $type-styles: (
   @include test('With height') {
     @include assert {
       @include output {
-        @include fluid(
+        @include toolkit.fluid(
           margin-top,
-          map-get($breakpoints, medium),
-          map-get($breakpoints, large),
+          map.get($breakpoints, medium),
+          map.get($breakpoints, large),
           50px,
           100px,
           $size-unit: height,
@@ -792,7 +796,7 @@ $type-styles: (
   @include test('With map keys for sizes') {
     @include assert {
       @include output {
-        @include fluid(
+        @include toolkit.fluid(
           margin-top,
           default,
           large,
@@ -817,10 +821,10 @@ $type-styles: (
   @include test('With multiple properties') {
     @include assert {
       @include output {
-        @include fluid(
+        @include toolkit.fluid(
           (margin-top, margin-bottom),
-          map-get($breakpoints, medium),
-          map-get($breakpoints, large),
+          map.get($breakpoints, medium),
+          map.get($breakpoints, large),
           50px,
           100px
         );
@@ -845,10 +849,10 @@ $type-styles: (
   @include test('With negative') {
     @include assert {
       @include output {
-        @include fluid(
+        @include toolkit.fluid(
           margin-top,
-          map-get($breakpoints, medium),
-          map-get($breakpoints, large),
+          map.get($breakpoints, medium),
+          map.get($breakpoints, large),
           50px,
           100px,
           $negative: true
@@ -871,10 +875,10 @@ $type-styles: (
   @include test('With scale value') {
     @include assert {
       @include output {
-        @include fluid(
+        @include toolkit.fluid(
           margin-top,
-          map-get($breakpoints, medium),
-          map-get($breakpoints, large),
+          map.get($breakpoints, medium),
+          map.get($breakpoints, large),
           50px,
           100px,
           $scale: 2
@@ -897,10 +901,10 @@ $type-styles: (
   @include test('With positive adjust value') {
     @include assert {
       @include output {
-        @include fluid(
+        @include toolkit.fluid(
           margin-top,
-          map-get($breakpoints, medium),
-          map-get($breakpoints, large),
+          map.get($breakpoints, medium),
+          map.get($breakpoints, large),
           50px,
           100px,
           $adjust: 15px
@@ -923,10 +927,10 @@ $type-styles: (
   @include test('With negative adjust value') {
     @include assert {
       @include output {
-        @include fluid(
+        @include toolkit.fluid(
           margin-top,
-          map-get($breakpoints, medium),
-          map-get($breakpoints, large),
+          map.get($breakpoints, medium),
+          map.get($breakpoints, large),
           50px,
           100px,
           $adjust: -15px
@@ -949,10 +953,10 @@ $type-styles: (
   @include test('With negative adjust value and negative: true') {
     @include assert {
       @include output {
-        @include fluid(
+        @include toolkit.fluid(
           margin-top,
-          map-get($breakpoints, medium),
-          map-get($breakpoints, large),
+          map.get($breakpoints, medium),
+          map.get($breakpoints, large),
           50px,
           100px,
           $negative: true,
@@ -981,20 +985,20 @@ $type-styles: (
 @include test-module('Size') {
   @include test('Get size function') {
     @include assert-equal(
-      get-size(m, default), 20px
+      toolkit.get-size(m, default), 20px
     );
     @include assert-equal(
-      get-size(m, medium), 40px
+      toolkit.get-size(m, medium), 40px
     );
     @include assert-equal(
-      get-size(m, max),80px
+      toolkit.get-size(m, max),80px
     );
   }
 
   @include test('Size mixin') {
     @include assert {
       @include output {
-        @include size(m);
+        @include toolkit.size(m);
       }
 
       @include expect {
@@ -1006,7 +1010,7 @@ $type-styles: (
   @include test('With only one breakpoint') {
     @include assert {
       @include output {
-        @include size(xs);
+        @include toolkit.size(xs);
       }
 
       @include expect {
@@ -1018,7 +1022,7 @@ $type-styles: (
   @include test('With only one breakpoint and multiple properties') {
     @include assert {
       @include output {
-        @include size(xs, width height);
+        @include toolkit.size(xs, width height);
       }
 
       @include expect {
@@ -1031,7 +1035,7 @@ $type-styles: (
   @include test('With only one breakpoint plus negative, scale, and adjust') {
     @include assert {
       @include output {
-        @include size(xs, $negative: true, $scale: 2, $adjust: 10px);
+        @include toolkit.size(xs, $negative: true, $scale: 2, $adjust: 10px);
       }
 
       @include expect {
@@ -1043,7 +1047,7 @@ $type-styles: (
   @include test('With custom property') {
     @include assert {
       @include output {
-        @include size(m, padding-top padding-bottom);
+        @include toolkit.size(m, padding-top padding-bottom);
       }
 
       @include expect {
@@ -1056,7 +1060,7 @@ $type-styles: (
   @include test('With negative') {
     @include assert {
       @include output {
-        @include size(m, $negative: true);
+        @include toolkit.size(m, $negative: true);
       }
 
       @include expect {
@@ -1068,7 +1072,7 @@ $type-styles: (
   @include test('With adjust value') {
     @include assert {
       @include output {
-        @include size(m, $adjust: 15px);
+        @include toolkit.size(m, $adjust: 15px);
       }
 
       @include expect {
@@ -1080,7 +1084,7 @@ $type-styles: (
   @include test('Outputs helper classes') {
     @include assert {
       @include output {
-        @include output-size-helpers;
+        @include toolkit.output-size-helpers;
       }
 
       @include expect {
@@ -1138,7 +1142,7 @@ $type-styles: (
   @include test('Outputs custom properties') {
     @include assert {
       @include output {
-        @include output-size-custom-properties;
+        @include toolkit.output-size-custom-properties;
       }
 
       @include expect {
