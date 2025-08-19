@@ -75,7 +75,9 @@ $fluid-min-width: 320px !default;
     }
     @else {
       @each $property in $properties {
-        #{$property}: $min-value;
+        & {
+          #{$property}: $min-value;
+        }
       }
     }
   }
@@ -88,7 +90,9 @@ $fluid-min-width: 320px !default;
     }
     @else {
       @each $property in $properties {
-        #{$property}: $val;
+        & {
+          #{$property}: $val;
+        }
       }
     }
   }
@@ -100,7 +104,9 @@ $fluid-min-width: 320px !default;
       }
       @else {
         @each $property in $properties {
-          #{$property}: $max-value;
+          & {
+            #{$property}: $max-value;
+          }
         }
       }
     }
