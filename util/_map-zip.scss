@@ -1,3 +1,6 @@
+@use 'sass:list';
+@use 'sass:map';
+
 //===============================================================
 // Map Zip
 //===============================================================
@@ -17,8 +20,8 @@
 /// @return {Map} Freshly created map
 /// @see http://sass-lang.com/documentation/Sass/Script/Functions.html#zip-instance_method
 @function map-zip($keys, $values) {
-  $l-keys: length($keys);
-  $l-values: length($values);
+  $l-keys: list.length($keys);
+  $l-values: list.length($values);
   $min: min($l-keys, $l-values);
   $map: ();
 
@@ -32,7 +35,7 @@
   }
 
   @for $i from 1 through $min {
-    $map: map-merge($map, (nth($keys, $i): nth($values, $i)));
+    $map: map.merge($map, (list.nth($keys, $i): list.nth($values, $i)));
   }
 
   @return $map;

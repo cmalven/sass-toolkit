@@ -1,3 +1,6 @@
+@use "sass:math";
+@use "sass:list";
+
 // ===============================================================
 // Compare Unit
 // ===============================================================
@@ -9,11 +12,11 @@
 */
 
 @function compare-unit($values) {
-  $unit: unit(nth($values, 1));
+  $unit: math.unit(list.nth($values, 1));
   $all-equal: true;
 
   @each $val in $values {
-    @if unit($val) != $unit {
+    @if math.unit($val) != $unit {
       $all-equal: false;
     }
   }

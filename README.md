@@ -4,7 +4,6 @@ A collection of foundational utilities for Sass.
 
 ## Tools
 
-- [Color](#color)
 - [Type Styles](#type-styles)
 - [Size](#size)
 - [Fluid](#fluid)
@@ -16,14 +15,29 @@ npm install sass-toolkit --save
 ```
 
 ```scss
-// in your main.scss
-@import "sass-toolkit/color";
-@import "sass-toolkit/type-styles";
-@import "sass-toolkit/size";
-@import "sass-toolkit/fluid";
+// In _common.scss (imported by all other scss files)
+@forward '@malven/sass-toolkit' with (
+  $-breakpoints: (
+      medium: 768px,
+      large: 1024px,
+      xlarge: 1280px,
+      full: 1440px,
+  ),
+  $-font-stacks: $font-stacks, // See "Type Styles" section below for required format
+  $-type-styles: $type-styles, // See "Type Styles" section below for required format
+  $-sizes: $sizes // See "Size" section below for required format
+);
 
-// Generate custom properties 
+// in main.scss
+@use './common' as *;
+
+// Required: output CSS custom properties
 @include output-size-custom-properties;
+
+// Optional: output helper classes
+@include output-type-helpers;
+@include output-size-helpers;
+
 ```
 
 ## Use
@@ -31,66 +45,6 @@ npm install sass-toolkit --save
 ### Requirements & Assumptions
 
 The included tools are based heavily on the frontend development process at Malven Co., and as a result make some assumptions about the tools you're using and how your styles are organized.
-
-#### Outputting Helpers
-
-There are mixins included for outputting helpers. One for each toolkit file..
-```
-@include output-color-helpers;
-@include output-type-helpers;
-@include output-size-helpers;
-```
-
-
-#### Media Queries
-
-Sass Toolkit doesn't make any assumptions about what you're using to output media queries, but it does require that you define your breakpoints in a map called `$breakpoints`. The specific breakpoints included can have whatever names or values you want, but they should be in the following format:
-
-```scss
-$breakpoints: (
-  small: 500px,
-  medium: 768px,
-  large: 1024px,
-  xlarge: 1400px
-);
-```
-
-If you're interested in using a Sass library to help with outputting media queries based on this map of breakpoints, we recommend [include-media](https://www.npmjs.com/package/include-media), which also expects a map called `$breakpoints`.
-
-### Color
-
-The `color` utility grabs colors and optionally generates helper class for your colors that can be used directly in your HTML.
-
-#### Required Setup
-
-Relies on a `$colors` map variable existing in the following format:
-
-```scss
-$colors: (
-  black: #222,
-  white: #fff,
-  gray: #aaa,
-  blue: #118bc1,
-  yellow: #ffe215
-);
-```
-
-#### As a SCSS function
-
-```scss
-.my-stuff {
-  background-color: color(blue);
-  color: color(yellow);
-}
-```
-
-#### As an HTML class
-
-```html
-<div class="h-color-bg-blue">
-  <h1 class="h-color-text-yellow">We all live in a yellow submarine</h1>
-</div>
-```
 
 ### Type Styles
 
