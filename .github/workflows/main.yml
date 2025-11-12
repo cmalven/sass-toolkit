@@ -21,9 +21,11 @@ jobs:
       with:
         node-version: '20'
         registry-url: 'https://registry.npmjs.org'
+    - name: Update npm
+      run: npm install -g npm@latest
     - name: Install, Build, and Test
       run: |
-        npm install
+        npm ci
         npm test
     - name: Publish to npm
       run: |
