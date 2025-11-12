@@ -1,20 +1,20 @@
-$-breakpoints: () !default;
-$-font-stacks: () !default;
-$-type-styles: () !default;
-$-sizes: () !default;
-$-colors: () !default;
+$toolkit-breakpoints: () !default;
+$toolkit-font-stacks: () !default;
+$toolkit-type-styles: () !default;
+$toolkit-sizes: () !default;
+$toolkit-colors: () !default;
 
 @forward 'color' show
   color,
   output-color-helpers
 with (
-  $colors: $-colors
+  $colors: $toolkit-colors
 );
 
 @forward 'fluid' show
   fluid
 with (
-  $breakpoints: $-breakpoints,
+  $breakpoints: $toolkit-breakpoints,
 );
 
 @forward 'size' show
@@ -24,8 +24,8 @@ with (
   output-size-custom-properties,
   output-size-helpers
 with (
-  $breakpoints: $-breakpoints,
-  $sizes: $-sizes,
+  $breakpoints: $toolkit-breakpoints,
+  $sizes: $toolkit-sizes,
 );
 
 @forward 'type-styles' show
@@ -37,7 +37,7 @@ with (
   filter-fluid-properties,
   output-type-helpers
 with (
-  $breakpoints: $-breakpoints,
-  $font-stacks: $-font-stacks,
-  $type-styles: $-type-styles,
+  $breakpoints: $toolkit-breakpoints,
+  $font-stacks: $toolkit-font-stacks,
+  $type-styles: $toolkit-type-styles,
 );

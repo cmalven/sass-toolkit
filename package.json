@@ -1,6 +1,6 @@
 {
   "name": "@malven/sass-toolkit",
-  "version": "8.0.0",
+  "version": "9.0.0",
   "description": "A collection of foundational utilities for Sass",
   "repository": {
     "type": "git",
@@ -16,9 +16,9 @@
   "homepage": "https://github.com/cmalven/sass-toolkit",
   "devDependencies": {
     "chokidar-cli": "^3.0.0",
-    "mocha": "^11.1.0",
-    "sass": "^1.85.1",
-    "sass-true": "^8.1.0"
+    "mocha": "^11.7.5",
+    "sass-embedded": "1.93.3",
+    "sass-true": "^9.0.0"
   },
   "scripts": {
     "test": "mocha",
