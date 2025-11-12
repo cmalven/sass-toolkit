@@ -30,6 +30,8 @@ $shade-mix: #000 !default;
   @param $map (map)     - Map to search for $key [$colors]
 */
 @function color($key, $map: $colors) {
+  @warn "The Sass Toolkit `color` function is deprecated and will be removed in future version. Consider replacing it with CSS custom properties.";
+
   @if map.has-key($map, $key) {
     @return map.get($map, $key);
   } @else {

@@ -115,11 +115,11 @@ $type-styles: (
 );
 
 @use '../index' as toolkit with (
-  $-colors: $colors,
-  $-breakpoints: $breakpoints,
-  $-font-stacks: $font-stacks,
-  $-type-styles: $type-styles,
-  $-sizes: $sizes,
+  $toolkit-breakpoints: $breakpoints,
+  $toolkit-font-stacks: $font-stacks,
+  $toolkit-type-styles: $type-styles,
+  $toolkit-sizes: $sizes,
+  $toolkit-colors: $colors,
 ) ;
 
 // ---------------------------------------------------------------

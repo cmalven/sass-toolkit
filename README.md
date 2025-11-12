@@ -17,15 +17,15 @@ npm install sass-toolkit --save
 ```scss
 // In _common.scss (imported by all other scss files)
 @forward '@malven/sass-toolkit' with (
-  $-breakpoints: (
+  $toolkit-breakpoints: (
       medium: 768px,
       large: 1024px,
       xlarge: 1280px,
       full: 1440px,
   ),
-  $-font-stacks: $font-stacks, // See "Type Styles" section below for required format
-  $-type-styles: $type-styles, // See "Type Styles" section below for required format
-  $-sizes: $sizes // See "Size" section below for required format
+  $toolkit-font-stacks: $font-stacks, // See "Type Styles" section below for required format
+  $toolkit-type-styles: $type-styles, // See "Type Styles" section below for required format
+  $toolkit-sizes: $sizes // See "Size" section below for required format
 );
 
 // in main.scss
