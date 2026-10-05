@@ -53,7 +53,10 @@
 @function map-extend($map, $maps.../*, $deep */) {
   $last: list.nth($maps, -1);
   $deep: $last == true;
-  $max: if($deep, list.length($maps) - 1, list.length($maps));
+  $max: list.length($maps);
+  @if $deep {
+    $max: $max - 1;
+  }
 
   // Loop through all maps in $maps...
   @for $i from 1 through $max {

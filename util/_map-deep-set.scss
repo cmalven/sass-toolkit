@@ -41,7 +41,11 @@
   }
 
   @for $i from list.length($map-list) through 1 {
-    $result: map.merge(list.nth($map-list, $i), (list.nth($keys, $i): if($i == list.length($map-list), list.nth($keys, -1), $result)));
+    $value: $result;
+    @if $i == list.length($map-list) {
+      $value: list.nth($keys, -1);
+    }
+    $result: map.merge(list.nth($map-list, $i), (list.nth($keys, $i): $value));
   }
 
   @return $result;
